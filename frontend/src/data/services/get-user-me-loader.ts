@@ -1,17 +1,16 @@
-import { getStrapiURL } from "@/src/lib/utils";
+import { getApiURL } from "@/src/lib/utils";
 import { getAuthToken } from "./get-token";
 
+const baseUrl = getApiURL();
 
 export async function getUserMeLoader() {
-  const baseUrl = getStrapiURL();
-
-  const url = new URL("/api/users/me", baseUrl);
+  const url = `${baseUrl}/profile`;
 
   const authToken = await getAuthToken();
   if (!authToken) return { ok: false, data: null, error: null };
 
   try {
-    const response = await fetch(url.href, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,11 +18,13 @@ export async function getUserMeLoader() {
       },
       cache: "no-cache",
     });
+
     const data = await response.json();
-    if (data.error) return { ok: false, data: null, error: data.error };
-    return { ok: true, data: data, error: null };
+    if (!response.ok) return { ok: false, data: null, error: data.error };
+
+    return { ok: true, data, error: null };
   } catch (error) {
-    console.log(error);
-    return { ok: false, data: null, error: error };
+    console.error(error);
+    return { ok: false, data: null, error };
   }
 }

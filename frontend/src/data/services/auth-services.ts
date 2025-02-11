@@ -1,4 +1,4 @@
-import { getStrapiURL } from "@/src/lib/utils";
+import { getApiURL } from "@/src/lib/utils";
 
 interface RegisterUserProps {
   username: string;
@@ -11,10 +11,10 @@ interface LoginUserProps {
   password: string;
 }
 
-const baseUrl = getStrapiURL();
+const baseUrl = getApiURL();
 
 export async function registerUserService(userData: RegisterUserProps) {
-  const url = new URL("/api/auth/local/register", baseUrl);
+  const url = `${baseUrl}/register`;
 
   try {
     const response = await fetch(url, {
@@ -22,7 +22,7 @@ export async function registerUserService(userData: RegisterUserProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...userData }),
+      body: JSON.stringify(userData),
     });
 
     return response.json();
@@ -32,7 +32,7 @@ export async function registerUserService(userData: RegisterUserProps) {
 }
 
 export async function loginUserService(userData: LoginUserProps) {
-  const url = new URL("/api/auth/local", baseUrl);
+  const url = `${baseUrl}/login`;
 
   try {
     const response = await fetch(url, {
@@ -40,7 +40,7 @@ export async function loginUserService(userData: LoginUserProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...userData }),
+      body: JSON.stringify(userData),
     });
 
     return response.json();

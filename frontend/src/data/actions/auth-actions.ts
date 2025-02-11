@@ -27,7 +27,7 @@ const schemaRegister = z.object({
 
 export async function registerUserAction(prevState: any, formData: FormData) {
   const cks = await cookies();
-  
+
   const validatedFields = schemaRegister.safeParse({
     username: formData.get("username"),
     password: formData.get("password"),
@@ -38,34 +38,23 @@ export async function registerUserAction(prevState: any, formData: FormData) {
     return {
       ...prevState,
       zodErrors: validatedFields.error.flatten().fieldErrors,
-      strapiErrors: null,
       message: "Missing Fields. Failed to Register.",
     };
   }
 
   const responseData = await registerUserService(validatedFields.data);
 
-  if (!responseData) {
+  if (!responseData || responseData.error) {
     return {
       ...prevState,
-      strapiErrors: null,
-      zodErrors: null,
-      message: "Ops! Something went wrong. Please try again.",
+      message: responseData?.error || "Ops! Something went wrong.",
     };
   }
 
-  if (responseData.error) {
-    return {
-      ...prevState,
-      strapiErrors: responseData.error,
-      zodErrors: null,
-      message: "Failed to Register.",
-    };
-  }
-
-  cks.set("jwt", responseData.jwt, config);
+  cks.set("jwt", responseData.token, config);
   redirect("/dashboard");
 }
+
 
 const schemaLogin = z.object({
   identifier: z
@@ -104,27 +93,17 @@ export async function loginUserAction(prevState: any, formData: FormData) {
 
   const responseData = await loginUserService(validatedFields.data);
 
-  if (!responseData) {
+  if (!responseData || responseData.error) {
     return {
       ...prevState,
-      strapiErrors: responseData.error,
-      zodErrors: null,
-      message: "Ops! Something went wrong. Please try again.",
+      message: responseData?.error || "Ops! Something went wrong.",
     };
   }
 
-  if (responseData.error) {
-    return {
-      ...prevState,
-      strapiErrors: responseData.error,
-      zodErrors: null,
-      message: "Failed to Login.",
-    };
-  }
-
-  cks.set("jwt", responseData.jwt);
+  cks.set("jwt", responseData.token, config);
   redirect("/dashboard");
 }
+
 
 export async function logoutAction() {
   const cks = await cookies();
