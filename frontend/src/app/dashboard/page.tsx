@@ -1,10 +1,12 @@
-import { LogoutButton } from "@/src/components/custom/LogoutButton";
+import {LogoutButton} from "@/src/components/custom/LogoutButton"
+import Link from "next/link"
 
 export default function DashboardRoute() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <h1>Dashboard</h1>
-      <LogoutButton />
-    </div>
-  );
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+            <h1>Dashboard</h1>
+            <Link href={"/"}>Home</Link>
+            <LogoutButton />
+        </div>
+    )
 }
