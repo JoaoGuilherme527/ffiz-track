@@ -39,8 +39,8 @@ export function SigninForm() {
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="identifier" name="identifier" type="text" placeholder="username or email" />
-                            {formState?.zodErrors?.identifier && <ZodErrors error={formState.zodErrors.identifier} />}
+                            <Input id="email" name="email" type="text" placeholder="email" />
+                            {formState?.zodErrors?.email && <ZodErrors error={formState.zodErrors.email} />}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>

@@ -57,10 +57,10 @@ export async function registerUserAction(prevState: any, formData: FormData) {
 
 
 const schemaLogin = z.object({
-  identifier: z
+  email: z
     .string()
     .min(3, {
-      message: "Identifier must have at least 3 or more characters",
+      message: "Email must have at least 3 or more characters",
     })
     .max(20, {
       message: "Please enter a valid username or email address",
@@ -79,7 +79,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   const cks = await cookies();
 
   const validatedFields = schemaLogin.safeParse({
-    identifier: formData.get("identifier"),
+    email: formData.get("email"),
     password: formData.get("password"),
   });
 
@@ -99,7 +99,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
       message: responseData?.error || "Ops! Something went wrong.",
     };
   }
-
+  console.log(responseData);
   cks.set("jwt", responseData.token, config);
   redirect("/dashboard");
 }
