@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "api/server.js",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
+    "build": "prisma generate",
     "dev": "nodemon api/server.js",
     "start": "node api/server.js"
   },

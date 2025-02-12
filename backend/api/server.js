@@ -78,7 +78,7 @@ app.get("/api", async (req, res) => {
 
 app.get("/api/users", async (req, res) => {
     await prisma.$connect()
-    const users = await prisma.user.findMany()
+    const users = await prisma.user.findMany() ?? []
     const usersFiltered = users.map((user) => {
         return {
             id: user.id,
