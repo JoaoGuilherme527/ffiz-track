@@ -89,4 +89,9 @@ app.get("/api/users", async (req, res) => {
     res.json(usersFiltered)
 })
 
-app.listen(3000, () => console.log("Servidor rodando na porta 3000"))
+app.listen({
+    host: '0.0.0.0',
+    port: process.env.PORT ? Number(process.env.PORT) : 3333
+}, () => {
+    console.log("HTTP Server running")
+})
