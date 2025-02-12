@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getApiURL() {
-  return process.env.API_URL ?? "http://localhost:3333";
+  return process.env.API_URL ?? process.env.API_DEV;
 }
 
 export function flattenAttributes(data: any): any {
