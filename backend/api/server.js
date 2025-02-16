@@ -31,7 +31,9 @@ app.post("/register", async (req, res) => {
             },
         })
 
-        res.status(201).json(newUser)
+        const token = jwt.sign({userId: newUser.id}, SECRET_KEY, {expiresIn: "1h"})
+
+        res.status(201).json({...newUser, token})
     } catch (error) {
         console.log(error)
         res.status(500).json({error: "Error creating user"})
@@ -58,7 +60,7 @@ app.post("/login", async (req, res) => {
 })
 
 app.get("/profile", async (req, res) => {
-    const token = req.headers.authorization?.split(" ")[1]
+    const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     await prisma.$connect()
     try {

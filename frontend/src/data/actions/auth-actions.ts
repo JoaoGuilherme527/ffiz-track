@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { loginUserService, registerUserService } from "../services/auth-services";
+import { isUserLogged, loginUserService, registerUserService } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -109,4 +109,10 @@ export async function logoutAction() {
   const cks = await cookies();
   cks.set("jwt", "", { ...config, maxAge: 0 });
   redirect("/");
+}
+
+export async function checkUserLogged() {
+  const user = await isUserLogged()
+  return user
+
 }

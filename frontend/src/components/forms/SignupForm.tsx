@@ -23,7 +23,7 @@ export function SignupForm() {
     console.log(formState, "client")
 
     return (
-        <div className="w-full max-w-md">
+        <div className="">
             <form
                 method="post"
                 onSubmit={(e) => {
@@ -34,8 +34,9 @@ export function SignupForm() {
                     })
                 }}
             >
-                <Card style={{border: "none", boxShadow: "none"}}>
-                    <CardHeader className="space-y-1">
+                <Link className="mt-4 text-center text-sm" href={"/"}> {"<"}  Back home</Link>
+                <Card className="border-none">
+                    <CardHeader className="space-y-1 p-0">
                         <CardTitle className="text-3xl font-bold">Sign Up</CardTitle>
                         <CardDescription>Enter your details to create a new account</CardDescription>
                     </CardHeader>
@@ -54,6 +55,11 @@ export function SignupForm() {
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
                             <Input id="password" name="password" type="password" placeholder="password" />
+                            {formState?.zodErrors?.password && <ZodErrors error={formState.zodErrors.password} />}
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword">Confirm password</Label>
+                            <Input className="outline-none" id="confirmPassword" type="password" placeholder="confirm password" />
                             {formState?.zodErrors?.password && <ZodErrors error={formState.zodErrors.password} />}
                         </div>
                     </CardContent>

@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Kodchasan:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -50,7 +53,7 @@ a {
 }
 
 @layer base {
-  :root {
+    :root {
         --background: 0 0% 100%;
         --foreground: 0 0% 3.9%;
         --card: 0 0% 100%;
@@ -77,7 +80,7 @@ a {
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
     }
-  .dark {
+    .dark {
         --background: 0 0% 3.9%;
         --foreground: 0 0% 98%;
         --card: 0 0% 3.9%;
@@ -106,10 +109,154 @@ a {
 }
 
 @layer base {
-  * {
-    @apply border-border;
+    * {
+        @apply border-border;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* reset */
+button {
+    all: unset;
+}
+
+.DropdownMenuContent,
+.DropdownMenuSubContent {
+	/* * {
+        border: 1px solid red;
+    } */
+    width: 150px;
+    background-color: white;
+    border-radius: 6px;
+    display: flex;
+	gap: 10px;
+    flex-direction: column;
+    animation-duration: 400ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+	margin-right: 20px;
+	padding: 10px 10px;
+}
+.DropdownMenuContent[data-side="top"],
+.DropdownMenuSubContent[data-side="top"] {
+    animation-name: slideDownAndFade;
+}
+.DropdownMenuContent[data-side="right"],
+.DropdownMenuSubContent[data-side="right"] {
+    animation-name: slideLeftAndFade;
+}
+.DropdownMenuContent[data-side="bottom"],
+.DropdownMenuSubContent[data-side="bottom"] {
+    animation-name: slideUpAndFade;
+}
+.DropdownMenuContent[data-side="left"],
+.DropdownMenuSubContent[data-side="left"] {
+    animation-name: slideRightAndFade;
+}
+
+.DropdownMenuItem,
+.DropdownMenuCheckboxItem,
+.DropdownMenuRadioItem,
+.DropdownMenuSubTrigger {
+    font-size: 18px;
+    line-height: 1;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    position: relative;
+    user-select: none;
+    outline: none;
+	padding-inline: 10px;
+	padding-block: 20px;
+}
+.DropdownMenuSubTrigger[data-state="open"] {
+    background-color: var(--violet-4);
+    color: var(--violet-11);
+}
+
+.DropdownMenuLabel {
+    padding-left: 25px;
+    font-size: 12px;
+    line-height: 25px;
+    color: var(--mauve-11);
+}
+
+.DropdownMenuArrow {
+    fill: white;
+}
+
+.IconButton {
+    font-family: inherit;
+    border-radius: 100%;
+    height: 45px;
+    width: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+.IconButton:hover {
+    background-color: var(--violet-3);
+}
+.IconButton:focus {
+    box-shadow: 0 0 0 2px black;
+}
+
+.RightSlot {
+    margin-left: auto;
+    padding-left: 20px;
+    color: var(--mauve-11);
+}
+[data-highlighted] > .RightSlot {
+    color: white;
+}
+[data-disabled] .RightSlot {
+    color: var(--mauve-8);
+}
+
+@keyframes slideUpAndFade {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideRightAndFade {
+    from {
+        opacity: 0;
+        transform: translateX(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideDownAndFade {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeftAndFade {
+    from {
+        opacity: 0;
+        transform: translateX(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }

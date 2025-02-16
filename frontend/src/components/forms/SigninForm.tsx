@@ -20,7 +20,7 @@ const INITIAL_STATE = {
 export function SigninForm() {
     const [formState, formAction] = useActionState(loginUserAction, INITIAL_STATE)
     return (
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md mx-auto flex flex-col justify-center items-center">
             <form
                 method="post"
                 onSubmit={(e) => {
@@ -31,15 +31,20 @@ export function SigninForm() {
                     })
                 }}
             >
-                <Card>
-                    <CardHeader className="space-y-1">
+                <Link className="mt-4 text-center text-sm" href={"/"}>
+                    {" "}
+                    {"<"} Back home
+                </Link>
+
+                <Card className="border-none">
+                    <CardHeader className="space-y-4 p-0">
                         <CardTitle className="text-3xl font-bold">Sign In</CardTitle>
                         <CardDescription>Enter your details to sign in to your account</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" name="email" type="text" placeholder="email" />
+                            <Input id="email" name="email" type="text" placeholder="email@gmail.com" />
                             {formState?.zodErrors?.email && <ZodErrors error={formState.zodErrors.email} />}
                         </div>
                         <div className="space-y-2">

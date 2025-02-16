@@ -1,4 +1,5 @@
 import { getApiURL } from "@/src/lib/utils";
+import { getUserMeLoader } from "./get-user-me-loader";
 
 interface RegisterUserProps {
   username: string;
@@ -48,4 +49,10 @@ export async function loginUserService(userData: LoginUserProps) {
     console.error("Login Service Error:", error);
     throw error;
   }
+}
+
+export async function isUserLogged() {
+  const user = await getUserMeLoader()
+  return user
+
 }

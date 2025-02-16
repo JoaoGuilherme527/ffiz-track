@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { cn } from "../lib/utils";
+import Link from "next/link";
 
 export default function Error({
   error,
@@ -22,6 +23,12 @@ export default function Error({
           This is an error page. Please try again later.
         </p>
         <p className="text-pink-800 italic">{error.message}</p>
+        <Link
+          href="/"
+          className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+        >
+          Go back home
+        </Link>
       </div>
     </div>
   );
