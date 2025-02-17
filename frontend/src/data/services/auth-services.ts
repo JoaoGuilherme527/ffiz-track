@@ -18,6 +18,7 @@ interface LoginUserProps {
 interface ExpenseItem {
   name: string;
   amount: number;
+  type: string
 }
 
 const baseUrl = getApiURL();
@@ -42,7 +43,6 @@ export async function registerUserService(userData: RegisterUserProps) {
 
 export async function loginUserService(userData: LoginUserProps) {
   const url = `${baseUrl}/login`;
-  console.log({ url });
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -60,7 +60,7 @@ export async function loginUserService(userData: LoginUserProps) {
   }
 }
 
-export async function postNewExpenseItem({ amount, name }: ExpenseItem) {
+export async function postNewExpenseItem({ amount, name, type }: ExpenseItem) {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
@@ -73,7 +73,7 @@ export async function postNewExpenseItem({ amount, name }: ExpenseItem) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`
       },
-      body: JSON.stringify({ name, amount }),
+      body: JSON.stringify({ name, amount, type }),
     });
 
     return response.json();

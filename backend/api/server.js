@@ -81,7 +81,7 @@ app.post("/:userId/expenses", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
-    const {name, amount} = req.body
+    const {name, amount, type} = req.body
     await prisma.$connect()
     try {
         const newExpense = await prisma.expenseItem.create({
@@ -89,6 +89,7 @@ app.post("/:userId/expenses", async (req, res) => {
                 name,
                 amount,
                 userId,
+                type
             },
         })
         res.status(201).json(newExpense)

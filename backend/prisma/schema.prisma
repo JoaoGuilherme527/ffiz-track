@@ -27,4 +27,5 @@ model ExpenseItem {
   amount    Float
   createdAt DateTime @default(now())
   userId    String
+  type      String
 }

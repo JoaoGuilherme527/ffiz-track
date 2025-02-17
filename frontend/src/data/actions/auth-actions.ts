@@ -99,7 +99,6 @@ export async function loginUserAction(prevState: any, formData: FormData) {
       message: responseData?.error || "Ops! Something went wrong.",
     };
   }
-  console.log({ responseData });
   cks.set("jwt", responseData.token, config);
   redirect("/dashboard");
 }
@@ -108,11 +107,13 @@ export async function addExpenseItem(formData: FormData) {
   const expenseItem = {
     name: formData.get("name"),
     amount: formData.get("amount"),
+    type: formData.get("type")
   }
 
   const response = await postNewExpenseItem({
     name: expenseItem.name as string,
-    amount: Number(expenseItem.amount)
+    amount: Number(expenseItem.amount),
+    type: expenseItem.type as string
   });
 
   return response
