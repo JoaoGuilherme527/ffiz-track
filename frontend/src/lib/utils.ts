@@ -50,3 +50,10 @@ export function flattenAttributes(data: any): any {
 
   return flattened;
 }
+
+
+//format the time 2025-02-17T03:29:45.189Z to 17/02/2025 03:29:45
+export function formatTime(time: string): string {
+  const date = new Date(time);
+  return date.toLocaleString();
+}

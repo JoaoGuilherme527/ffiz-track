@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { isUserLogged, loginUserService, registerUserService } from "../services/auth-services";
+import { getUserExpenses, isUserLogged, loginUserService, postNewExpenseItem, registerUserService } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -99,11 +100,29 @@ export async function loginUserAction(prevState: any, formData: FormData) {
       message: responseData?.error || "Ops! Something went wrong.",
     };
   }
-  console.log({responseData});
+  console.log({ responseData });
   cks.set("jwt", responseData.token, config);
   redirect("/dashboard");
 }
 
+export async function addExpenseItem(formData: FormData) {
+  const expenseItem = {
+    name: formData.get("name"),
+    amount: formData.get("amount"),
+  }
+
+  const response = await postNewExpenseItem({
+    name: expenseItem.name as string,
+    amount: Number(expenseItem.amount)
+  });
+
+  return response
+}
+
+export async function getExpenses() {
+  const data = await getUserExpenses()
+  return data
+}
 
 export async function logoutAction() {
   const cks = await cookies();

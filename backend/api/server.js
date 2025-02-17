@@ -44,14 +44,13 @@ app.post("/login", async (req, res) => {
     const {email, password} = req.body
     await prisma.$connect()
     try {
-        const user = await prisma.user.findUnique({where: {username: email, OR: {email}}})
+        const user = await prisma.user.findUnique({where: {email}})
         if (!user) return res.status(400).json({error: "Usuário não encontrado!"})
 
         const isValid = await bcrypt.compare(password, user.password)
         if (!isValid) return res.status(400).json({error: "Senha inválida!"})
 
         const token = jwt.sign({userId: user.id}, SECRET_KEY, {expiresIn: "1h"})
-        console.log(`Usuário ${user.username} fez login com sucesso! Token: ${token}`)
         res.json({token})
     } catch (error) {
         console.log(error)
@@ -76,6 +75,32 @@ app.get("/api", async (req, res) => {
     res.json({
         hello: "World!",
     })
+})
+
+app.post("/:userId/expenses", async (req, res) => {
+    const {userId} = req.params
+    const {name, amount} = req.body
+    await prisma.$connect()
+    try {
+        const newExpense = await prisma.expenseItem.create({
+            data: {
+                name,
+                amount,
+                userId,
+            },
+        })
+        res.status(201).json(newExpense)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Error creating expense"})
+    }
+})
+
+app.get("/:userId/expenses", async (req, res) => {
+    const {userId} = req.params
+    await prisma.$connect()
+    const expenses = (await prisma.expenseItem.findMany({where: {userId}})) ?? []
+    res.json(expenses)
 })
 
 app.get("/api/users", async (req, res) => {
