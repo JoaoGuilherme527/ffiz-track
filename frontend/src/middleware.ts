@@ -2,7 +2,7 @@
 // import type { NextRequest } from "next/server";
 // import { getUserMeLoader } from "./data/services/get-user-me-loader";
 
-// export async function middleware(request: NextRequest) {
+export async function middleware() {
 //   // const user = await getUserMeLoader();
 //   // const currentPath = request.nextUrl.pathname;
 
@@ -10,4 +10,4 @@
 //   //   return NextResponse.redirect(new URL("/signin", request.url));
 //   // }
 //   // return NextResponse.next();
-// }
+}
