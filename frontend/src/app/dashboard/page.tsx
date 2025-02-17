@@ -75,7 +75,12 @@ export default function DashboardRoute() {
                             </div>
                             <p className="text-2xl text-[var(--light-green)] font-extrabold">{formatUSDtoBRL(item.amount)}</p>
                         </div>
-                        <div className={`absolute right-0 bg-red-400 w-[10%] h-full rounded-r-md flex items-center justify-center z-10`} onClick={() => {console.log()}}>
+                        <div
+                            className={`absolute right-0 bg-red-400 w-[10%] h-full rounded-r-md flex items-center justify-center z-10`}
+                            onClick={() => {
+                                console.log()
+                            }}
+                        >
                             <Image alt="add button" src={SVGIMG} className={"rotate-45"} />
                         </div>
                     </div>
@@ -93,11 +98,11 @@ export default function DashboardRoute() {
                     } `}
                     onSubmit={(e) => {
                         e.preventDefault()
+                        setIsAddExpenseModalOpen(false)
                         startTransition(() => {
                             const formData = new FormData(e.target as HTMLFormElement)
                             addExpenseItem(formData).then((response) => {
                                 setExpenseItems([...expenseItems, response])
-                                setIsAddExpenseModalOpen(false)
                             })
                         })
                     }}
