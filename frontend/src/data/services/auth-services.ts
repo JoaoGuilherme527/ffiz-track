@@ -41,7 +41,7 @@ export async function registerUserService(userData: RegisterUserProps) {
 
 export async function loginUserService(userData: LoginUserProps) {
   const url = `${baseUrl}/login`;
-
+  console.log({url});
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -50,11 +50,12 @@ export async function loginUserService(userData: LoginUserProps) {
       },
       body: JSON.stringify(userData),
     });
-
+    
     return response.json();
   } catch (error) {
     console.error("Login Service Error:", error);
-    throw error;
+    return null;
+
   }
 }
 
