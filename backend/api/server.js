@@ -43,15 +43,15 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
     const {email, password} = req.body
     await prisma.$connect()
-
     try {
-        const user = await prisma.user.findUnique({where: {email}})
+        const user = await prisma.user.findUnique({where: {username: email, OR: {email}}})
         if (!user) return res.status(400).json({error: "Usuário não encontrado!"})
 
         const isValid = await bcrypt.compare(password, user.password)
         if (!isValid) return res.status(400).json({error: "Senha inválida!"})
 
         const token = jwt.sign({userId: user.id}, SECRET_KEY, {expiresIn: "1h"})
+        console.log(`Usuário ${user.username} fez login com sucesso! Token: ${token}`)
         res.json({token})
     } catch (error) {
         console.log(error)
@@ -80,7 +80,7 @@ app.get("/api", async (req, res) => {
 
 app.get("/api/users", async (req, res) => {
     await prisma.$connect()
-    const users = await prisma.user.findMany() ?? []
+    const users = (await prisma.user.findMany()) ?? []
     const usersFiltered = users.map((user) => {
         return {
             id: user.id,
@@ -91,9 +91,12 @@ app.get("/api/users", async (req, res) => {
     res.json(usersFiltered)
 })
 
-app.listen({
-    host: '0.0.0.0',
-    port: process.env.PORT ? Number(process.env.PORT) : 3333
-}, () => {
-    console.log("HTTP Server running")
-})
+app.listen(
+    {
+        host: "0.0.0.0",
+        port: process.env.PORT ? Number(process.env.PORT) : 3333,
+    },
+    () => {
+        console.log("HTTP Server running")
+    }
+)
