@@ -13,13 +13,13 @@ interface HeaderProps {
 
 export function Header({isMobile}: HeaderProps) {
     const [isLogged, setIsLogged] = useState(false)
-    const [isLoading, setIsLoading] = useState(true) // Estado para controlar o loading
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         async function fetchUserStatus() {
             const result = await checkUserLogged()
             setIsLogged(result.ok)
-            setIsLoading(false) // Marca como carregado
+            setIsLoading(false)
         }
         fetchUserStatus()
     }, [])
@@ -32,7 +32,7 @@ export function Header({isMobile}: HeaderProps) {
                 <div className=" bg-gray-300 font-semibold text-left text-base text-white px-10 py-2 rounded-sm">Loading...</div>
             ) : isMobile && !isLogged ? (
                 <DropdownMenu.Root>
-                    <DropdownMenu.Trigger asChild className="shadow-lg">
+                    <DropdownMenu.Trigger asChild className="shadow-lg outline-none">
                         <button className="IconButton" aria-label="Customise options">
                             <HamburgerMenuIcon />
                         </button>

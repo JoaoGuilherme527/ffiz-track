@@ -99,7 +99,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
       message: responseData?.error || "Ops! Something went wrong.",
     };
   }
-  console.log(responseData);
+  console.log({responseData});
   cks.set("jwt", responseData.token, config);
   redirect("/dashboard");
 }
