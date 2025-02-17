@@ -5,7 +5,7 @@
 import Image from "next/image"
 import {startTransition, useActionState, useEffect, useLayoutEffect, useState, useTransition} from "react"
 import SVGIMG from "../../../public/plus.svg"
-import {addExpenseItem, checkUserLogged, getExpenses} from "@/src/data/actions/auth-actions"
+import {addExpenseItem, checkUserLogged, deleteExpense, getExpenses} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
 import {formatTime} from "@/src/lib/utils"
 
@@ -23,19 +23,20 @@ export default function DashboardRoute() {
     const [expenseItems, setExpenseItems] = useState<ExpenseItem[]>([])
     const [pending, startTransition] = useTransition()
 
-    const formatUSDtoBRL = (number: number) =>
-        new Intl.NumberFormat("pt-BR", {
+    const formatUSDtoBRL = (number: number): string => {
+        return new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
         }).format(number)
+    }
+    async function fetchExpenses() {
+        const response = await getExpenses()
+        if (response) {
+            setExpenseItems(response)
+        } else setExpenseItems([])
+    }
 
     useLayoutEffect(() => {
-        async function fetchExpenses() {
-            const response = await getExpenses()
-            if (response) {
-                setExpenseItems(response)
-            }
-        }
         fetchExpenses()
     }, [])
 
@@ -76,9 +77,12 @@ export default function DashboardRoute() {
                             <p className="text-2xl text-[var(--light-green)] font-extrabold">{formatUSDtoBRL(item.amount)}</p>
                         </div>
                         <div
-                            className={`absolute right-0 bg-red-400 w-[10%] h-full rounded-r-md flex items-center justify-center z-10`}
+                            className={`absolute right-0 bg-red-400 w-[10%] h-full rounded-r-md flex items-center justify-center z-10 active:bg-red-600`}
                             onClick={() => {
-                                console.log()
+                                setIsEditExpenseOpen({status: false, data: null})
+                                startTransition(() => {
+                                    deleteExpense(item.id).then(fetchExpenses)
+                                })
                             }}
                         >
                             <Image alt="add button" src={SVGIMG} className={"rotate-45"} />

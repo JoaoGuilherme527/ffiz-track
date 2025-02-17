@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getUserExpenses, isUserLogged, loginUserService, postNewExpenseItem, registerUserService } from "../services/auth-services";
+import { deleteUserExpense, getUserExpenses, isUserLogged, loginUserService, postNewExpenseItem, registerUserService } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -119,8 +119,14 @@ export async function addExpenseItem(formData: FormData) {
 }
 
 export async function getExpenses() {
-  const data = await getUserExpenses()
-  return data
+  const response = await getUserExpenses()
+  return response
+}
+
+export async function deleteExpense(id: string) {
+  const response = await deleteUserExpense(id)
+  return response
+
 }
 
 export async function logoutAction() {

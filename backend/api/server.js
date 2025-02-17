@@ -78,6 +78,8 @@ app.get("/api", async (req, res) => {
 })
 
 app.post("/:userId/expenses", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
     const {name, amount} = req.body
     await prisma.$connect()
@@ -97,10 +99,29 @@ app.post("/:userId/expenses", async (req, res) => {
 })
 
 app.get("/:userId/expenses", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
     await prisma.$connect()
     const expenses = (await prisma.expenseItem.findMany({where: {userId}})) ?? []
     res.json(expenses)
+})
+
+app.delete("/expenses/:id", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
+    const {id} = req.params
+    await prisma.$connect()
+    try {
+        const expense = await prisma.expenseItem.findUnique({where: {id}})
+        if (expense) {
+            const deletedExpense = await prisma.expenseItem.delete({where: {id}})
+            res.status(201).json(deletedExpense)
+        } else res.status(401).json({error: "Expense does'nt exist!"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Error deleting expense"})
+    }
 })
 
 app.get("/api/users", async (req, res) => {
