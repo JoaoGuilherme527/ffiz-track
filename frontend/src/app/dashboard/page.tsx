@@ -3,12 +3,12 @@
 "use client"
 
 import Image from "next/image"
-import {startTransition, useActionState, useEffect, useLayoutEffect, useState, useTransition} from "react"
+import {useEffect, useLayoutEffect, useState, useTransition} from "react"
 import SVGIMG_PLUS from "../../../public/plus.svg"
 import SVGIMG_EDIT from "../../../public/edit.svg"
-import {addExpenseItem, checkUserLogged, deleteExpense, getExpenses, updateExpenseItem} from "@/src/data/actions/auth-actions"
+import {addExpenseItem, deleteExpense, getExpenses, updateExpenseItem} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
-import {formatTime} from "@/src/lib/utils"
+import ExpenseItemComponent from "@/src/components/custom/ExpenseItem"
 
 interface ExpenseItem {
     name: string
@@ -27,25 +27,45 @@ export default function DashboardRoute() {
     })
     const [expenseItems, setExpenseItems] = useState<ExpenseItem[]>([])
     const [pending, startTransition] = useTransition()
-    const [totalExpensesAmount, setTotalExpensesAmount] = useState(0)
+    const [totalExpensesAmount, setTotalExpensesAmount] = useState("")
+    const [fontSize, setFontSize] = useState("text-5xl")
 
     const formatUSDtoBRL = (number: number): string => {
-        return new Intl.NumberFormat("pt-BR", {
+        const formattedValue = new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
         }).format(number)
-    }
 
-    function handleExpensesSum(items: ExpenseItem[]) {}
+        return formattedValue
+    }
 
     async function fetchExpenses() {
         const response: ExpenseItem[] = await getExpenses()
         if (response) {
             setExpenseItems(response)
-            const sum = response.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
-            setTotalExpensesAmount(sum)
         } else setExpenseItems([])
     }
+
+    useEffect(
+        function sumExpenses() {
+            const sum = expenseItems.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
+            const formattedValue = formatUSDtoBRL(sum)
+            const length = formattedValue.length
+
+            setTotalExpensesAmount(formattedValue)
+
+            if (length <= 10) {
+                setFontSize("text-5xl")
+            } else if (length <= 14) {
+                setFontSize("text-4xl")
+            } else if (length <= 18) {
+                setFontSize("text-3xl")
+            } else {
+                setFontSize("text-2xl")
+            }
+        },
+        [expenseItems]
+    )
 
     useLayoutEffect(() => {
         startTransition(() => {
@@ -55,6 +75,7 @@ export default function DashboardRoute() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden">
+            <div className="z-40 absolute top-0 w-full h-[6%] bg-[var(--dark-green)] shadow-md"></div>
             {pending ? (
                 <div className="z-50 absolute top-0 right-0 w-dvw h-dvh bg-[#0002] flex items-center justify-center">
                     <div className="w-20 h-20 animate-ping bg-white rounded-full"></div>
@@ -76,52 +97,28 @@ export default function DashboardRoute() {
             >
                 <Image alt="add button" src={SVGIMG_PLUS} className={`${isAddExpenseModalOpen ? "rotate-45" : "rotate-0"}`} />
             </div>
-            <div className="z-20 w-full h-[40%] absolute top-0 left-0 flex items-center justify-center px-10">
-                <div className="border-4 rounded border-[var(--light-green)] w-full px-5 py-5">
-                    <h1 className="text-[var(--light-green)] font-bold text-5xl text-center">{formatUSDtoBRL(totalExpensesAmount)}</h1>
+            <div className="transition-all z-20 w-full h-[35%] absolute top-0 left-0 flex items-center justify-center px-10">
+                <div className="transition-all border-2 rounded border-[var(--light-green)] w-full px-5 py-5">
+                    <h1 className={`transition-all drop-shadow-lg text-[var(--light-green)] font-bold text-center ${fontSize}`}>{totalExpensesAmount}</h1>
                 </div>
             </div>
-            <div className="z-20 w-full h-[60%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-20 ">
-                {expenseItems?.map((item, index) => (
-                    <div className="w-full relative flex items-center active:scale-y-[0.9] transition-all" key={index}>
-                        <div
-                            className={`transition-all flex items-center gap-1 w-full bg-white dark:bg-gray-900 rounded-md shadow-xl p-5 z-20 ${
-                                isEditExpenseOpen.data?.id === item.id ? "translate-x-[-24%] w-[80%] rounded-r-none" : ""
-                            } `}
-                            onClick={() => {
-                                if (isEditExpenseOpen.data?.id === item.id) {
-                                    setIsEditExpenseOpen({status: false, data: null})
-                                    return
-                                } else setIsEditExpenseOpen({status: true, data: item})
-                            }}
-                        >
-                            <div className="flex flex-col w-full flex-1">
-                                <h1 className="text-lg text-gray-800 font-semibold">{item.name}</h1>
-                                <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.createdAt)}</p>
-                            </div>
-                            <p className="text-2xl text-red-300 font-bold">{formatUSDtoBRL(item.amount)}</p>
-                        </div>
-                        <div
-                            className={`absolute right-0 bg-red-400 w-[12%] h-full rounded-r-md flex items-center justify-center z-10 active:bg-red-600`}
-                            onClick={() => {
-                                setIsEditExpenseOpen({status: false, data: null})
-                                startTransition(() => {
-                                    deleteExpense(item.id).then(() => fetchExpenses())
-                                })
-                            }}
-                        >
-                            <Image alt="delete button" src={SVGIMG_PLUS} className={"rotate-45"} />
-                        </div>
-                        <div
-                            className={`absolute right-[12%] bg-blue-400 w-[12%] h-full flex items-center justify-center z-10 active:bg-blue-600`}
-                            onClick={() => {
-                                setIsEditExpenseOpen({status: false, data: null})
-                                setIsEditModalExpenseOpen({status: true, data: item})
-                            }}
-                        >
-                            <Image alt="edit button" src={SVGIMG_EDIT} />
-                        </div>
-                    </div>
+            <div className="z-20 w-full h-[65%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-20 ">
+                {expenseItems.map((item, key) => (
+                    <ExpenseItemComponent
+                        key={key}
+                        SVGIMG_EDIT={SVGIMG_EDIT}
+                        SVGIMG_PLUS={SVGIMG_PLUS}
+                        deleteExpense={() => {
+                            setIsEditExpenseOpen({status: false, data: null})
+                            startTransition(() => {
+                                deleteExpense(item.id).then(() => fetchExpenses())
+                            })
+                        }}
+                        item={item}
+                        isEditExpenseOpen={isEditExpenseOpen}
+                        setIsEditExpenseOpen={setIsEditExpenseOpen}
+                        setIsEditModalExpenseOpen={setIsEditModalExpenseOpen}
+                    />
                 ))}
             </div>
             <div
@@ -208,7 +205,7 @@ export default function DashboardRoute() {
             >
                 <form
                     method="post"
-                    className={`transition-all flex flex-col gap-5 w-[90%] rounded-md shadow-2xl bg-white px-10 pt-2 pb-5 ${
+                    className={`relative transition-all flex flex-col gap-5 w-[90%] rounded-md shadow-2xl bg-white px-10 pt-2 pb-5 ${
                         isEditModalExpenseOpen.status ? "translate-y-0 opacity-1" : "translate-y-full opacity-0"
                     } `}
                     onSubmit={(e) => {
@@ -240,7 +237,7 @@ export default function DashboardRoute() {
 
                     <div className="">
                         <label htmlFor="amount" className="text-sm text-gray-700">
-                            Update amount of your expense: {formatUSDtoBRL(isEditModalExpenseOpen.data?.amount as number)}
+                            Current amount: {formatUSDtoBRL(isEditModalExpenseOpen.data?.amount as number)}
                         </label>
                         <Input
                             required
