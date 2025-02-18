@@ -15,10 +15,11 @@ interface LoginUserProps {
   password: string;
 }
 
-interface ExpenseItem {
+export interface ExpenseItem {
   name: string;
   amount: number;
   type: string
+  id?: string
 }
 
 const baseUrl = getApiURL();
@@ -79,6 +80,26 @@ export async function postNewExpenseItem({ amount, name, type }: ExpenseItem) {
     return response.json();
   } catch (error) {
     console.error("Post Expense Item Service Error:", error);
+  }
+}
+export async function updateUserExpense({ amount, id }: Pick<ExpenseItem, "amount" | "id">): Promise<ExpenseItem | string> {
+  const authToken = await getAuthToken();
+  const url = `${baseUrl}/expenses/${id}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`
+      },
+      body: JSON.stringify({ amount }),
+    });
+
+    return response.json();
+  } catch (error) {
+    console.error("Update Expense Item Service Error:", error);
+    return `ERROR: ${error}`
   }
 }
 

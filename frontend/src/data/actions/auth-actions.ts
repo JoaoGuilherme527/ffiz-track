@@ -4,7 +4,7 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { deleteUserExpense, getUserExpenses, isUserLogged, loginUserService, postNewExpenseItem, registerUserService } from "../services/auth-services";
+import { deleteUserExpense, ExpenseItem, getUserExpenses, isUserLogged, loginUserService, postNewExpenseItem, registerUserService, updateUserExpense } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -114,6 +114,19 @@ export async function addExpenseItem(formData: FormData) {
     name: expenseItem.name as string,
     amount: Number(expenseItem.amount),
     type: expenseItem.type as string
+  });
+
+  return response
+}
+
+export async function updateExpenseItem(formData: FormData, id: string): Promise<ExpenseItem | string> {
+  const expenseItem = {
+    amount: formData.get("amount"),
+  }
+
+  const response = await updateUserExpense({
+    amount: Number(expenseItem.amount),
+    id
   });
 
   return response

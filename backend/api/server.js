@@ -44,7 +44,14 @@ app.post("/login", async (req, res) => {
     const {email, password} = req.body
     await prisma.$connect()
     try {
-        const user = await prisma.user.findUnique({where: {email}})
+        const user = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email: email }, 
+                    { username: email }
+                ]
+            }
+        });
         if (!user) return res.status(400).json({error: "Usuário não encontrado!"})
 
         const isValid = await bcrypt.compare(password, user.password)
@@ -89,7 +96,7 @@ app.post("/:userId/expenses", async (req, res) => {
                 name,
                 amount,
                 userId,
-                type
+                type,
             },
         })
         res.status(201).json(newExpense)
@@ -122,6 +129,26 @@ app.delete("/expenses/:id", async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({error: "Error deleting expense"})
+    }
+})
+app.put("/expenses/:id", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
+    const {id} = req.params
+    const {amount} = req.body
+    await prisma.$connect()
+    try {
+        const expense = await prisma.expenseItem.findUnique({where: {id}})
+        if (expense) {
+            const updateExpense = await prisma.expenseItem.update({
+                where: {id},
+                data: {amount},
+            })
+            res.status(201).json(updateExpense)
+        } else res.status(401).json({error: "Expense does'nt exist!"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Error updating expense"})
     }
 })
 

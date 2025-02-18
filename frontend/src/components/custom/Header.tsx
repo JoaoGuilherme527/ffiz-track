@@ -24,16 +24,16 @@ export function Header({isMobile}: HeaderProps) {
 
     return (
         <div className="flex justify-between items-center p-4 shadow">
-            <Image width={40} height={40} src="/favicon.png" alt="logo Icon" />
+            <Image width={40} height={40} src="/favicon.svg" alt="logo Icon" />
 
             {isLoading ? (
-                <div className=" bg-gray-300 font-semibold text-left text-base text-white px-10 py-2 rounded-sm">Loading...</div>
+                <div className=" bg-[#0005] font-semibold text-left text-base text-white px-10 py-2 rounded-sm">Loading...</div>
             ) : isLogged ? (
                 <Link
                     href="/dashboard"
                     className={`font-semibold text-left ${
-                        isMobile ? "text-sm   px-5 py-1 " : "text-base  bg-gray-900 px-10 py-2"
-                    } text-white bg-gray-900 rounded-sm`}
+                        isMobile ? "text-sm   px-5 py-1 " : "text-base px-10 py-2"
+                    } text-white bg-[var(--dark-green)] rounded-sm`}
                 >
                     Dashboard
                 </Link>
@@ -42,7 +42,7 @@ export function Header({isMobile}: HeaderProps) {
                     <Link className="font-semibold text-left text-base" href={"/signin"}>
                         Signin
                     </Link>
-                    <Link className="font-semibold text-left text-sm bg-gray-900 text-white rounded-sm px-3 py-1" href={"/signup"}>
+                    <Link className="font-semibold text-left text-sm bg-[var(--dark-green)] text-white rounded-sm px-3 py-1" href={"/signup"}>
                         Sign Up
                     </Link>
                 </div>

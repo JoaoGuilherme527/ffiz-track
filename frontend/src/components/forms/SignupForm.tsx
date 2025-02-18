@@ -3,7 +3,7 @@
 
 import Link from "next/link"
 
-import {startTransition, useActionState} from "react"
+import {startTransition, useActionState, useState} from "react"
 import {ZodErrors} from "../custom/ZodErros"
 import {registerUserAction} from "@/src/data/actions/auth-actions"
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "../ui/card"
@@ -20,7 +20,8 @@ const INITIAL_STATE = {
 
 export function SignupForm() {
     const [formState, formAction] = useActionState(registerUserAction, INITIAL_STATE)
-    console.log(formState, "client")
+    const [isPassword, setIsPassword] = useState("")
+    const [isConfirmPassword, setIsConfirmPassword] = useState("")
 
     return (
         <div className="">
@@ -34,10 +35,13 @@ export function SignupForm() {
                     })
                 }}
             >
-                <Link className="mt-4 text-center text-sm" href={"/"}> {"<"}  Back home</Link>
+                <Link className="mt-4 text-center text-sm" href={"/"}>
+                    {" "}
+                    {"<"} Back home
+                </Link>
                 <Card className="border-none">
                     <CardHeader className="space-y-1 p-0">
-                        <CardTitle className="text-3xl font-bold">Sign Up</CardTitle>
+                        <CardTitle className="text-3xl font-bold text-[var(--dark-green)]">Sign Up</CardTitle>
                         <CardDescription>Enter your details to create a new account</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -54,17 +58,38 @@ export function SignupForm() {
 
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" placeholder="password" />
+                            <Input
+                                onChange={(e) => {
+                                    setIsPassword(e.target.value)
+                                }}
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="password"
+                                // className={`${isPassword === isConfirmPassword ? "" : "outline-red-500"}`}
+                            />
                             {formState?.zodErrors?.password && <ZodErrors error={formState.zodErrors.password} />}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="confirmPassword">Confirm password</Label>
-                            <Input className="outline-none" id="confirmPassword" type="password" placeholder="confirm password" />
+                            <Input
+                                onChange={(e) => {
+                                    setIsConfirmPassword(e.target.value)
+                                }}
+                                className={`${isPassword === isConfirmPassword ? "" : "outline-red-500"}`}
+                                id="confirmPassword"
+                                type="password"
+                                placeholder="confirm password"
+                            />
                             {formState?.zodErrors?.password && <ZodErrors error={formState.zodErrors.password} />}
                         </div>
                     </CardContent>
-                    <CardFooter className="flex flex-col">
-                        <SubmitButton className="w-full" text="Sign Up" loadingText="Loading" />
+                    <CardFooter className={`flex flex-col ${isPassword === isConfirmPassword ? "" : "pointer-events-none opacity-[0.5]"}`}>
+                        <SubmitButton
+                            className="w-full bg-[var(--green)] hover:bg-[var(--dark-green)]"
+                            text="Sign Up"
+                            loadingText="Loading"
+                        />
                         {formState?.strapiErrors && <StrapiErrors error={formState.strapiErrors} />}
                     </CardFooter>
                 </Card>

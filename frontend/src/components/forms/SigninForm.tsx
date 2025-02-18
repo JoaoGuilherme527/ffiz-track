@@ -38,7 +38,7 @@ export function SigninForm() {
 
                 <Card className="border-none">
                     <CardHeader className="space-y-4 p-0">
-                        <CardTitle className="text-3xl font-bold">Sign In</CardTitle>
+                        <CardTitle className="text-3xl font-bold text-[var(--dark-green)]">Sign In</CardTitle>
                         <CardDescription>Enter your details to sign in to your account</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -54,7 +54,7 @@ export function SigninForm() {
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col">
-                        <SubmitButton className="w-full" text="Sign In" loadingText="Loading" />
+                        <SubmitButton className="w-full bg-[var(--green)] hover:bg-[var(--dark-green)]" text="Sign In" loadingText="Loading" />
                         {formState?.strapiErrors && <StrapiErrors error={formState.strapiErrors} />}
                     </CardFooter>
                 </Card>
