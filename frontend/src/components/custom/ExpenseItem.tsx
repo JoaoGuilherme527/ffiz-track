@@ -81,7 +81,7 @@ export default function ExpenseItemComponent({
                 className="absolute right-0 bg-red-400 w-[12%] h-full rounded-r-md flex items-center justify-center z-10 active:bg-red-600"
                 onClick={deleteExpense}
             >
-                <Image alt="delete button" src={SVGIMG_PLUS} className="rotate-45" />
+                <Image alt="delete button" src={SVGIMG_PLUS} className="rotate-45" width={20} height={20} />
             </div>
 
             <div
@@ -91,7 +91,7 @@ export default function ExpenseItemComponent({
                     setIsEditModalExpenseOpen({status: true, data: item})
                 }}
             >
-                <Image alt="edit button" src={SVGIMG_EDIT} />
+                <Image alt="edit button" src={SVGIMG_EDIT}  width={20} height={20}/>
             </div>
         </div>
     )
