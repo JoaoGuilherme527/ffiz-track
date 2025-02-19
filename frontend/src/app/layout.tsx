@@ -19,10 +19,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
-                <link rel="png" href="%PUBLIC_URL%/favicon.png" />
+                <link rel="png" href="%PUBLIC_URL%/favicon.svg" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta name="theme-color" content="#6da095" />
-                <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.png" />
+                <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.svg" />
                 <meta name="viewport" content="width=device-width, user-scalable=no" />
             </head>
             <body className={`${inter} antialiased overflow-hidden`}>{children}</body>
