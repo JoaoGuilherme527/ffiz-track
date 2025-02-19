@@ -2,18 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import Navbar from "@/src/components/custom/Navbar"
-import {ReactNode} from "react"
 
-interface DashboardLayoutProps {
-    children: ReactNode
-}
-
-export default function DashboardLayout({children}: DashboardLayoutProps) {
+export default function DashboardRoute()  {
     return (
         <div>
-            {children}
-            <Navbar />
+            Hello
         </div>
     )
 }

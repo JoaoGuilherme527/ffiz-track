@@ -9,13 +9,13 @@ const Navbar = () => {
     return (
         <div className="z-30 absolute bottom-0 w-full h-20 bg-[var(--green)] flex items-center justify-center px-10 gap-32">
             <Link
-                className={`text-sm p-3 rounded-full bg-red-200 ${pathname.includes("expenses") ? "opacity-0 pointer-events-none" : ""}`}
+                className={`active:scale-[0.9] transition-all text-sm p-3 rounded-full bg-red-200 ${pathname.includes("expenses") ? "opacity-0 pointer-events-none" : ""}`}
                 href={"/dashboard/expenses"}
             >
                 <Image className="drop-shadow-lg" src={"/expense.png"} alt="" width={40} height={40} />
             </Link>
             <Link
-                className={`text-sm p-3 rounded-full bg-[var(--light-green)] ${
+                className={`active:scale-[0.9] transition-all text-sm p-3 rounded-full bg-[var(--light-green)] ${
                     pathname.includes("earnings") ? "opacity-0 pointer-events-none" : ""
                 }`}
                 href={"/dashboard/earnings"}

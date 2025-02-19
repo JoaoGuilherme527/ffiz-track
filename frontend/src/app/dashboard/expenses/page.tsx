@@ -5,7 +5,6 @@ import {useEffect, useLayoutEffect, useState, useTransition} from "react"
 import {addExpenseItem, deleteExpense, getExpenses, updateExpenseItem} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
 import ExpenseItemComponent from "@/src/components/custom/ExpenseItem"
-import Navbar from "@/src/components/custom/Navbar"
 
 interface ExpenseItem {
     name: string
@@ -71,7 +70,6 @@ export default function ExpenseRoute() {
     }, [])
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden">
-            <div className="z-40 absolute top-0 w-full h-[6%] bg-[var(--dark-green)] shadow-md"></div>
             {pending ? (
                 <div className="z-50 absolute top-0 right-0 w-dvw h-dvh bg-[#0002] flex items-center justify-center">
                     <div className="w-20 h-20 animate-ping bg-white rounded-full"></div>
@@ -260,7 +258,6 @@ export default function ExpenseRoute() {
                     </div>
                 </form>
             </div>
-            <Navbar />
         </div>
     )
 }
