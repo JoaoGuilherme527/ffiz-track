@@ -2,11 +2,10 @@
 
 import Image from "next/image"
 import {useEffect, useLayoutEffect, useState, useTransition} from "react"
-import SVGIMG_PLUS from "../../../public/plus.svg"
-import SVGIMG_EDIT from "../../../public/edit.svg"
 import {addExpenseItem, deleteExpense, getExpenses, updateExpenseItem} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
 import ExpenseItemComponent from "@/src/components/custom/ExpenseItem"
+import Navbar from "@/src/components/custom/Navbar"
 
 interface ExpenseItem {
     name: string
@@ -89,10 +88,18 @@ export default function ExpenseRoute() {
                 </div>
             </div>
             <div
-                className="z-40 absolute bottom-5 left-[50%] translate-x-[-50%] rounded-full bg-[var(--green)] shadow-lg w-20 h-20 justify-center items-center flex text-white active:scale-[0.7] transition-all"
+                className={`z-40 absolute bottom-5 left-[50%] translate-x-[-50%] rounded-full bg-[var(--green)] shadow-lg w-20 h-20 justify-center items-center flex text-white active:scale-[0.7] transition-all ${
+                    isAddExpenseModalOpen ? "rotate-2 bg-red-300" : "rotate-0"
+                }`}
                 onClick={() => setIsAddExpenseModalOpen(!isAddExpenseModalOpen)}
             >
-                <Image alt="add button" src={SVGIMG_PLUS} className={`${isAddExpenseModalOpen ? "rotate-45" : "rotate-0"}`} />
+                <Image
+                    alt="add button"
+                    src={"/plus.svg"}
+                    className={`${isAddExpenseModalOpen ? "rotate-45" : "rotate-0"}`}
+                    width={20}
+                    height={20}
+                />
             </div>
             <div className="transition-all z-20 w-full h-[35%] absolute top-0 left-0 flex items-center justify-center px-10">
                 <div className="transition-all border-2 rounded border-[var(--light-green)] w-full px-5 py-5">
@@ -105,8 +112,8 @@ export default function ExpenseRoute() {
                 {expenseItems.map((item, key) => (
                     <ExpenseItemComponent
                         key={key}
-                        SVGIMG_EDIT={SVGIMG_EDIT}
-                        SVGIMG_PLUS={SVGIMG_PLUS}
+                        SVGIMG_EDIT={"/edit.svg"}
+                        SVGIMG_PLUS={"/plus.svg"}
                         deleteExpense={() => {
                             setIsEditExpenseOpen({status: false, data: null})
                             startTransition(() => {
@@ -227,16 +234,15 @@ export default function ExpenseRoute() {
                         })
                     }}
                 >
-                    <div
-                        className="absolute top-[-5] right-[-5] p-1 bg-red-400 rounded"
-                        onClick={() => setIsEditModalExpenseOpen({data: null, status: false})}
-                    >
-                        <Image alt="delete button" src={SVGIMG_PLUS} className={"rotate-45"} />
-                    </div>
-
-                    <div className="">
-                        <label htmlFor="amount" className="text-sm text-gray-700">
+                    <div className="flex flex-col gap-5">
+                        <label className="text-sm text-gray-700 flex place-items-baseline justify-between">
                             Current amount: {formatUSDtoBRL(isEditModalExpenseOpen.data?.amount as number)}
+                            <div
+                                className="w-8 h-8 p-1 bg-red-400 rounded flex items-center justify-center"
+                                onClick={() => setIsEditModalExpenseOpen({data: null, status: false})}
+                            >
+                                <Image alt="delete button" src={"/plus.svg"} className={"rotate-45"} width={20} height={20} />
+                            </div>
                         </label>
                         <Input
                             required
@@ -254,6 +260,7 @@ export default function ExpenseRoute() {
                     </div>
                 </form>
             </div>
+            <Navbar />
         </div>
     )
 }
