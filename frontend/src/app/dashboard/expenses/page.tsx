@@ -5,6 +5,7 @@ import {useEffect, useLayoutEffect, useState, useTransition} from "react"
 import {addExpenseItem, deleteExpense, getExpenses, updateExpenseItem} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
 import ExpenseItemComponent from "@/src/components/custom/ExpenseItem"
+import {useGlobalContext} from "../../providers/GlobalProvider"
 
 interface ExpenseItem {
     name: string
@@ -15,6 +16,7 @@ interface ExpenseItem {
 }
 
 export default function ExpenseRoute() {
+    const {setCurrentExpense} = useGlobalContext()
     const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false)
     const [isEditExpenseOpen, setIsEditExpenseOpen] = useState<{status: boolean; data: ExpenseItem | null}>({status: false, data: null})
     const [isEditModalExpenseOpen, setIsEditModalExpenseOpen] = useState<{status: boolean; data: ExpenseItem | null}>({
@@ -49,6 +51,7 @@ export default function ExpenseRoute() {
             const length = formattedValue.length
 
             setTotalExpensesAmount(formattedValue)
+            setCurrentExpense(sum)
 
             if (length <= 10) {
                 setFontSize("text-5xl")
@@ -77,36 +80,15 @@ export default function ExpenseRoute() {
             ) : (
                 <></>
             )}
-            <div className="w-full h-[30%] absolute top-0 left-0 bg-red-500 z-10">
-                <div className="relative w-full h-full bg-[var(--green)]"></div>
-                <div className="container">
-                    <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                        <path d="M0,100 C150,140 300,60 500,100 L500,00 L0,0 Z" style={{stroke: "none", fill: "var(--green)"}}></path>
-                    </svg>
-                </div>
-            </div>
-            <div
-                className={`z-40 absolute bottom-5 left-[50%] translate-x-[-50%] rounded-full bg-[var(--green)] shadow-lg w-20 h-20 justify-center items-center flex text-white active:scale-[0.7] transition-all ${
-                    isAddExpenseModalOpen ? "rotate-2 bg-red-300" : "rotate-0"
-                }`}
-                onClick={() => setIsAddExpenseModalOpen(!isAddExpenseModalOpen)}
-            >
-                <Image
-                    alt="add button"
-                    src={"/plus.svg"}
-                    className={`${isAddExpenseModalOpen ? "rotate-45" : "rotate-0"}`}
-                    width={20}
-                    height={20}
-                />
-            </div>
-            <div className="transition-all z-20 w-full h-[35%] absolute top-0 left-0 flex items-center justify-center px-10">
+
+            <div className="transition-all z-20 w-full py-28 gap-4 absolute top-0 left-0 flex flex-col items-center justify-center px-10">
                 <div className="transition-all border-2 rounded border-[var(--light-green)] w-full px-5 py-5">
                     <h1 className={`transition-all drop-shadow-lg text-[var(--light-green)] font-bold text-center ${fontSize}`}>
                         {totalExpensesAmount}
                     </h1>
                 </div>
             </div>
-            <div className="z-20 w-full h-[65%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-20 ">
+            <div className="z-20 w-full h-[65%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40 ">
                 {expenseItems.map((item, key) => (
                     <ExpenseItemComponent
                         key={key}
@@ -257,6 +239,20 @@ export default function ExpenseRoute() {
                         </button>
                     </div>
                 </form>
+            </div>
+            <div
+                className={`z-40 absolute bottom-16 left-[50%] translate-x-[-50%] rounded-full bg-[var(--green)] shadow-lg w-14 h-14 justify-center items-center flex text-white active:scale-[0.7] transition-all ${
+                    isAddExpenseModalOpen ? "rotate-2 bg-red-300" : "rotate-0"
+                }`}
+                onClick={() => setIsAddExpenseModalOpen(!isAddExpenseModalOpen)}
+            >
+                <Image
+                    alt="add button"
+                    src={"/plus.svg"}
+                    className={`${isAddExpenseModalOpen ? "rotate-45" : "rotate-0"}`}
+                    width={20}
+                    height={20}
+                />
             </div>
         </div>
     )
