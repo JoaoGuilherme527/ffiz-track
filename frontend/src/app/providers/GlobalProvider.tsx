@@ -7,6 +7,8 @@ import {createContext, useContext, useState, ReactNode} from "react"
 interface GlobalContextProps {
     currentExpense: number
     setCurrentExpense: (param: number) => void
+    currentEarnings: number
+    setCurrentEarnings: (param: number) => void
     transactionItems: TransactionItem[]
     setTransactionItems: (param: TransactionItem[]) => void
     fetchTransactions: () => Promise<void>
@@ -16,6 +18,7 @@ const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
 
 export function GlobalProvider({children}: {children: ReactNode}) {
     const [currentExpense, setCurrentExpense] = useState<number>(0)
+    const [currentEarnings, setCurrentEarnings] = useState<number>(0)
     const [transactionItems, setTransactionItems] = useState<TransactionItem[]>([])
 
     async function fetchTransactions() {
@@ -29,12 +32,28 @@ export function GlobalProvider({children}: {children: ReactNode}) {
                 .filter(({type}) => type === "expense")
                 .map(({amount}) => amount)
                 .reduce((acc, crr) => acc + crr, 0)
+
+            const sumEarnings = transitions
+                .filter(({type}) => type === "earning")
+                .map(({amount}) => amount)
+                .reduce((acc, crr) => acc + crr, 0)
             setCurrentExpense(sumExpenses)
+            setCurrentEarnings(sumEarnings)
         } else setTransactionItems([])
     }
 
     return (
-        <GlobalContext.Provider value={{currentExpense, setCurrentExpense, transactionItems, setTransactionItems, fetchTransactions}}>
+        <GlobalContext.Provider
+            value={{
+                currentEarnings,
+                setCurrentEarnings,
+                currentExpense,
+                setCurrentExpense,
+                transactionItems,
+                setTransactionItems,
+                fetchTransactions,
+            }}
+        >
             {children}
         </GlobalContext.Provider>
     )

@@ -1,63 +1,32 @@
 "use client"
 
 import Image from "next/image"
-import {memo, useLayoutEffect, useState, useTransition} from "react"
+import {memo, useState, useTransition} from "react"
 import {addTransactionItem, deleteTransaction, updateTransactionItem} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
 import {useGlobalContext} from "../../providers/GlobalProvider"
 import {TransactionItem} from "@/src/types/types"
 import {formatUSDtoBRL} from "@/src/lib/utils"
-import TransactionItemComponent from "@/src/components/custom/TransactionItem"
+import TransactionItemComponent from "@/src/app/dashboard/components/TransactionItem"
+import TotalAmountLabelComponent from "@/src/app/dashboard/components/TotalAmountLabel"
+import Loading from "../../loading"
+import AddTransactionButton from "@/src/app/dashboard/components/AddTransactionButton"
+import FormModalAddTransactionComponent from "@/src/app/dashboard/components/FormModalAddTransaction"
 
 function ExpenseRoute() {
     const {currentExpense, fetchTransactions, setTransactionItems, transactionItems} = useGlobalContext()
-    const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false)
     const [isEditExpenseOpen, setIsEditExpenseOpen] = useState<{status: boolean; data: TransactionItem | null}>({status: false, data: null})
     const [isEditModalExpenseOpen, setIsEditModalExpenseOpen] = useState<{status: boolean; data: TransactionItem | null}>({
         status: false,
         data: null,
     })
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const [pending, startTransition] = useTransition()
-    const [totalExpensesAmount, setTotalExpensesAmount] = useState("")
-    const [fontSize, setFontSize] = useState("text-2xl")
 
-    useLayoutEffect(() => {
-        startTransition(() => {
-            fetchTransactions().then(() => {
-                const formattedValue = formatUSDtoBRL(currentExpense)
-                const length = formattedValue.length
-
-                setTotalExpensesAmount(formattedValue)
-
-                if (length <= 10) {
-                    setFontSize("text-5xl")
-                } else if (length <= 14) {
-                    setFontSize("text-4xl")
-                } else if (length <= 18) {
-                    setFontSize("text-3xl")
-                } else {
-                    setFontSize("text-2xl")
-                }
-            })
-        })
-    }, [])
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden">
-            {pending ? (
-                <div className="z-50 absolute top-0 right-0 w-dvw h-dvh bg-[#0002] flex items-center justify-center">
-                    <div className="w-20 h-20 animate-ping bg-white rounded-full"></div>
-                </div>
-            ) : (
-                <></>
-            )}
-
-            <div className="transition-all z-20 w-full py-28 gap-4 absolute top-0 left-0 flex flex-col items-center justify-center px-10">
-                <div className="transition-all border-2 rounded border-[var(--light-green)] w-full px-5 py-5">
-                    <h1 className={`transition-all drop-shadow-lg text-[var(--light-green)] font-bold text-center ${fontSize}`}>
-                        {totalExpensesAmount}
-                    </h1>
-                </div>
-            </div>
+            {pending ? <Loading /> : <></>}
+            <TotalAmountLabelComponent amount={currentExpense} />
             <div className="z-20 w-full h-[65%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40 ">
                 {transactionItems
                     .filter(({type}) => type === "expense")
@@ -79,83 +48,21 @@ function ExpenseRoute() {
                         />
                     ))}
             </div>
-            <div
-                className={`transition-all w-dvw h-dvh  z-30 absolute  left-[50%] translate-x-[-50%] flex items-center justify-center bottom-[0]  ${
-                    isAddExpenseModalOpen ? "bg-[#0003] " : "bg-[#0000] pointer-events-none"
-                }`}
-            >
-                <form
-                    method="post"
-                    className={`transition-all flex flex-col space-y-5 w-[90%] rounded-md shadow-2xl bg-white px-10 pt-2 pb-5 ${
-                        isAddExpenseModalOpen ? "translate-y-0 opacity-1" : "translate-y-full opacity-0"
-                    } `}
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        setIsAddExpenseModalOpen(false)
-                        startTransition(() => {
-                            const formData = new FormData(e.target as HTMLFormElement)
-                            addTransactionItem(formData).then((response) => {
-                                setTransactionItems([...transactionItems, response])
-                            })
-                            e.currentTarget.reset()
+
+            <FormModalAddTransactionComponent
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                onSubmit={(e) => {
+                    startTransition(() => {
+                        const formData = new FormData(e.target as HTMLFormElement)
+                        addTransactionItem(formData).then((response) => {
+                            setTransactionItems([...transactionItems, response])
                         })
-                    }}
-                >
-                    <div className="">
-                        <label htmlFor="name" className="text-sm text-gray-700">
-                            Name of your expense:
-                        </label>
-                        <Input required id="name" name="name" type="text" placeholder="expense name" />
-                    </div>
-                    <div className="">
-                        <label htmlFor="amount" className="text-sm text-gray-700">
-                            Amount of your expense:
-                        </label>
-                        <Input required id="amount" name="amount" type="number" placeholder="amount" step={"0.01"} />
-                    </div>
-                    <div className="">
-                        <label htmlFor="type" className="text-sm text-gray-700">
-                            Type of your expense:
-                        </label>
-                        <select
-                            required
-                            name="type"
-                            id="type"
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                        >
-                            <option value="Utilities">Utilities</option>
-                            <option value="Transportation">Transportation</option>
-                            <option value="Housing">Housing</option>
-                            <option value="Clothing">Clothing</option>
-                            <option value="Student loans">Student loans</option>
-                            <option value="Cellphone">Cellphone</option>
-                            <option value="Car payment">Car payment</option>
-                            <option value="Personal care">Personal care</option>
-                            <option value="Health care">Health care</option>
-                            <option value="Debt">Debt</option>
-                            <option value="Rent">Rent</option>
-                            <option value="Memberships">Memberships</option>
-                            <option value="Emergency fund">Emergency fund</option>
-                            <option value="Concerts">Concerts</option>
-                            <option value="Food">Food</option>
-                            <option value="Registration">Registration</option>
-                            <option value="Insurance">Insurance</option>
-                            <option value="Entertainment">Entertainment</option>
-                            <option value="Groceries">Groceries</option>
-                            <option value="Savings">Savings</option>
-                            <option value="Parking">Parking</option>
-                            <option value="Gas">Gas</option>
-                            <option value="Restaurants">Restaurants</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div className="w-full flex justify-center">
-                        <button type="submit" className="text-sm text-white py-2 px-10 rounded font-bold bg-[var(--dark-green)]">
-                            Add Expense
-                        </button>
-                    </div>
-                </form>
-            </div>
+                        e.currentTarget.reset()
+                    })
+                }}
+            />
+
             <div
                 className={`transition-all w-dvw h-dvh  z-30 absolute  left-[50%] translate-x-[-50%] flex items-center justify-center bottom-[0]  ${
                     isEditModalExpenseOpen.status ? "bg-[#0003] " : "bg-[#0000] pointer-events-none"
@@ -212,20 +119,8 @@ function ExpenseRoute() {
                     </div>
                 </form>
             </div>
-            <div
-                className={`z-40 absolute bottom-16 left-[50%] translate-x-[-50%] rounded-full bg-[var(--green)] shadow-lg w-14 h-14 justify-center items-center flex text-white active:scale-[0.7] transition-all ${
-                    isAddExpenseModalOpen ? "rotate-2 bg-red-300" : "rotate-0"
-                }`}
-                onClick={() => setIsAddExpenseModalOpen(!isAddExpenseModalOpen)}
-            >
-                <Image
-                    alt="add button"
-                    src={"/plus.svg"}
-                    className={`${isAddExpenseModalOpen ? "rotate-45" : "rotate-0"}`}
-                    width={20}
-                    height={20}
-                />
-            </div>
+
+            <AddTransactionButton isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </div>
     )
 }

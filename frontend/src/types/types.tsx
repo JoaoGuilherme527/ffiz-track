@@ -2,7 +2,7 @@
 export interface TransactionItem {
   name: string;
   amount: number;
-  type: string
+  type: "expense" | "earning"
   createdAt?: string
   category?: string
   transactionDate: string

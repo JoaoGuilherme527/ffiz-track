@@ -1,7 +1,7 @@
 import {useState, useRef} from "react"
 import Image from "next/image"
-import {formatTime} from "@/src/lib/utils"
-import { TransactionItem } from "@/src/types/types"
+import {formatShortBRL, formatTime} from "@/src/lib/utils"
+import {TransactionItem} from "@/src/types/types"
 
 interface TransactionItemProps {
     item: TransactionItem
@@ -11,13 +11,6 @@ interface TransactionItemProps {
     deleteExpense: () => void
     SVGIMG_PLUS: string
     SVGIMG_EDIT: string
-}
-
-const formatShortBRL = (number: number): string => {
-    if (number >= 1_000_000_000) return `R$ ${(number / 1_000_000_000).toFixed(1)}B`
-    if (number >= 1_000_000) return `R$ ${(number / 1_000_000).toFixed(1)}M`
-    if (number >= 1_000) return `R$ ${(number / 1_000).toFixed(1)}K`
-    return new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(number)
 }
 
 export default function TransactionItemComponent({
@@ -63,7 +56,11 @@ export default function TransactionItemComponent({
                     <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.createdAt as string)}</p>
                 </div>
 
-                <p className={`text-2xl text-red-300 font-bold truncate max-w-[${isLongPress ? "300px" : "150px"}] cursor-pointer`}>
+                <p
+                    className={`text-2xl ${item.type == "earning" ? "text-green-500" : "text-red-300"}  font-bold truncate max-w-[${
+                        isLongPress ? "300px" : "150px"
+                    }] cursor-pointer`}
+                >
                     {isLongPress
                         ? new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(item.amount)
                         : formatShortBRL(item.amount)}
@@ -84,7 +81,7 @@ export default function TransactionItemComponent({
                     setIsEditModalExpenseOpen({status: true, data: item})
                 }}
             >
-                <Image alt="edit button" src={SVGIMG_EDIT}  width={20} height={20}/>
+                <Image alt="edit button" src={SVGIMG_EDIT} width={20} height={20} />
             </div>
         </div>
     )
