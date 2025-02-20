@@ -4,17 +4,20 @@
 "use client"
 
 import Navbar from "@/src/components/custom/Navbar"
-import {checkUserLogged} from "@/src/data/actions/auth-actions"
+import {checkUserLogged, getExpenses} from "@/src/data/actions/auth-actions"
+import {ExpenseItem} from "@/src/types/types"
 import Image from "next/image"
 import Link from "next/link"
 import {usePathname, useRouter} from "next/navigation"
 import {ReactNode, useEffect, useState} from "react"
+import {useGlobalContext} from "../providers/GlobalProvider"
 
 export default function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const {fetchExpenses} = useGlobalContext()
     const pathname = usePathname()
     const [isUser, setIsUser] = useState<any>()
     const router = useRouter()
@@ -28,6 +31,7 @@ export default function DashboardLayout({
         setIsUser(user.data)
     }
 
+
     function getRouteName(): string {
         const name: {[key: string]: string} = {
             "/dashboard/expenses": "Expenses",
@@ -39,6 +43,7 @@ export default function DashboardLayout({
 
     useEffect(() => {
         handleUser()
+        fetchExpenses()
     }, [pathname])
 
     useEffect(() => {

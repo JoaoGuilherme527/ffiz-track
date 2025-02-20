@@ -57,3 +57,12 @@ export function formatTime(time: string): string {
   const date = new Date(time);
   return date.toLocaleString();
 }
+
+export function formatUSDtoBRL(number: number): string {
+  const formattedValue = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(number)
+
+  return formattedValue
+}

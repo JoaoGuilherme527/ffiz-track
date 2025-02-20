@@ -1,74 +1,44 @@
 "use client"
 
 import Image from "next/image"
-import {useEffect, useLayoutEffect, useState, useTransition} from "react"
-import {addExpenseItem, deleteExpense, getExpenses, updateExpenseItem} from "@/src/data/actions/auth-actions"
+import {memo, useLayoutEffect, useState, useTransition} from "react"
+import {addExpenseItem, deleteExpense, updateExpenseItem} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
 import ExpenseItemComponent from "@/src/components/custom/ExpenseItem"
 import {useGlobalContext} from "../../providers/GlobalProvider"
+import {ExpenseItem} from "@/src/types/types"
+import { formatUSDtoBRL } from "@/src/lib/utils"
 
-interface ExpenseItem {
-    name: string
-    amount: number
-    createdAt: string
-    id: string
-    userId: string
-}
-
-export default function ExpenseRoute() {
-    const {setCurrentExpense} = useGlobalContext()
+function ExpenseRoute() {
+    const {currentExpense, expenseItems, fetchExpenses, setExpenseItems} = useGlobalContext()
     const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false)
     const [isEditExpenseOpen, setIsEditExpenseOpen] = useState<{status: boolean; data: ExpenseItem | null}>({status: false, data: null})
     const [isEditModalExpenseOpen, setIsEditModalExpenseOpen] = useState<{status: boolean; data: ExpenseItem | null}>({
         status: false,
         data: null,
     })
-    const [expenseItems, setExpenseItems] = useState<ExpenseItem[]>([])
     const [pending, startTransition] = useTransition()
     const [totalExpensesAmount, setTotalExpensesAmount] = useState("")
-    const [fontSize, setFontSize] = useState("text-5xl")
-
-    const formatUSDtoBRL = (number: number): string => {
-        const formattedValue = new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-        }).format(number)
-
-        return formattedValue
-    }
-
-    async function fetchExpenses() {
-        const response: ExpenseItem[] = await getExpenses()
-        if (response) {
-            setExpenseItems(response)
-        } else setExpenseItems([])
-    }
-
-    useEffect(
-        function sumExpenses() {
-            const sum = expenseItems.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
-            const formattedValue = formatUSDtoBRL(sum)
-            const length = formattedValue.length
-
-            setTotalExpensesAmount(formattedValue)
-            setCurrentExpense(sum)
-
-            if (length <= 10) {
-                setFontSize("text-5xl")
-            } else if (length <= 14) {
-                setFontSize("text-4xl")
-            } else if (length <= 18) {
-                setFontSize("text-3xl")
-            } else {
-                setFontSize("text-2xl")
-            }
-        },
-        [expenseItems]
-    )
+    const [fontSize, setFontSize] = useState("text-2xl")
 
     useLayoutEffect(() => {
         startTransition(() => {
-            fetchExpenses()
+            fetchExpenses().then(() => {
+                const formattedValue = formatUSDtoBRL(currentExpense)
+                const length = formattedValue.length
+
+                setTotalExpensesAmount(formattedValue)
+
+                if (length <= 10) {
+                    setFontSize("text-5xl")
+                } else if (length <= 14) {
+                    setFontSize("text-4xl")
+                } else if (length <= 18) {
+                    setFontSize("text-3xl")
+                } else {
+                    setFontSize("text-2xl")
+                }
+            })
         })
     }, [])
     return (
@@ -257,3 +227,5 @@ export default function ExpenseRoute() {
         </div>
     )
 }
+
+export default memo(ExpenseRoute)
