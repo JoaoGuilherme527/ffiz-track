@@ -21,11 +21,13 @@ model User {
   createdAt DateTime @default(now())
 }
 
-model ExpenseItem {
-  id        String   @id @default(cuid())
-  name      String
-  amount    Float
-  createdAt DateTime @default(now())
-  userId    String
-  type      String
+model TransactionItem {
+  id              String   @id @default(cuid())
+  name            String
+  amount          Float
+  createdAt       DateTime @default(now())
+  transactionDate DateTime @default(now())
+  userId          String
+  type            String
+  category        String?
 }

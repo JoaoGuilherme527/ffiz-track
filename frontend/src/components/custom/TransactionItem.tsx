@@ -1,20 +1,13 @@
 import {useState, useRef} from "react"
 import Image from "next/image"
 import {formatTime} from "@/src/lib/utils"
+import { TransactionItem } from "@/src/types/types"
 
-interface ExpenseItem {
-    name: string
-    amount: number
-    createdAt: string
-    id: string
-    userId: string
-}
-
-interface ExpenseItemProps {
-    item: ExpenseItem
-    isEditExpenseOpen: {status: boolean; data: ExpenseItem | null}
-    setIsEditExpenseOpen: (value: {status: boolean; data: ExpenseItem | null}) => void
-    setIsEditModalExpenseOpen: (value: {status: boolean; data: ExpenseItem | null}) => void
+interface TransactionItemProps {
+    item: TransactionItem
+    isEditExpenseOpen: {status: boolean; data: TransactionItem | null}
+    setIsEditExpenseOpen: (value: {status: boolean; data: TransactionItem | null}) => void
+    setIsEditModalExpenseOpen: (value: {status: boolean; data: TransactionItem | null}) => void
     deleteExpense: () => void
     SVGIMG_PLUS: string
     SVGIMG_EDIT: string
@@ -27,7 +20,7 @@ const formatShortBRL = (number: number): string => {
     return new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(number)
 }
 
-export default function ExpenseItemComponent({
+export default function TransactionItemComponent({
     item,
     isEditExpenseOpen,
     setIsEditExpenseOpen,
@@ -35,7 +28,7 @@ export default function ExpenseItemComponent({
     deleteExpense,
     SVGIMG_PLUS,
     SVGIMG_EDIT,
-}: ExpenseItemProps) {
+}: TransactionItemProps) {
     const [isLongPress, setIsLongPress] = useState(false)
     const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -67,7 +60,7 @@ export default function ExpenseItemComponent({
             >
                 <div className="flex flex-col w-full flex-1">
                     <h1 className="text-lg text-gray-800 font-semibold">{item.name}</h1>
-                    <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.createdAt)}</p>
+                    <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.createdAt as string)}</p>
                 </div>
 
                 <p className={`text-2xl text-red-300 font-bold truncate max-w-[${isLongPress ? "300px" : "150px"}] cursor-pointer`}>

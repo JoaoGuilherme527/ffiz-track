@@ -1,8 +1,10 @@
 
-export interface ExpenseItem {
-    name: string
-    amount: number
-    createdAt: string
-    id: string
-    userId: string
+export interface TransactionItem {
+  name: string;
+  amount: number;
+  type: string
+  createdAt?: string
+  category?: string
+  transactionDate: string
+  id?: string
 }

@@ -46,12 +46,9 @@ app.post("/login", async (req, res) => {
     try {
         const user = await prisma.user.findFirst({
             where: {
-                OR: [
-                    { email: email }, 
-                    { username: email }
-                ]
-            }
-        });
+                OR: [{email: email}, {username: email}],
+            },
+        })
         if (!user) return res.status(400).json({error: "Usuário não encontrado!"})
 
         const isValid = await bcrypt.compare(password, user.password)
@@ -84,71 +81,79 @@ app.get("/api", async (req, res) => {
     })
 })
 
-app.post("/:userId/expenses", async (req, res) => {
+app.post("/:userId/transactions", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
-    const {name, amount, type} = req.body
+    const {name, amount, type, transactionDate, category} = req.body
     await prisma.$connect()
     try {
-        const newExpense = await prisma.expenseItem.create({
+        const newTransaction = await prisma.transactionItem.create({
             data: {
                 name,
                 amount,
                 userId,
                 type,
+                category: category ?? "",
+                transactionDate,
             },
         })
-        res.status(201).json(newExpense)
+        res.status(201).json(newTransaction)
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: "Error creating expense"})
+        res.status(500).json({error: "Error creating transaction"})
     }
 })
 
-app.get("/:userId/expenses", async (req, res) => {
+app.get("/:userId/transactions/:type?", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
-    const {userId} = req.params
+    const {userId, type} = req.params
     await prisma.$connect()
-    const expenses = (await prisma.expenseItem.findMany({where: {userId}})) ?? []
-    res.json(expenses)
+    const transaction =
+        (await prisma.transactionItem.findMany({
+            where: {
+                userId,
+                type,
+            },
+        })) ?? []
+    res.json(transaction)
 })
 
-app.delete("/expenses/:id", async (req, res) => {
+app.delete("/transactions/:id", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {id} = req.params
     await prisma.$connect()
     try {
-        const expense = await prisma.expenseItem.findUnique({where: {id}})
-        if (expense) {
-            const deletedExpense = await prisma.expenseItem.delete({where: {id}})
-            res.status(201).json(deletedExpense)
-        } else res.status(401).json({error: "Expense does'nt exist!"})
+        const transaction = await prisma.transactionItem.findUnique({where: {id}})
+        if (transaction) {
+            const deletedTransaction = await prisma.transactionItem.delete({where: {id}})
+            res.status(201).json(deletedTransaction)
+        } else res.status(401).json({error: "Transaction does'nt exist!"})
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: "Error deleting expense"})
+        res.status(500).json({error: "Error deleting transaction"})
     }
 })
-app.put("/expenses/:id", async (req, res) => {
+app.put("/transactions/:id", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {id} = req.params
     const {amount} = req.body
     await prisma.$connect()
     try {
-        const expense = await prisma.expenseItem.findUnique({where: {id}})
-        if (expense) {
-            const updateExpense = await prisma.expenseItem.update({
+        const transaction = await prisma.transactionItem.findUnique({where: {id}})
+        if (transaction) {
+            const updateTransaction = await prisma.transactionItem.update({
                 where: {id},
                 data: {amount},
             })
-            res.status(201).json(updateExpense)
-        } else res.status(401).json({error: "Expense does'nt exist!"})
+            res.status(201).json(updateTransaction)
+        } else res.status(401).json({error: "Transaction does'nt exist!"})
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: "Error updating expense"})
+        res.status(500).json({error: "Error updating transaction"})
     }
 })
 

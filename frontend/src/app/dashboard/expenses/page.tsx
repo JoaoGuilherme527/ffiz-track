@@ -2,18 +2,18 @@
 
 import Image from "next/image"
 import {memo, useLayoutEffect, useState, useTransition} from "react"
-import {addExpenseItem, deleteExpense, updateExpenseItem} from "@/src/data/actions/auth-actions"
+import {addTransactionItem, deleteTransaction, updateTransactionItem} from "@/src/data/actions/auth-actions"
 import {Input} from "@/src/components/ui/input"
-import ExpenseItemComponent from "@/src/components/custom/ExpenseItem"
 import {useGlobalContext} from "../../providers/GlobalProvider"
-import {ExpenseItem} from "@/src/types/types"
-import { formatUSDtoBRL } from "@/src/lib/utils"
+import {TransactionItem} from "@/src/types/types"
+import {formatUSDtoBRL} from "@/src/lib/utils"
+import TransactionItemComponent from "@/src/components/custom/TransactionItem"
 
 function ExpenseRoute() {
-    const {currentExpense, expenseItems, fetchExpenses, setExpenseItems} = useGlobalContext()
+    const {currentExpense, fetchTransactions, setTransactionItems, transactionItems} = useGlobalContext()
     const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false)
-    const [isEditExpenseOpen, setIsEditExpenseOpen] = useState<{status: boolean; data: ExpenseItem | null}>({status: false, data: null})
-    const [isEditModalExpenseOpen, setIsEditModalExpenseOpen] = useState<{status: boolean; data: ExpenseItem | null}>({
+    const [isEditExpenseOpen, setIsEditExpenseOpen] = useState<{status: boolean; data: TransactionItem | null}>({status: false, data: null})
+    const [isEditModalExpenseOpen, setIsEditModalExpenseOpen] = useState<{status: boolean; data: TransactionItem | null}>({
         status: false,
         data: null,
     })
@@ -23,7 +23,7 @@ function ExpenseRoute() {
 
     useLayoutEffect(() => {
         startTransition(() => {
-            fetchExpenses().then(() => {
+            fetchTransactions().then(() => {
                 const formattedValue = formatUSDtoBRL(currentExpense)
                 const length = formattedValue.length
 
@@ -59,23 +59,25 @@ function ExpenseRoute() {
                 </div>
             </div>
             <div className="z-20 w-full h-[65%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40 ">
-                {expenseItems.map((item, key) => (
-                    <ExpenseItemComponent
-                        key={key}
-                        SVGIMG_EDIT={"/edit.svg"}
-                        SVGIMG_PLUS={"/plus.svg"}
-                        deleteExpense={() => {
-                            setIsEditExpenseOpen({status: false, data: null})
-                            startTransition(() => {
-                                deleteExpense(item.id).then(() => fetchExpenses())
-                            })
-                        }}
-                        item={item}
-                        isEditExpenseOpen={isEditExpenseOpen}
-                        setIsEditExpenseOpen={setIsEditExpenseOpen}
-                        setIsEditModalExpenseOpen={setIsEditModalExpenseOpen}
-                    />
-                ))}
+                {transactionItems
+                    .filter(({type}) => type === "expense")
+                    .map((item, key) => (
+                        <TransactionItemComponent
+                            key={key}
+                            SVGIMG_EDIT={"/edit.svg"}
+                            SVGIMG_PLUS={"/plus.svg"}
+                            deleteExpense={() => {
+                                setIsEditExpenseOpen({status: false, data: null})
+                                startTransition(() => {
+                                    deleteTransaction(item.id as string).then(() => fetchTransactions())
+                                })
+                            }}
+                            item={item}
+                            isEditExpenseOpen={isEditExpenseOpen}
+                            setIsEditExpenseOpen={setIsEditExpenseOpen}
+                            setIsEditModalExpenseOpen={setIsEditModalExpenseOpen}
+                        />
+                    ))}
             </div>
             <div
                 className={`transition-all w-dvw h-dvh  z-30 absolute  left-[50%] translate-x-[-50%] flex items-center justify-center bottom-[0]  ${
@@ -92,8 +94,8 @@ function ExpenseRoute() {
                         setIsAddExpenseModalOpen(false)
                         startTransition(() => {
                             const formData = new FormData(e.target as HTMLFormElement)
-                            addExpenseItem(formData).then((response) => {
-                                setExpenseItems([...expenseItems, response])
+                            addTransactionItem(formData).then((response) => {
+                                setTransactionItems([...transactionItems, response])
                             })
                             e.currentTarget.reset()
                         })
@@ -169,16 +171,16 @@ function ExpenseRoute() {
                         setIsEditModalExpenseOpen({data: null, status: false})
                         startTransition(() => {
                             const formData = new FormData(e.target as HTMLFormElement)
-                            updateExpenseItem(formData, isEditModalExpenseOpen.data?.id ?? "")
+                            updateTransactionItem(formData, isEditModalExpenseOpen.data?.id ?? "")
                                 .then((response) => {
                                     if (typeof response !== "string") {
                                         const {id} = response
-                                        const expensesFilter = expenseItems.filter((item) => id != item.id)
-                                        setExpenseItems(expensesFilter)
+                                        const expensesFilter = transactionItems.filter((item) => id != item.id)
+                                        setTransactionItems(expensesFilter)
                                     }
                                 })
                                 .then(() => {
-                                    fetchExpenses()
+                                    fetchTransactions()
                                 })
                             e.currentTarget.reset()
                         })

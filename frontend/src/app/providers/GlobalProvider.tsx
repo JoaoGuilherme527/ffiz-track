@@ -1,34 +1,40 @@
 "use client"
 
-import {getExpenses} from "@/src/data/actions/auth-actions"
-import {ExpenseItem} from "@/src/types/types"
+import {getEarnings, getExpenses} from "@/src/data/actions/auth-actions"
+import {TransactionItem} from "@/src/types/types"
 import {createContext, useContext, useState, ReactNode} from "react"
 
 interface GlobalContextProps {
     currentExpense: number
     setCurrentExpense: (param: number) => void
-    expenseItems: ExpenseItem[]
-    setExpenseItems: (param: ExpenseItem[]) => void
-    fetchExpenses: () => Promise<void>
+    transactionItems: TransactionItem[]
+    setTransactionItems: (param: TransactionItem[]) => void
+    fetchTransactions: () => Promise<void>
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
 
 export function GlobalProvider({children}: {children: ReactNode}) {
     const [currentExpense, setCurrentExpense] = useState<number>(0)
-    const [expenseItems, setExpenseItems] = useState<ExpenseItem[]>([])
+    const [transactionItems, setTransactionItems] = useState<TransactionItem[]>([])
 
-    async function fetchExpenses() {
-        const response: ExpenseItem[] = await getExpenses()
-        if (response) {
-            setExpenseItems(response)
-            const sum = response.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
-            setCurrentExpense(sum)
-        } else setExpenseItems([])
+    async function fetchTransactions() {
+        const expenses: TransactionItem[] = await getExpenses()
+        const earnings: TransactionItem[] = await getEarnings()
+        const transitions: TransactionItem[] = Array.prototype.concat(expenses, earnings)
+
+        if (transitions) {
+            setTransactionItems(transitions)
+            const sumExpenses = transitions
+                .filter(({type}) => type === "expense")
+                .map(({amount}) => amount)
+                .reduce((acc, crr) => acc + crr, 0)
+            setCurrentExpense(sumExpenses)
+        } else setTransactionItems([])
     }
 
     return (
-        <GlobalContext.Provider value={{currentExpense, setCurrentExpense, expenseItems, setExpenseItems, fetchExpenses}}>
+        <GlobalContext.Provider value={{currentExpense, setCurrentExpense, transactionItems, setTransactionItems, fetchTransactions}}>
             {children}
         </GlobalContext.Provider>
     )

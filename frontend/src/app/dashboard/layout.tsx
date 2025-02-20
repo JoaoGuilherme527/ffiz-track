@@ -5,7 +5,7 @@
 
 import Navbar from "@/src/components/custom/Navbar"
 import {checkUserLogged, getExpenses} from "@/src/data/actions/auth-actions"
-import {ExpenseItem} from "@/src/types/types"
+import {TransactionItem} from "@/src/types/types"
 import Image from "next/image"
 import Link from "next/link"
 import {usePathname, useRouter} from "next/navigation"
@@ -17,7 +17,7 @@ export default function DashboardLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const {fetchExpenses} = useGlobalContext()
+    const {fetchTransactions} = useGlobalContext()
     const pathname = usePathname()
     const [isUser, setIsUser] = useState<any>()
     const router = useRouter()
@@ -43,7 +43,7 @@ export default function DashboardLayout({
 
     useEffect(() => {
         handleUser()
-        fetchExpenses()
+        fetchTransactions()
     }, [pathname])
 
     useEffect(() => {
