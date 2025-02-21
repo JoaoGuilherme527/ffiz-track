@@ -3,6 +3,7 @@
 import { getApiURL } from "@/src/lib/utils";
 import { getUserMeLoader } from "./get-user-me-loader";
 import { getAuthToken } from "./get-token";
+import { TransactionItem } from "@/src/types/types";
 
 interface RegisterUserProps {
   username: string;
@@ -13,13 +14,6 @@ interface RegisterUserProps {
 interface LoginUserProps {
   email: string;
   password: string;
-}
-
-export interface ExpenseItem {
-  name: string;
-  amount: number;
-  type: string
-  id?: string
 }
 
 const baseUrl = getApiURL();
@@ -61,11 +55,12 @@ export async function loginUserService(userData: LoginUserProps) {
   }
 }
 
-export async function postNewExpenseItem({ amount, name, type }: ExpenseItem) {
+export async function postNewTransactionItem({ amount, name, category, transactionDate, type }: TransactionItem) {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
-  const url = `${baseUrl}/${id}/expenses`;
+  const url = `${baseUrl}/${id}/transactions`;
+  const date = transactionDate ?? new Date()
 
   try {
     const response = await fetch(url, {
@@ -74,17 +69,17 @@ export async function postNewExpenseItem({ amount, name, type }: ExpenseItem) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`
       },
-      body: JSON.stringify({ name, amount, type }),
+      body: JSON.stringify({ name, amount, category, transactionDate: date, type }),
     });
 
     return response.json();
   } catch (error) {
-    console.error("Post Expense Item Service Error:", error);
+    console.error("Post Transaction Item Service Error:", error);
   }
 }
-export async function updateUserExpense({ amount, id }: Pick<ExpenseItem, "amount" | "id">): Promise<ExpenseItem | string> {
+export async function updateUserTransaction({ amount, id }: Pick<TransactionItem, "amount" | "id">): Promise<TransactionItem | string> {
   const authToken = await getAuthToken();
-  const url = `${baseUrl}/expenses/${id}`;
+  const url = `${baseUrl}/transactions/${id}`;
 
   try {
     const response = await fetch(url, {
@@ -98,7 +93,7 @@ export async function updateUserExpense({ amount, id }: Pick<ExpenseItem, "amoun
 
     return response.json();
   } catch (error) {
-    console.error("Update Expense Item Service Error:", error);
+    console.error("Update Transaction Item Service Error:", error);
     return `ERROR: ${error}`
   }
 }
@@ -107,7 +102,7 @@ export async function getUserExpenses() {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
-  const url = `${baseUrl}/${id}/expenses`;
+  const url = `${baseUrl}/${id}/transactions/expense`;
 
   try {
     const response = await fetch(url, {
@@ -119,13 +114,33 @@ export async function getUserExpenses() {
 
     return response.json();
   } catch (error) {
-    console.error("Get User Expenses Service Error:", error);
+    console.error("Get User Transactions Service Error:", error);
   }
 }
 
-export async function deleteUserExpense(expenseId: string) {
+export async function getUserProfits() {
   const authToken = await getAuthToken();
-  const url = `${baseUrl}/expenses/${expenseId}`;
+  const { data } = await getUserMeLoader()
+  const { id } = data
+  const url = `${baseUrl}/${id}/transactions/profit`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      },
+    });
+
+    return response.json();
+  } catch (error) {
+    console.error("Get User Transactions Service Error:", error);
+  }
+}
+
+export async function deleteUserTransaction(transactionId: string) {
+  const authToken = await getAuthToken();
+  const url = `${baseUrl}/transactions/${transactionId}`;
 
   try {
     await fetch(url, {
@@ -136,7 +151,7 @@ export async function deleteUserExpense(expenseId: string) {
     });
     return { ok: true }
   } catch (error) {
-    console.error("Post Expense Item Service Error:", error);
+    console.error("Post Transaction Item Service Error:", error);
     return { ok: false }
 
   }

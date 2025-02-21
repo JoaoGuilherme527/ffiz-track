@@ -7,8 +7,9 @@
 @tailwind utilities;
 
 :root {
-    --light-green: #b7dbc8;
+    --light-green: #b7dbb8;
     --green: #6da095;
+    --darkest-green: #001700;
     --dark-green: #285d66;
     --yellow-green: #e1df66;
 }
@@ -124,20 +125,20 @@ button {
 
 .DropdownMenuContent,
 .DropdownMenuSubContent {
-	/* * {
+    /* * {
         border: 1px solid red;
     } */
     width: 150px;
     background-color: white;
     border-radius: 6px;
     display: flex;
-	gap: 10px;
+    gap: 10px;
     flex-direction: column;
     animation-duration: 400ms;
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform, opacity;
-	margin-right: 20px;
-	padding: 10px 10px;
+    margin-right: 20px;
+    padding: 10px 10px;
 }
 .DropdownMenuContent[data-side="top"],
 .DropdownMenuSubContent[data-side="top"] {
@@ -169,8 +170,8 @@ button {
     position: relative;
     user-select: none;
     outline: none;
-	padding-inline: 10px;
-	padding-block: 20px;
+    padding-inline: 10px;
+    padding-block: 20px;
 }
 .DropdownMenuSubTrigger[data-state="open"] {
     background-color: var(--violet-4);

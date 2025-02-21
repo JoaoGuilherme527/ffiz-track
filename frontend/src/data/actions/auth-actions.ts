@@ -4,7 +4,8 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { deleteUserExpense, ExpenseItem, getUserExpenses, isUserLogged, loginUserService, postNewExpenseItem, registerUserService, updateUserExpense } from "../services/auth-services";
+import { TransactionItem } from "@/src/types/types";
+import { deleteUserTransaction, getUserProfits, getUserExpenses, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -103,28 +104,32 @@ export async function loginUserAction(prevState: any, formData: FormData) {
   redirect("/dashboard");
 }
 
-export async function addExpenseItem(formData: FormData) {
-  const expenseItem = {
+export async function addTransactionItem(formData: FormData) {
+  const transactionItem = {
     name: formData.get("name"),
     amount: formData.get("amount"),
-    type: formData.get("type")
+    category: formData.get("category"),
+    type: formData.get("type"),
+    transactionDate: formData.get("transactionDate"),
   }
 
-  const response = await postNewExpenseItem({
-    name: expenseItem.name as string,
-    amount: Number(expenseItem.amount),
-    type: expenseItem.type as string
+  const response = await postNewTransactionItem({
+    name: transactionItem.name as string,
+    amount: Number(transactionItem.amount),
+    category: transactionItem.category as string,
+    transactionDate: transactionItem.transactionDate as string,
+    type: transactionItem.type as "expense" | "profit",
   });
 
   return response
 }
 
-export async function updateExpenseItem(formData: FormData, id: string): Promise<ExpenseItem | string> {
+export async function updateTransactionItem(formData: FormData, id: string): Promise<TransactionItem | string> {
   const expenseItem = {
     amount: formData.get("amount"),
   }
 
-  const response = await updateUserExpense({
+  const response = await updateUserTransaction({
     amount: Number(expenseItem.amount),
     id
   });
@@ -137,8 +142,13 @@ export async function getExpenses() {
   return response
 }
 
-export async function deleteExpense(id: string) {
-  const response = await deleteUserExpense(id)
+export async function getProfits() {
+  const response = await getUserProfits()
+  return response
+}
+
+export async function deleteTransaction(id: string) {
+  const response = await deleteUserTransaction(id)
   return response
 
 }
