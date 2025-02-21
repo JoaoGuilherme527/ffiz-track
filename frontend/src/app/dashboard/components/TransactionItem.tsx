@@ -1,13 +1,13 @@
 import {useState, useRef} from "react"
 import Image from "next/image"
 import {formatShortBRL, formatTime} from "@/src/lib/utils"
-import {TransactionItem} from "@/src/types/types"
+import { TransactionItem } from "@/src/types/types"
 
 interface TransactionItemProps {
     item: TransactionItem
-    isEditExpenseOpen: {status: boolean; data: TransactionItem | null}
-    setIsEditExpenseOpen: (value: {status: boolean; data: TransactionItem | null}) => void
-    setIsEditModalExpenseOpen: (value: {status: boolean; data: TransactionItem | null}) => void
+    isEditTransactionOpen: {status: boolean; data: TransactionItem | null}
+    setIsTransactionOpen: (value: {status: boolean; data: TransactionItem | null}) => void
+    setIsEditModalOpen: (value: {status: boolean; data: TransactionItem | null}) => void
     deleteExpense: () => void
     SVGIMG_PLUS: string
     SVGIMG_EDIT: string
@@ -15,9 +15,9 @@ interface TransactionItemProps {
 
 export default function TransactionItemComponent({
     item,
-    isEditExpenseOpen,
-    setIsEditExpenseOpen,
-    setIsEditModalExpenseOpen,
+    isEditTransactionOpen,
+    setIsTransactionOpen,
+    setIsEditModalOpen,
     deleteExpense,
     SVGIMG_PLUS,
     SVGIMG_EDIT,
@@ -40,13 +40,12 @@ export default function TransactionItemComponent({
         <div className="w-full relative flex items-center active:scale-y-[0.9] transition-all" key={item.id}>
             <div
                 className={`transition-all flex items-center gap-1 w-full bg-white dark:bg-gray-900 rounded-md shadow-xl p-5 z-20 ${
-                    isEditExpenseOpen.data?.id === item.id ? "translate-x-[-24%] w-[80%] rounded-r-none" : ""
+                    isEditTransactionOpen.data?.id === item.id ? "translate-x-[-24%] w-[80%] rounded-r-none" : ""
                 }`}
                 onClick={() => {
-                    if (isEditExpenseOpen.data?.id === item.id) {
-                        setIsEditExpenseOpen({status: false, data: null})
-                        return
-                    } else setIsEditExpenseOpen({status: true, data: item})
+                    if (isEditTransactionOpen.data?.id === item.id) {
+                        setIsTransactionOpen({status: false, data: null})
+                    } else setIsTransactionOpen({status: true, data: item})
                 }}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
@@ -56,11 +55,7 @@ export default function TransactionItemComponent({
                     <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.createdAt as string)}</p>
                 </div>
 
-                <p
-                    className={`text-2xl ${item.type == "earning" ? "text-green-500" : "text-red-300"}  font-bold truncate max-w-[${
-                        isLongPress ? "300px" : "150px"
-                    }] cursor-pointer`}
-                >
+                <p className={`${item.type == "profit" ? "text-green-500" : "text-red-300"} text-2xl  font-bold truncate max-w-[${isLongPress ? "300px" : "150px"}] cursor-pointer`}>
                     {isLongPress
                         ? new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(item.amount)
                         : formatShortBRL(item.amount)}
@@ -77,11 +72,11 @@ export default function TransactionItemComponent({
             <div
                 className="absolute right-[12%] bg-blue-400 w-[12%] h-full flex items-center justify-center z-10 active:bg-blue-600"
                 onClick={() => {
-                    setIsEditExpenseOpen({status: false, data: null})
-                    setIsEditModalExpenseOpen({status: true, data: item})
+                    setIsTransactionOpen({status: false, data: null})
+                    setIsEditModalOpen({status: true, data: item})
                 }}
             >
-                <Image alt="edit button" src={SVGIMG_EDIT} width={20} height={20} />
+                <Image alt="edit button" src={SVGIMG_EDIT}  width={20} height={20}/>
             </div>
         </div>
     )

@@ -1,52 +1,49 @@
 "use client"
 
-import {getEarnings, getExpenses} from "@/src/data/actions/auth-actions"
+import {getProfits, getExpenses} from "@/src/data/actions/auth-actions"
 import {TransactionItem} from "@/src/types/types"
 import {createContext, useContext, useState, ReactNode} from "react"
 
 interface GlobalContextProps {
     currentExpense: number
     setCurrentExpense: (param: number) => void
-    currentEarnings: number
-    setCurrentEarnings: (param: number) => void
+    currentProfits: number
+    setCurrentProfits: (param: number) => void
     transactionItems: TransactionItem[]
     setTransactionItems: (param: TransactionItem[]) => void
-    fetchTransactions: () => Promise<void>
+    fetchTransactions: () => Promise<{
+        sumExpenses: number
+        sumProfits: number
+    }>
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
 
 export function GlobalProvider({children}: {children: ReactNode}) {
     const [currentExpense, setCurrentExpense] = useState<number>(0)
-    const [currentEarnings, setCurrentEarnings] = useState<number>(0)
+    const [currentProfits, setCurrentProfits] = useState<number>(0)
     const [transactionItems, setTransactionItems] = useState<TransactionItem[]>([])
 
     async function fetchTransactions() {
         const expenses: TransactionItem[] = await getExpenses()
-        const earnings: TransactionItem[] = await getEarnings()
-        const transitions: TransactionItem[] = Array.prototype.concat(expenses, earnings)
+        const profits: TransactionItem[] = await getProfits()
+        const transitions: TransactionItem[] = Array.prototype.concat(expenses, profits)
 
-        if (transitions) {
-            setTransactionItems(transitions)
-            const sumExpenses = transitions
-                .filter(({type}) => type === "expense")
-                .map(({amount}) => amount)
-                .reduce((acc, crr) => acc + crr, 0)
+        setTransactionItems(transitions)
+        const sumExpenses = expenses.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
 
-            const sumEarnings = transitions
-                .filter(({type}) => type === "earning")
-                .map(({amount}) => amount)
-                .reduce((acc, crr) => acc + crr, 0)
-            setCurrentExpense(sumExpenses)
-            setCurrentEarnings(sumEarnings)
-        } else setTransactionItems([])
+        const sumProfits = profits.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
+        setCurrentExpense(sumExpenses)
+        setCurrentProfits(sumProfits)
+
+        return {sumExpenses, sumProfits}
     }
 
     return (
         <GlobalContext.Provider
             value={{
-                currentEarnings,
-                setCurrentEarnings,
+                currentProfits,
+                setCurrentProfits,
                 currentExpense,
                 setCurrentExpense,
                 transactionItems,

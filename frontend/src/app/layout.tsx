@@ -22,7 +22,7 @@ export default function RootLayout({
             <head>
                 <link rel="png" href="%PUBLIC_URL%/favicon.svg" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="theme-color" content="#6da095" />
+                <meta name="theme-color" content="#001700" />
                 <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.svg" />
                 <meta name="viewport" content="width=device-width, user-scalable=no" />
             </head>

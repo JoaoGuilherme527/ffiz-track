@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { TransactionItem } from "@/src/types/types";
-import { deleteUserTransaction, getUserEarnings, getUserExpenses, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction } from "../services/auth-services";
+import { deleteUserTransaction, getUserProfits, getUserExpenses, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -108,6 +108,7 @@ export async function addTransactionItem(formData: FormData) {
   const transactionItem = {
     name: formData.get("name"),
     amount: formData.get("amount"),
+    category: formData.get("category"),
     type: formData.get("type"),
     transactionDate: formData.get("transactionDate"),
   }
@@ -115,8 +116,9 @@ export async function addTransactionItem(formData: FormData) {
   const response = await postNewTransactionItem({
     name: transactionItem.name as string,
     amount: Number(transactionItem.amount),
-    type: transactionItem.type as string,
-    transactionDate: transactionItem.transactionDate as string
+    category: transactionItem.category as string,
+    transactionDate: transactionItem.transactionDate as string,
+    type: transactionItem.type as "expense" | "profit",
   });
 
   return response
@@ -140,8 +142,8 @@ export async function getExpenses() {
   return response
 }
 
-export async function getEarnings() {
-  const response = await getUserEarnings()
+export async function getProfits() {
+  const response = await getUserProfits()
   return response
 }
 

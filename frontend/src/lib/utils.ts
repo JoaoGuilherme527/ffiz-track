@@ -55,7 +55,7 @@ export function flattenAttributes(data: any): any {
 //format the time 2025-02-17T03:29:45.189Z to 17/02/2025 03:29:45
 export function formatTime(time: string): string {
   const date = new Date(time);
-  return date.toLocaleString();
+  return date.toLocaleString().slice(0,17);
 }
 
 export function formatUSDtoBRL(number: number): string {

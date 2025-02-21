@@ -55,7 +55,7 @@ export async function loginUserService(userData: LoginUserProps) {
   }
 }
 
-export async function postNewTransactionItem({ amount, name, type, transactionDate }: TransactionItem) {
+export async function postNewTransactionItem({ amount, name, category, transactionDate, type }: TransactionItem) {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
@@ -69,7 +69,7 @@ export async function postNewTransactionItem({ amount, name, type, transactionDa
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`
       },
-      body: JSON.stringify({ name, amount, type, transactionDate: date }),
+      body: JSON.stringify({ name, amount, category, transactionDate: date, type }),
     });
 
     return response.json();
@@ -118,11 +118,11 @@ export async function getUserExpenses() {
   }
 }
 
-export async function getUserEarnings() {
+export async function getUserProfits() {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
-  const url = `${baseUrl}/${id}/transactions/earning`;
+  const url = `${baseUrl}/${id}/transactions/profit`;
 
   try {
     const response = await fetch(url, {

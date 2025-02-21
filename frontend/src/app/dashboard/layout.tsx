@@ -29,11 +29,10 @@ export default function DashboardLayout({
         setIsUser(user.data)
     }
 
-
     function getRouteName(): string {
         const name: {[key: string]: string} = {
             "/dashboard/expenses": "Expenses",
-            "/dashboard/earnings": "Earnings",
+            "/dashboard/profits": "Profits",
             "/dashboard": "Dashboard",
         }
         return name[pathname ?? "/dashboard"] ?? "Dashboard"
@@ -42,9 +41,6 @@ export default function DashboardLayout({
     useEffect(() => {
         handleUser()
         fetchTransactions()
-    }, [pathname])
-
-    useEffect(() => {
         const newRouteName = getRouteName()
         setCurrentRouteName("")
         let index = 0
@@ -57,10 +53,10 @@ export default function DashboardLayout({
     }, [pathname])
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden">
+        <div className="flex flex-col h-dvh bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden ">
             <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
             <div className="w-full h-[30%] absolute top-0 left-0 bg-red-500 z-10">
-                <div className="relative w-full h-full bg-[var(--green)]"></div>
+                <div className="relative w-full h-full bg-[var(--dark-green)]"></div>
                 <div className="container ">
                     <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
                         <path
@@ -68,7 +64,7 @@ export default function DashboardLayout({
                                 pathname.includes("expenses") ? "60" : "160"
                             } 500,100 L500,00 L0,0 Z`}
                             className="transition-all duration-500"
-                            style={{stroke: "none", fill: "var(--green)"}}
+                            style={{stroke: "none", fill: "var(--dark-green)"}}
                         ></path>
                     </svg>
                 </div>
