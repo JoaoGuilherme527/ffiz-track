@@ -15,6 +15,8 @@ interface GlobalContextProps {
         sumExpenses: number
         sumProfits: number
     }>
+    isMobile: boolean
+    setIsMobile: (param: boolean) => void
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
@@ -22,6 +24,7 @@ const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
 export function GlobalProvider({children}: {children: ReactNode}) {
     const [currentExpense, setCurrentExpense] = useState<number>(0)
     const [currentProfits, setCurrentProfits] = useState<number>(0)
+    const [isMobile, setIsMobile] = useState<boolean>(false)
     const [transactionItems, setTransactionItems] = useState<TransactionItem[]>([])
 
     async function fetchTransactions() {
@@ -49,6 +52,8 @@ export function GlobalProvider({children}: {children: ReactNode}) {
                 transactionItems,
                 setTransactionItems,
                 fetchTransactions,
+                isMobile,
+                setIsMobile,
             }}
         >
             {children}

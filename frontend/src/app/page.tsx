@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
-import {useLayoutEffect, useState} from "react"
+import {useEffect, useLayoutEffect, useState} from "react"
 import {Header} from "../components/custom/Header"
+import {useGlobalContext} from "./providers/GlobalProvider"
 
 export default function Home() {
-    const [isMobile, setIsMobile] = useState(false)
-    useLayoutEffect(() => {
+    const {setIsMobile,isMobile} = useGlobalContext()
+    useEffect(() => {
         setIsMobile(window.innerWidth <= 768)
     }, [])
 

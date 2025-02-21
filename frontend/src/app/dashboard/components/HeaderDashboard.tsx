@@ -8,7 +8,7 @@ interface HeaderDashboardProps {
 
 export default function HeaderDashboardComponent({routeName, username}: HeaderDashboardProps) {
     return (
-        <div className="z-40 w-full h-[7%] bg-[var(--darkest-green)] shadow-md flex justify-between items-center p-4">
+        <div className="z-40 w-full h-[7%] md:w-full bg-[var(--darkest-green)] shadow-md flex justify-between items-center p-4 relative">
             <Link href={"/"} className="active:scale-[0.9] transition-all">
                 <Image width={30} height={30} className=" bg-white p-[1px] rounded " src="/favicon.svg" alt="logo Icon" />
             </Link>

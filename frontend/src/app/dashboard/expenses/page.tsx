@@ -26,7 +26,7 @@ function ExpenseRoute() {
     const [pending, startTransition] = useTransition()
 
     return (
-        <div className="flex flex-col items-center justify-center h-full bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden">
+        <div className="flex flex-col items-center justify-center h-full bg-[var(--light-green)] overflow-hidden">
             {pending ? <Loading /> : <></>}
             <TotalAmountLabelComponent type="expense" amount={currentAmount} />
             <div className="z-20 w-full h-[65%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40 ">

@@ -4,12 +4,15 @@
 
 import {formatUSDtoBRL} from "@/src/lib/utils"
 import {useGlobalContext} from "../providers/GlobalProvider"
+import { useLayoutEffect } from "react"
 
 export default function DashboardRoute() {
-        const {currentExpense, currentProfits} = useGlobalContext()
-
+        const {currentExpense, currentProfits, fetchTransactions} = useGlobalContext()
+        useLayoutEffect(()=>{
+            fetchTransactions()
+        },[])
         return (
-                <div className="z-20 flex flex-col gap-2 py-2 px-2 w-full h-full ">
+                <div className="z-20 flex flex-col gap-2 py-2 px-2 w-full h-full">
                         <div className="relative h-20 rounded-md bg-[var(--darkest-green)] py-2 px-6 flex items-center justify-end text-gray-100 shadow-lg">
                                 <h1 className="absolute top-2 left-2 text-white font-extralight  text-lg">Balance</h1>
                                 <p className="font-semibold text-4xl">{formatUSDtoBRL(currentProfits - currentExpense)}</p>

@@ -29,7 +29,7 @@ export default function ProfitsRoute() {
     const [currentAmount, setCurrentAmount] = useState(0)
 
     return (
-        <div className="flex flex-col items-center justify-center h-full bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden">
+        <div className="flex flex-col items-center justify-center h-full bg-[var(--light-green)] overflow-hidden">
             {pending ? <Loading /> : <></>}
             <TotalAmountLabelComponent type="profit" amount={currentAmount} />
 

@@ -23,7 +23,7 @@ const LinkRouteButton = ({className, iconSize = 32, src, href, filled}: LinkRout
 const Navbar = () => {
     const pathname = usePathname()
     return (
-        <div className="z-30 w-full h-14 bg-[var(--darkest-green)] flex items-center justify-between px-10">
+        <div className="z-30 w-full h-14 md:w-64 md:h-full md:flex-col bg-[var(--darkest-green)] flex items-center justify-between px-10 md:p-10">
             <LinkRouteButton href={"/dashboard"} src={"money-bag"} filled={!pathname.includes("dashboard/")} />
             <LinkRouteButton href={"/dashboard/expenses"} src={"expense"} filled={pathname.includes("expenses")} />
             <LinkRouteButton href={"/dashboard/profits"} src={"income"} filled={pathname.includes("profits")} />
