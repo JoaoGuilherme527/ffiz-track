@@ -22,15 +22,17 @@ function ExpenseRoute() {
         data: null,
     })
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [currentAmount, setCurrentAmount] = useState(0)
     const [pending, startTransition] = useTransition()
 
     return (
         <div className="flex flex-col items-center justify-center h-full bg-[var(--light-green)] dark:bg-gray-900 overflow-hidden">
             {pending ? <Loading /> : <></>}
-            <TotalAmountLabelComponent type="expense" />
+            <TotalAmountLabelComponent type="expense" amount={currentAmount} />
             <div className="z-20 w-full h-[65%] px-10 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40 ">
                 {transactionItems
                     .filter(({type}) => type === "expense")
+                    .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
                     .map((item, key) => (
                         <TransactionItemComponent
                             key={key}
@@ -39,7 +41,9 @@ function ExpenseRoute() {
                             deleteExpense={() => {
                                 setIsTransactionOpen({status: false, data: null})
                                 startTransition(() => {
-                                    deleteTransaction(item.id as string).then(() => fetchTransactions())
+                                    deleteTransaction(item.id as string).then(() =>
+                                        fetchTransactions().then(({sumExpenses}) => setCurrentAmount(sumExpenses))
+                                    )
                                 })
                             }}
                             item={item}

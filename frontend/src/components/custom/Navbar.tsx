@@ -15,7 +15,7 @@ interface LinkRouteButtonProps {
 }
 
 const LinkRouteButton = ({className, iconSize = 32, src, href, filled}: LinkRouteButtonProps) => (
-    <Link className={`active:scale-[0.9] transition-all text-sm invert ${className ?? ""}`} href={href}>
+    <Link className={`active:scale-[0.8] transition-all text-sm invert ${className ?? ""}`} href={href}>
         <Image className="drop-shadow-lg" src={`/${src}${filled ? "-filled.png" : ".png"}`} alt="" width={iconSize} height={iconSize} />
     </Link>
 )

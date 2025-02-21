@@ -6,10 +6,11 @@ import {useGlobalContext} from "../../providers/GlobalProvider"
 
 interface TotalAmountLabelProps {
     type: "expense" | "profit"
+    amount?: number
 }
 
 export default function AmountLabelComponent({type}: TotalAmountLabelProps) {
-    const {transactionItems} = useGlobalContext()
+    const {currentExpense, currentProfits, transactionItems} = useGlobalContext()
     const [fontSize, setFontSize] = useState("text-4xl")
     const [totalAmount, setTotalAmount] = useState("R$ 0,00")
 
@@ -18,6 +19,8 @@ export default function AmountLabelComponent({type}: TotalAmountLabelProps) {
             .filter((item) => type == item.type)
             .map(({amount}) => amount)
             .reduce((acc, crr) => acc + crr, 0)
+
+        // const formattedValue = amount ? formatUSDtoBRL(amount) : formatUSDtoBRL(type === "expense" ? currentExpense : currentProfits)
 
         const formattedValue = formatUSDtoBRL(sum)
 
@@ -34,7 +37,7 @@ export default function AmountLabelComponent({type}: TotalAmountLabelProps) {
         } else {
             setFontSize("text-2xl")
         }
-    }, [])
+    }, [currentExpense, currentProfits])
 
     return (
         <div className="transition-all z-20 w-full py-28 gap-4 absolute top-0 left-0 flex flex-col items-center justify-center px-10">

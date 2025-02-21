@@ -52,7 +52,7 @@ export default function TransactionItemComponent({
             >
                 <div className="flex flex-col w-full flex-1">
                     <h1 className="text-lg text-gray-800 font-semibold">{item.name}</h1>
-                    <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.createdAt as string)}</p>
+                    <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.transactionDate as string)}</p>
                 </div>
 
                 <p className={`${item.type == "profit" ? "text-green-500" : "text-red-300"} text-2xl  font-bold truncate max-w-[${isLongPress ? "300px" : "150px"}] cursor-pointer`}>
