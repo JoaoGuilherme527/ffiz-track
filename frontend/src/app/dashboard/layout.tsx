@@ -15,7 +15,7 @@ export default function DashboardLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const {fetchTransactions} = useGlobalContext()
+    const {fetchTransactions, isMobile,setIsMobile} = useGlobalContext()
     const pathname = usePathname()
     const [isUser, setIsUser] = useState<any>()
     const router = useRouter()
@@ -39,6 +39,7 @@ export default function DashboardLayout({
     }
 
     useEffect(() => {
+        setIsMobile(window.innerWidth <= 768)
         handleUser()
         fetchTransactions()
         const newRouteName = getRouteName()
@@ -54,32 +55,35 @@ export default function DashboardLayout({
 
     return (
         <div>
-            <div className="flex flex-col h-dvh bg-[var(--light-green)] overflow-hidden md:hidden">
-                <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
-                <div className="w-full h-[30%] absolute top-0 left-0 bg-red-500 z-10">
-                    <div className="relative w-full h-full bg-[var(--dark-green)]"></div>
-                    <div className="">
-                        <svg viewBox="0 0 700 700" preserveAspectRatio="xMinYMin meet">
-                            <path
-                                d={`M0,100 C300,${pathname.includes("expenses") ? "160" : "60"} 500,${
-                                    pathname.includes("expenses") ? "60" : "160"
-                                } 800,100 L800,00 L0,0 Z`}
-                                className="transition-all duration-500"
-                                style={{stroke: "none", fill: "var(--dark-green)"}}
-                            ></path>
-                        </svg>
+            {isMobile ? (
+                <div className="flex flex-col h-dvh bg-[var(--light-green)] overflow-hidden md:hidden">
+                    <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
+                    <div className="w-full h-[30%] absolute top-0 left-0 bg-red-500 z-10">
+                        <div className="relative w-full h-full bg-[var(--dark-green)]"></div>
+                        <div className="">
+                            <svg viewBox="0 0 700 700" preserveAspectRatio="xMinYMin meet">
+                                <path
+                                    d={`M0,100 C300,${pathname.includes("expenses") ? "160" : "60"} 500,${
+                                        pathname.includes("expenses") ? "60" : "160"
+                                    } 800,100 L800,00 L0,0 Z`}
+                                    className="transition-all duration-500"
+                                    style={{stroke: "none", fill: "var(--dark-green)"}}
+                                ></path>
+                            </svg>
+                        </div>
+                    </div>
+                    {children}
+                    <Navbar />
+                </div>
+            ) : (
+                <div className="flex bg-[var(--light-green)] overflow-hidden h-dvh">
+                    <Navbar />
+                    <div className="w-dvw h-dvh">
+                        <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
+                        {children}
                     </div>
                 </div>
-                {children}
-                <Navbar />
-            </div>
-            <div className="flex bg-[var(--light-green)] overflow-hidden h-dvh">
-                <Navbar />
-                <div className="w-dvw h-dvh">
-                    <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
-                    {children}
-                </div>
-            </div>
+            )}
         </div>
     )
 }
