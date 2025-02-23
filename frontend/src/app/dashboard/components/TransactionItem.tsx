@@ -37,9 +37,9 @@ export default function TransactionItemComponent({
     }
 
     return (
-        <div className="w-full relative flex items-center active:scale-y-[0.9] transition-all" key={item.id}>
+        <div className="w-full relative flex items-center active:scale-y-[0.9] transition-all ]" key={item.id}>
             <div
-                className={`transition-all flex items-center gap-1 w-full bg-white dark:bg-gray-900 rounded-md shadow-xl p-5 z-20 ${
+                className={`transition-all flex items-center gap-1 w-full bg-white border-gray-300 border-[1px] rounded-md shadow-sm p-5 z-20 ${
                     isEditTransactionOpen.data?.id === item.id ? "translate-x-[-24%] w-[80%] rounded-r-none" : ""
                 }`}
                 onClick={() => {
@@ -55,7 +55,7 @@ export default function TransactionItemComponent({
                     <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.transactionDate as string)}</p>
                 </div>
 
-                <p className={`${item.type == "profit" ? "text-green-500" : "text-red-300"} text-2xl  font-bold truncate max-w-[${isLongPress ? "300px" : "150px"}] cursor-pointer`}>
+                <p className={`${item.type == "profit" ? "text-green-500" : "text-red-400"} text-2xl  font-bold truncate max-w-[${isLongPress ? "300px" : "150px"}] cursor-pointer`}>
                     {isLongPress
                         ? new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(item.amount)
                         : formatShortBRL(item.amount)}

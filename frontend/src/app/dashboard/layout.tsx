@@ -15,7 +15,7 @@ export default function DashboardLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const {fetchTransactions, isMobile,setIsMobile} = useGlobalContext()
+    const {fetchTransactions, isMobile, setIsMobile} = useGlobalContext()
     const pathname = usePathname()
     const [isUser, setIsUser] = useState<any>()
     const router = useRouter()
@@ -31,8 +31,8 @@ export default function DashboardLayout({
 
     function getRouteName(): string {
         const name: {[key: string]: string} = {
-            "/dashboard/expenses": "Expenses",
-            "/dashboard/profits": "Profits",
+            "/dashboard/transactions/expense": "Expenses",
+            "/dashboard/transactions/profit": "Profits",
             "/dashboard": "Dashboard",
         }
         return name[pathname ?? "/dashboard"] ?? "Dashboard"
@@ -54,36 +54,36 @@ export default function DashboardLayout({
     }, [pathname])
 
     return (
-        <div>
-            {isMobile ? (
-                <div className="flex flex-col h-dvh bg-[var(--light-green)] overflow-hidden md:hidden">
+        <div className="overflow-hidden">
+            {/* Mobile */}
+            <div className="flex flex-col h-dvh bg-white overflow-hidden md:hidden">
+                <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
+                {/* <div className="w-full h-[30%] absolute top-0 left-0  z-10">
+                    <div className="relative w-full h-full bg-[var(--dark-green)]"></div>
+                    <div className="">
+                        <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+                            <path
+                                d={`M0,100 C300,${pathname.includes("/dashboard/transactions/expense") ? "160" : "60"} 500,${
+                                    pathname.includes("/dashboard/transactions/expense") ? "60" : "160"
+                                } 500,100 L500,00 L0,0 Z`}
+                                className="transition-all duration-500"
+                                style={{stroke: "none", fill: "var(--dark-green)"}}
+                            ></path>
+                        </svg>
+                    </div>
+                </div> */}
+                {children}
+                <Navbar />
+            </div>
+
+            {/* Desktop */}
+            <div className="flex  bg-white overflow-hidden h-dvh max-sm:hidden">
+                <Navbar />
+                <div className="w-dvw h-dvh overflow-hidden">
                     <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
-                    <div className="w-full h-[30%] absolute top-0 left-0 bg-red-500 z-10">
-                        <div className="relative w-full h-full bg-[var(--dark-green)]"></div>
-                        <div className="">
-                            <svg viewBox="0 0 700 700" preserveAspectRatio="xMinYMin meet">
-                                <path
-                                    d={`M0,100 C300,${pathname.includes("expenses") ? "160" : "60"} 500,${
-                                        pathname.includes("expenses") ? "60" : "160"
-                                    } 800,100 L800,00 L0,0 Z`}
-                                    className="transition-all duration-500"
-                                    style={{stroke: "none", fill: "var(--dark-green)"}}
-                                ></path>
-                            </svg>
-                        </div>
-                    </div>
                     {children}
-                    <Navbar />
                 </div>
-            ) : (
-                <div className="flex bg-[var(--light-green)] overflow-hidden h-dvh">
-                    <Navbar />
-                    <div className="w-dvw h-dvh">
-                        <HeaderDashboardComponent routeName={currentRouteName} username={isUser?.username} />
-                        {children}
-                    </div>
-                </div>
-            )}
+            </div>
         </div>
     )
 }

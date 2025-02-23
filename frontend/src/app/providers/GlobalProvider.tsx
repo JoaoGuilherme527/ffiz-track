@@ -14,6 +14,9 @@ interface GlobalContextProps {
     fetchTransactions: () => Promise<{
         sumExpenses: number
         sumProfits: number
+        expenses: TransactionItem[]
+        transactions: TransactionItem[]
+        profits: TransactionItem[]
     }>
     isMobile: boolean
     setIsMobile: (param: boolean) => void
@@ -30,16 +33,16 @@ export function GlobalProvider({children}: {children: ReactNode}) {
     async function fetchTransactions() {
         const expenses: TransactionItem[] = await getExpenses()
         const profits: TransactionItem[] = await getProfits()
-        const transitions: TransactionItem[] = Array.prototype.concat(expenses, profits)
+        const transactions: TransactionItem[] = Array.prototype.concat(expenses, profits)
 
-        setTransactionItems(transitions)
+        setTransactionItems(transactions)
         const sumExpenses = expenses.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
 
         const sumProfits = profits.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
         setCurrentExpense(sumExpenses)
         setCurrentProfits(sumProfits)
 
-        return {sumExpenses, sumProfits}
+        return {sumExpenses, sumProfits, expenses, transactions, profits}
     }
 
     return (
