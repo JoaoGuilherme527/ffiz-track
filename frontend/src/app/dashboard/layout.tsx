@@ -6,7 +6,7 @@
 import Navbar from "@/src/components/custom/Navbar"
 import {checkUserLogged} from "@/src/data/actions/auth-actions"
 import {usePathname, useRouter} from "next/navigation"
-import {useEffect, useState} from "react"
+import {useEffect, useLayoutEffect, useState} from "react"
 import {useGlobalContext} from "../providers/GlobalProvider"
 import HeaderDashboardComponent from "./components/HeaderDashboard"
 
@@ -15,7 +15,7 @@ export default function DashboardLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const {fetchTransactions, isMobile, setIsMobile} = useGlobalContext()
+    const {fetchTransactions, isMobile, setIsMobile,transactionItems} = useGlobalContext()
     const pathname = usePathname()
     const [isUser, setIsUser] = useState<any>()
     const router = useRouter()
@@ -39,9 +39,12 @@ export default function DashboardLayout({
     }
 
     useEffect(() => {
+        fetchTransactions()
+    }, [])
+
+    useEffect(() => {
         setIsMobile(window.innerWidth <= 768)
         handleUser()
-        fetchTransactions()
         const newRouteName = getRouteName()
         setCurrentRouteName("")
         let index = 0

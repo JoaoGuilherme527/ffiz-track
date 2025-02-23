@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import {getProfits, getExpenses} from "@/src/data/actions/auth-actions"
@@ -18,6 +19,8 @@ interface GlobalContextProps {
         transactions: TransactionItem[]
         profits: TransactionItem[]
     }>
+    categoryMaxOcc: {element: string | null; occurred: number}
+    totalCategoryAmount: number
     isMobile: boolean
     setIsMobile: (param: boolean) => void
 }
@@ -29,11 +32,34 @@ export function GlobalProvider({children}: {children: ReactNode}) {
     const [currentProfits, setCurrentProfits] = useState<number>(0)
     const [isMobile, setIsMobile] = useState<boolean>(false)
     const [transactionItems, setTransactionItems] = useState<TransactionItem[]>([])
+    const [categoryMaxOcc, setCategoryMaxOcc] = useState<{element: string | null; occurred: number}>({element: "Other", occurred: 0})
+    const [totalCategoryAmount, setTotalCategoryAmount] = useState(0)
 
     async function fetchTransactions() {
         const expenses: TransactionItem[] = await getExpenses()
         const profits: TransactionItem[] = await getProfits()
         const transactions: TransactionItem[] = Array.prototype.concat(expenses, profits)
+
+        const arr = expenses.map(({category}) => category)
+        let maxOcc: {element: string | null; occurred: number} = {element: null, occurred: 0}
+
+        const mostOcc = arr.reduce((acc: {[key: string]: number}, el) => {
+            if (el !== undefined) {
+                acc[el] = acc[el] ? acc[el] + 1 : 1
+            }
+            if (el !== undefined && acc[el] > maxOcc.occurred) {
+                maxOcc = {element: el, occurred: acc[el]}
+            }
+            return acc
+        }, {})
+
+        const amountMostOcc = expenses
+            .filter(({category}) => category === maxOcc.element)
+            .map(({amount}) => amount)
+            .reduce((acc, crr) => acc + crr)
+
+        setCategoryMaxOcc(maxOcc)
+        setTotalCategoryAmount(amountMostOcc)
 
         setTransactionItems(transactions)
         const sumExpenses = expenses.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
@@ -57,6 +83,8 @@ export function GlobalProvider({children}: {children: ReactNode}) {
                 fetchTransactions,
                 isMobile,
                 setIsMobile,
+                categoryMaxOcc,
+                totalCategoryAmount,
             }}
         >
             {children}

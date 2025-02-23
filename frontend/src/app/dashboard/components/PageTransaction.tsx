@@ -63,9 +63,11 @@ function PageTransaction({params}: {params: string}) {
                     onSubmit={(e) => {
                         startTransition(() => {
                             const formData = new FormData(e.target as HTMLFormElement)
-                            addTransactionItem(formData).then((response) => {
-                                setTransactionItems([...transactionItems, response])
-                            })
+                            addTransactionItem(formData)
+                                .then((response) => {
+                                    setTransactionItems([...transactionItems, response])
+                                })
+                                .then(() => fetchTransactions())
                             e.currentTarget.reset()
                         })
                     }}

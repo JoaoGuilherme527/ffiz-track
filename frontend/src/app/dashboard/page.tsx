@@ -4,9 +4,7 @@
 
 import {formatShortBRL, formatTime, formatUSDtoBRL} from "@/src/lib/utils"
 import {useGlobalContext} from "../providers/GlobalProvider"
-import {useEffect, useLayoutEffect, useState, useTransition} from "react"
 import Image from "next/image"
-import Loading from "../loading"
 import {StaticImport} from "next/dist/shared/lib/get-img-props"
 
 interface DashboardCardProps {
@@ -33,41 +31,10 @@ const DashboardCard = ({src, title, value, description, variant}: DashboardCardP
 )
 
 export default function DashboardRoute() {
-    const {currentExpense, currentProfits, transactionItems, fetchTransactions} = useGlobalContext()
-    const [pending, startTransition] = useTransition()
-    const [categoryMaxOcc, setCategoryMaxOcc] = useState<{element: string | null; occurred: number}>({element: "Other", occurred: 0})
-    const [totalCategoryAmount, setTotalCategoryAmount] = useState(0)
-    useLayoutEffect(() => {
-        startTransition(() => {
-            fetchTransactions().then(({expenses}) => {
-                const arr = expenses.map(({category}) => category)
-                let maxOcc: {element: string | null; occurred: number} = {element: null, occurred: 0}
-
-                const mostOcc = arr.reduce((acc: {[key: string]: number}, el) => {
-                    if (el !== undefined) {
-                        acc[el] = acc[el] ? acc[el] + 1 : 1
-                    }
-                    if (el !== undefined && acc[el] > maxOcc.occurred) {
-                        maxOcc = {element: el, occurred: acc[el]}
-                    }
-                    return acc
-                }, {})
-
-                const amountMostOcc = expenses
-                    .filter(({category}) => category === maxOcc.element)
-                    .map(({amount}) => amount)
-                    .reduce((acc, crr) => acc + crr)
-
-                setTotalCategoryAmount(amountMostOcc)
-                setCategoryMaxOcc(maxOcc)
-            })
-        })
-    }, [])
+    const {currentExpense, currentProfits, transactionItems, categoryMaxOcc, totalCategoryAmount} = useGlobalContext()
 
     return (
         <>
-            {pending ? <Loading /> : <></>}
-
             {/* Desktop */}
             {/* <div className="w-full h-full flex-col flex max-sm:hidden p-6">
                 <div className="flex gap-4">
@@ -132,7 +99,9 @@ export default function DashboardRoute() {
                         <div className="flex flex-col gap-4 w-full">
                             {transactionItems
                                 .filter(({type}) => type === "expense")
-                                .slice(-transactionItems.filter(({type}) => type === "expense").length, 4)
+                                .reverse()
+                                .slice(-transactionItems.filter(({type}) => type === "expense").length, 5)
+                                .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
                                 .map(({amount, name, transactionDate}, key) => (
                                     <div key={key} className="relative  flex bg-gray-100 py-4 px-2 gap-2 rounded">
                                         <div className="absolute top-1/2 translate-y-[-50%] left-[-8.4%] bg-green-400 rounded-full w-4 h-4"></div>
