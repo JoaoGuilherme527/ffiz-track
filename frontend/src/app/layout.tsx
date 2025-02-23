@@ -10,6 +10,7 @@ const inter = Inter({
 
 const test = Comfortaa({
     weight: "400",
+    subsets: ["latin"],
 })
 
 export const metadata: Metadata = {
