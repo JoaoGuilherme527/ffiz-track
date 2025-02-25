@@ -81,6 +81,41 @@ app.get("/api", async (req, res) => {
     })
 })
 
+app.post("/:userId/card", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
+    const {userId} = req.params
+    const {available, name, limit} = req.body
+    await prisma.$connect()
+    try {
+        const newCard = await prisma.card.create({
+            data: {
+                available,
+                limit,
+                name,
+                userId,
+            },
+        })
+        res.status(201).json(newCard)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Error creating card"})
+    }
+})
+app.get("/:userId/card", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
+    const {userId} = req.params
+    await prisma.$connect()
+    try {
+        const card = await prisma.card.findUnique({where: {userId}})
+        res.status(201).json(card)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Error getting card"})
+    }
+})
+
 app.post("/:userId/transactions", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
@@ -117,7 +152,7 @@ app.get("/:userId/transactions/:type?", async (req, res) => {
                 type,
             },
         })) ?? []
-    res.json(transaction)
+    res.status(201).json(transaction)
 })
 
 app.delete("/transactions/:id", async (req, res) => {
