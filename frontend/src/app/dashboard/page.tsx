@@ -17,21 +17,22 @@ interface DashboardCardProps {
 
 const DashboardCard = ({src, title, value, description, variant}: DashboardCardProps) => (
     <div
-        className={`relative p-4 border-[1px] border-gray-300  rounded-md flex flex-col  items-start justify-evenly flex-1 text-gray-700 shadow-sm gap-2 ${
+        className={` relative p-4 border-[1px] border-gray-300  rounded-md flex flex-col  items-start justify-evenly flex-1 text-gray-700 shadow-sm gap-2 ${
             variant ? "bg-green-500" : "bg-white"
         }`}
     >
         <div className={`rounded-full   ${variant ? "bg-white" : "bg-gray-50"}`}>
             <Image src={src} alt="" width={50} height={50} className=" p-2 w-16 h-w-16" />
         </div>
-        <h1 className={`font-bold text-sm   ${variant ? "text-white" : "text-gray-400"}`}>{title}</h1>
-        <p className={`font-extrabold text-xl  ${variant ? "text-white" : ""}`}>{value}</p>
-        <p className="text-gray-400 text-sm font-normal">{description}</p>
+        <h1 className={`font-bold text-sm   ${variant ? "text-gray-50" : "text-gray-400"}`}>{title}</h1>
+        <p className={`font-extrabold text-base  ${variant ? "text-white" : ""}`}>{value}</p>
+        <p className={`${variant ? "text-gray-50" : "text-gray-400"} text-xs font-normal`}>{description}</p>
     </div>
 )
 
 export default function DashboardRoute() {
-    const {currentExpense, currentProfits, transactionItems, categoryMaxOcc, totalCategoryAmount} = useGlobalContext()
+    const {currentExpense, currentProfits, transactionItems, categoryMaxOcc, totalCategoryAmount, totalTimesCategoryApp, categoryMostOcc} =
+        useGlobalContext()
 
     return (
         <>
@@ -67,25 +68,37 @@ export default function DashboardRoute() {
                 <div className="h-52 flex gap-4">
                     <DashboardCard title="TOTAL PROFITS" src="/income-green.png" value={formatUSDtoBRL(currentProfits)} description="" />
                     <DashboardCard
-                        title="TOTAL EXPENSES"
-                        src="/expense-green.png"
-                        value={formatUSDtoBRL(currentExpense)}
+                        title="BALANCE"
+                        src="/money-bag-filled-green.png"
+                        value={formatUSDtoBRL(currentProfits - currentExpense)}
                         description=""
                         variant
                     />
                 </div>
                 <div className="h-52 flex gap-4">
+                    <DashboardCard title="TOTAL EXPENSES" src="/expense-green.png" value={formatUSDtoBRL(currentExpense)} description="" />
                     <DashboardCard
-                        title="BALANCE"
+                        title="AVAILABLE CREDIT"
                         src="/money-bag-filled-green.png"
-                        value={formatUSDtoBRL(currentProfits - currentExpense)}
-                        description=""
+                        // value={formatUSDtoBRL(41.82)}
+                        // description={formatUSDtoBRL(1000)}
+                        value={formatUSDtoBRL(0)}
+                        description={formatUSDtoBRL(0)}
                     />
+                </div>
+                <div className="h-52 flex gap-4">
                     <DashboardCard
                         title="MOST SPENDING"
                         src="/coins-green.png"
-                        value={categoryMaxOcc.element?.toUpperCase() as string}
+                        value={categoryMaxOcc.toUpperCase() as string}
                         description={formatUSDtoBRL(totalCategoryAmount)}
+                        variant
+                    />
+                    <DashboardCard
+                        title="MOST FREQUENCY"
+                        src="/coins-green.png"
+                        value={categoryMostOcc.toUpperCase() as string}
+                        description={totalTimesCategoryApp + " Times"}
                     />
                 </div>
                 <div className=" flex-2 flex flex-col p-4 border-[1px] border-gray-300 bg-white rounded-md gap-4 ">
