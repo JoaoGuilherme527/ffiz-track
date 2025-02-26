@@ -5,7 +5,7 @@ interface FormModalAddTransactionProps {
     isModalOpen: boolean
     setIsModalOpen: (param: boolean) => void
     onSubmit: (e: FormEvent<HTMLFormElement>) => void
-    type: string
+    type: "expense" | "profit"
 }
 
 export default function FormModalAddTransactionComponent({isModalOpen, onSubmit, setIsModalOpen, type}: FormModalAddTransactionProps) {
