@@ -3,12 +3,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import Navbar from "@/src/components/custom/Navbar"
 import {checkUserLogged} from "@/src/data/actions/auth-actions"
 import {usePathname, useRouter} from "next/navigation"
 import {useEffect, useState} from "react"
 import {useGlobalContext} from "../providers/GlobalProvider"
-import HeaderDashboardComponent from "./components/HeaderDashboard"
+import HeaderDashboardComponent from "./_components/HeaderDashboard"
+import Navbar from "@/src/components/custom/Navbar"
 
 export default function DashboardLayout({
     children,

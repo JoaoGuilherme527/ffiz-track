@@ -5,7 +5,7 @@ import {useEffect, useState} from "react"
 import {useGlobalContext} from "../../providers/GlobalProvider"
 
 interface TotalAmountLabelProps {
-    type: "expense" | "profit"
+    type: string
 }
 
 export default function AmountLabelComponent({type}: TotalAmountLabelProps) {

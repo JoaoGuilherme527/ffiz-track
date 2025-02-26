@@ -1,3 +1,4 @@
+import Dropdown from "@/src/components/custom/DropdowMenu"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -15,10 +16,12 @@ export default function HeaderDashboardComponent({routeName, username}: HeaderDa
             <h1 className={`text-white text-base drop-shadow-md transition-all  duration-500  absolute left-2/4 translate-x-[-50%]`}>
                 {routeName}
             </h1>
-            <div className="flex items-center justify-center gap-2">
-                <p className="text-white text-sm">{username}</p>
-                <div className="w-7 h-7 rounded-full bg-white"></div>
-            </div>
+            <Dropdown>
+                <div className="flex items-center justify-center gap-2 cursor-pointer">
+                    <p className="text-gray-500 text-sm md:text-2xl ">{username}</p>
+                    <div className="w-7 h-7 md:h-10 md:w-10 rounded-full bg-gray-300"></div>
+                </div>
+            </Dropdown>
         </div>
     )
 }
