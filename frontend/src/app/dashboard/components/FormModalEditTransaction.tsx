@@ -13,8 +13,8 @@ interface EditExpenseModalProps {
 export default function FormModalEditTransactionComponent({onClose, onSubmit, isModalOpen, amount}: EditExpenseModalProps) {
     return (
         <div
-            className={`transition-all w-dvw h-dvh  z-40 absolute  left-[50%] translate-x-[-50%] flex items-center justify-center bottom-[0]  ${
-                isModalOpen ? "bg-[#0003] " : "bg-[#0000] pointer-events-none"
+            className={`transition-all w-dvw  z-40 absolute  left-[50%] translate-x-[-50%] flex items-center justify-center top-0  ${
+                isModalOpen ? "bg-[#0003] h-dvh top-0" : "bg-[#0000] pointer-events-none h-0"
             }`}
         >
             <form

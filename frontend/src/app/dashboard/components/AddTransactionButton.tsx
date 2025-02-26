@@ -13,7 +13,7 @@ export default function AddTransactionButton({isModalOpen, setIsModalOpen}: AddT
             }`}
             onClick={() => setIsModalOpen(!isModalOpen)}
         >
-            <Image alt="add button" src={"/plus.svg"} className={`${isModalOpen ? "rotate-45" : "rotate-0"}`} width={20} height={20} />
+            <Image alt="add button" src={"/plus.svg"} className={`${isModalOpen ? "rotate-45" : "rotate-0"}`} width={30} height={30} />
         </div>
     )
 }

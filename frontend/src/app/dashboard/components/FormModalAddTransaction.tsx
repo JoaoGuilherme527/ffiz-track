@@ -5,7 +5,7 @@ interface FormModalAddTransactionProps {
     isModalOpen: boolean
     setIsModalOpen: (param: boolean) => void
     onSubmit: (e: FormEvent<HTMLFormElement>) => void
-    type: "expense" | "profit"
+    type: string
 }
 
 export default function FormModalAddTransactionComponent({isModalOpen, onSubmit, setIsModalOpen, type}: FormModalAddTransactionProps) {
@@ -20,14 +20,14 @@ export default function FormModalAddTransactionComponent({isModalOpen, onSubmit,
 
     return (
         <div
-            className={`transition-all w-dvw h-dvh  z-30 absolute  left-[50%] translate-x-[-50%] flex items-center justify-center top-0  ${
-                isModalOpen ? "bg-[#0003] " : "bg-[#0000] pointer-events-none"
+            className={`transition-all  w-dvw  z-30 absolute  left-[50%] translate-x-[-50%] flex items-center justify-center top-0 ${
+                isModalOpen ? "bg-[#0003] h-dvh top-0 " : "bg-[#0000] pointer-events-none h-0 "
             }`}
         >
             <form
                 method="post"
                 className={`transition-all flex flex-col space-y-3 w-[90%] rounded-md shadow-2xl bg-white px-10 pt-1 pb-5 ${
-                    isModalOpen ? "translate-y-0 opacity-1" : "translate-y-full opacity-0"
+                    isModalOpen ? "translate-y-0 opacity-1" : "translate-y-[100%] opacity-0"
                 } `}
                 onSubmit={(e) => {
                     e.preventDefault()
