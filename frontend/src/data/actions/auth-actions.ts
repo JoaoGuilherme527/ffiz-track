@@ -53,7 +53,7 @@ export async function registerUserAction(prevState: any, formData: FormData) {
   }
 
   cks.set("jwt", responseData.token, config);
-  redirect("/dashboard");
+  redirect("/layout/dashboard");
 }
 
 
@@ -101,7 +101,7 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     };
   }
   cks.set("jwt", responseData.token, config);
-  redirect("/dashboard");
+  redirect("/layout/dashboard");
 }
 
 export async function addTransactionItem(formData: FormData) {

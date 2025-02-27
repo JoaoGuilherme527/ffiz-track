@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
     const user = await getUserMeLoader();
     const currentPath = request.nextUrl.pathname;
 
-    if (currentPath.startsWith("/dashboard") && user.ok === false) {
+    if (currentPath.startsWith("/layout") && user.ok === false) {
         return NextResponse.redirect(new URL("/signin", request.url));
     }
     return NextResponse.next();

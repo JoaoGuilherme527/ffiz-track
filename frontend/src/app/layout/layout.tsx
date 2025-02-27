@@ -29,11 +29,11 @@ export default function DashboardLayout({
 
     function getRouteName(): string {
         const name: {[key: string]: string} = {
-            "/dashboard/transactions/expense": "Expenses",
-            "/dashboard/transactions/profit": "Profits",
-            "/dashboard": "Dashboard",
+            "/layout/transactions/expense": "Expenses",
+            "/layout/transactions/profit": "Profits",
+            "/layout/dashboard": "Dashboard",
         }
-        return name[pathname ?? "/dashboard"] ?? "Dashboard"
+        return name[pathname ?? "/layout/dashboard"] ?? "Dashboard"
     }
 
     useEffect(() => {

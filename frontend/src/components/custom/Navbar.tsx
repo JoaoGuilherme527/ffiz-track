@@ -18,7 +18,13 @@ interface LinkRouteButtonProps {
 
 const LinkRouteButtonMobile = ({className, iconSize = 32, src, href, path}: LinkRouteButtonProps) => (
     <Link className={`active:scale-[0.8] transition-all text-sm invert ${className ?? ""}`} href={href}>
-        <Image className="opacity-50 drop-shadow-lg invert" src={`/${src}${path ? "-filled.png" : ".png"}`} alt="" width={iconSize} height={iconSize} />
+        <Image
+            className="opacity-50 drop-shadow-lg invert"
+            src={`/${src}${path ? "-filled.png" : ".png"}`}
+            alt=""
+            width={iconSize}
+            height={iconSize}
+        />
     </Link>
 )
 
@@ -41,10 +47,17 @@ const Navbar = () => {
         <div className="z-30 w-full h-14 md:w-64 md:h-full md:flex-col bg-white md:border-r-[1px] border-t-[1px] border-gray-300 py-4  md:justify-start flex md:items-start md:px-2 md:pt-28 px-10 md:p-10 relative">
             {/* Mobile */}
             <div className="flex items-center justify-between w-full px-10 md:hidden">
-                <LinkRouteButtonMobile href={"/dashboard"} src={"money-bag"} path={!pathname.includes("dashboard/")} />
-                <LinkRouteButtonMobile href={"/dashboard/transactions/expense"} src={"expense"} path={pathname.includes("/dashboard/transactions/expense")} />
-                <LinkRouteButtonMobile href={"/dashboard/transactions/profit"} src={"income"} path={pathname.includes("/dashboard/transactions/profit")} />
-                
+                <LinkRouteButtonMobile href={"/layout/dashboard"} src={"money-bag"} path={pathname.includes("/layout/dashboard")} />
+                <LinkRouteButtonMobile
+                    href={"/layout/dashboard/transactions/expense"}
+                    src={"expense"}
+                    path={pathname.includes("/layout/dashboard/transactions/expense")}
+                />
+                <LinkRouteButtonMobile
+                    href={"/layout/dashboard/transactions/profit"}
+                    src={"income"}
+                    path={pathname.includes("/layout/dashboard/transactions/profit")}
+                />
             </div>
 
             {/* Desktop */}
@@ -60,21 +73,21 @@ const Navbar = () => {
                 </div>
 
                 <LinkRouteButton
-                    href={"/dashboard"}
-                    path={!pathname.includes("dashboard/")}
+                    href={"/layout/dashboard"}
+                    path={pathname.includes("/layout/dashboard")}
                     src={"/money-bag.png"}
                     src2={"/money-bag-filled-green.png"}
                     name="Dashboard"
                 />
                 <LinkRouteButton
-                    href={"/dashboard/transactions/expense"}
+                    href={"/layout/dashboard/transactions/expense"}
                     path={pathname.includes("transactions/expense")}
                     src={"/expense.png"}
                     src2={"/expense-filled-green.png"}
                     name="Expenses"
                 />
                 <LinkRouteButton
-                    href={"/dashboard/transactions/profit"}
+                    href={"/layout/dashboard/transactions/profit"}
                     path={pathname.includes("transactions/profit")}
                     src={"/income.png"}
                     src2={"/income-filled-green.png"}
