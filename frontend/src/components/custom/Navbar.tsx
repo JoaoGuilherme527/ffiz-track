@@ -49,14 +49,14 @@ const Navbar = () => {
             <div className="flex items-center justify-between w-full px-10 md:hidden">
                 <LinkRouteButtonMobile href={"/layout/dashboard"} src={"money-bag"} path={pathname.includes("/layout/dashboard")} />
                 <LinkRouteButtonMobile
-                    href={"/layout/dashboard/transactions/expense"}
+                    href={"/layout/transactions/expense"}
                     src={"expense"}
-                    path={pathname.includes("/layout/dashboard/transactions/expense")}
+                    path={pathname.includes("/layout/transactions/expense")}
                 />
                 <LinkRouteButtonMobile
-                    href={"/layout/dashboard/transactions/profit"}
+                    href={"/layout/transactions/profit"}
                     src={"income"}
-                    path={pathname.includes("/layout/dashboard/transactions/profit")}
+                    path={pathname.includes("/layout/transactions/profit")}
                 />
             </div>
 
@@ -80,15 +80,15 @@ const Navbar = () => {
                     name="Dashboard"
                 />
                 <LinkRouteButton
-                    href={"/layout/dashboard/transactions/expense"}
-                    path={pathname.includes("transactions/expense")}
+                    href={"/layout/transactions/expense"}
+                    path={pathname.includes("/transactions/expense")}
                     src={"/expense.png"}
                     src2={"/expense-filled-green.png"}
                     name="Expenses"
                 />
                 <LinkRouteButton
-                    href={"/layout/dashboard/transactions/profit"}
-                    path={pathname.includes("transactions/profit")}
+                    href={"/layout/transactions/profit"}
+                    path={pathname.includes("/transactions/profit")}
                     src={"/income.png"}
                     src2={"/income-filled-green.png"}
                     name="Profits"
