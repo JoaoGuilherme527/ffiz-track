@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { TransactionItem } from "@/src/types/types";
-import { deleteUserTransaction, getUserProfits, getUserExpenses, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction } from "../services/auth-services";
+import { deleteUserTransaction, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction, getUserTransactions, getUserData } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -137,20 +137,16 @@ export async function updateTransactionItem(formData: FormData, id: string): Pro
   return response
 }
 
-export async function getExpenses() {
-  const response = await getUserExpenses()
-  return response
-}
-
-export async function getProfits() {
-  const response = await getUserProfits()
-  return response
+export async function getTransactions(type: string) {
+  return await getUserTransactions(type)
 }
 
 export async function deleteTransaction(id: string) {
-  const response = await deleteUserTransaction(id)
-  return response
+  return await deleteUserTransaction(id)
+}
 
+export async function getData() {
+  return await getUserData()
 }
 
 export async function logoutAction() {
@@ -160,7 +156,6 @@ export async function logoutAction() {
 }
 
 export async function checkUserLogged() {
-  const user = await isUserLogged()
-  return user
+  return await isUserLogged()
 
 }

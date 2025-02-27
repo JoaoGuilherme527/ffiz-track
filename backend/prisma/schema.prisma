@@ -38,4 +38,5 @@ model Card {
   limit     Float
   available Float
   userId    String
+  color     String @default("#FFF")
 }

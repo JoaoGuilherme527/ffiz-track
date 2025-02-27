@@ -81,11 +81,51 @@ app.get("/api", async (req, res) => {
     })
 })
 
+app.get("/:userId/data", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
+    const {userId} = req.params
+    await prisma.$connect()
+    try {
+        const categoryCount = {}
+        const categorySum = {}
+        const expenses = await prisma.transactionItem.findMany({where: {AND: {type: "expense", userId}}})
+        const profits = await prisma.transactionItem.findMany({where: {AND: {type: "profit", userId}}})
+
+        const sumExpenses = expenses.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
+        const sumProfits = profits.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
+
+        expenses.forEach(({category, amount}) => {
+            categoryCount[category] = (categoryCount[category] || 0) + 1
+            categorySum[category] = (categorySum[category] || 0) + amount
+        })
+
+        const mostFrequentCategory = Object.entries(categoryCount).reduce((max, current) => (current[1] > max[1] ? current : max), ["", 0])
+
+        const highestSpendingCategory = Object.entries(categorySum).reduce((max, current) => (current[1] > max[1] ? current : max), ["", 0])
+
+        res.status(201).json({
+            balance: sumProfits - sumExpenses ,
+            mostFrequentCategory: {
+                category: mostFrequentCategory[0],
+                amount: mostFrequentCategory[1],
+            },
+            highestSpendingCategory: {
+                category: highestSpendingCategory[0],
+                amount: highestSpendingCategory[1],
+            },
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Error creating card"})
+    }
+})
+
 app.post("/:userId/card", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
-    const {available, name, limit} = req.body
+    const {available, name, limit, color} = req.body
     await prisma.$connect()
     try {
         const newCard = await prisma.card.create({
@@ -94,6 +134,7 @@ app.post("/:userId/card", async (req, res) => {
                 limit,
                 name,
                 userId,
+                color,
             },
         })
         res.status(201).json(newCard)
