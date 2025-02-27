@@ -32,8 +32,11 @@ model TransactionItem {
   category        String?
 }
 
-// model Card {
-//   id   String @id @default(cuid())
-//   type String
-//   name String
-// }
+model Card {
+  id        String @id @default(cuid())
+  name      String
+  limit     Float
+  available Float
+  userId    String
+  color     String @default("#FFF")
+}

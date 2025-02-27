@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import {memo, useState, useTransition} from "react"
-import {useGlobalContext} from "../../providers/GlobalProvider"
+import {useState, useTransition} from "react"
 import {TransactionItem} from "@/src/types/types"
 import Loading from "../../loading"
 import TransactionItemComponent from "../components/TransactionItem"
@@ -9,11 +9,18 @@ import {addTransactionItem, deleteTransaction, updateTransactionItem} from "@/sr
 import FormModalAddTransactionComponent from "../components/FormModalAddTransaction"
 import FormModalEditTransactionComponent from "../components/FormModalEditTransaction"
 import AddTransactionButton from "../components/AddTransactionButton"
-import TotalAmountLabelComponent from "@/src/app/dashboard/components/TotalAmountLabel"
+import AmountLabelComponent from "../components/TotalAmountLabel"
+import {useRouter} from "next/navigation"
 
-function PageTransaction({params}: {params: string}) {
-    const slug = params
-    const {fetchTransactions, setTransactionItems, transactionItems} = useGlobalContext()
+interface TransactionParams {
+    type: string
+    sumProfits: number
+    sumExpenses: number
+    transactions: TransactionItem[]
+}
+
+export default function TransactionScreen({params}: {params: TransactionParams}) {
+    const router = useRouter()
     const [isEditTransactionOpen, setIsTransactionOpen] = useState<{status: boolean; data: TransactionItem | null}>({
         status: false,
         data: null,
@@ -23,7 +30,6 @@ function PageTransaction({params}: {params: string}) {
         data: null,
     })
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [currentAmount, setCurrentAmount] = useState(0)
     const [pending, startTransition] = useTransition()
 
     return (
@@ -31,10 +37,10 @@ function PageTransaction({params}: {params: string}) {
             {/* Mobile */}
             <div className="flex flex-col items-center justify-center h-dvh bg-white overflow-x-hidden md:hidden">
                 {pending ? <Loading /> : <></>}
-                <TotalAmountLabelComponent type={slug} amount={currentAmount} />
+                <AmountLabelComponent type={params.type} sumProfits={params.sumProfits} sumExpenses={params.sumExpenses} />
                 <div className="z-20 w-full h-[65%] px-5 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40 ">
-                    {transactionItems
-                        .filter(({type}) => type === slug)
+                    {params.transactions
+                        .filter(({type}) => type === params.type)
                         .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
                         .map((item, key) => (
                             <TransactionItemComponent
@@ -44,9 +50,9 @@ function PageTransaction({params}: {params: string}) {
                                 deleteExpense={() => {
                                     setIsTransactionOpen({status: false, data: null})
                                     startTransition(() => {
-                                        deleteTransaction(item.id as string).then(() =>
-                                            fetchTransactions().then(({sumExpenses}) => setCurrentAmount(sumExpenses))
-                                        )
+                                        deleteTransaction(item.id as string).then(() => {
+                                            router.refresh()
+                                        })
                                     })
                                 }}
                                 item={item}
@@ -63,15 +69,13 @@ function PageTransaction({params}: {params: string}) {
                     onSubmit={(e) => {
                         startTransition(() => {
                             const formData = new FormData(e.target as HTMLFormElement)
-                            addTransactionItem(formData)
-                                .then((response) => {
-                                    setTransactionItems([...transactionItems, response])
-                                })
-                                .then(() => fetchTransactions())
+                            addTransactionItem(formData).then(() => {
+                                router.refresh()
+                            })
                             e.currentTarget.reset()
                         })
                     }}
-                    type={slug}
+                    type={params.type}
                 />
 
                 <FormModalEditTransactionComponent
@@ -82,17 +86,9 @@ function PageTransaction({params}: {params: string}) {
                         setIsEditModalOpen({data: null, status: false})
                         startTransition(() => {
                             const formData = new FormData(e.target as HTMLFormElement)
-                            updateTransactionItem(formData, isEditModalOpen.data?.id ?? "")
-                                .then((response) => {
-                                    if (typeof response !== "string") {
-                                        const {id} = response
-                                        const expensesFilter = transactionItems.filter((item) => id != item.id)
-                                        setTransactionItems(expensesFilter)
-                                    }
-                                })
-                                .then(() => {
-                                    fetchTransactions()
-                                })
+                            updateTransactionItem(formData, isEditModalOpen.data?.id ?? "").then(() => {
+                                router.refresh()
+                            })
                             e.currentTarget.reset()
                         })
                     }}
@@ -103,8 +99,8 @@ function PageTransaction({params}: {params: string}) {
 
             {/* Desktop */}
             <div className="bg-white w-full h-full max-sm:hidden">
-                {transactionItems
-                    .filter(({type}) => type === slug)
+                {params.transactions
+                    .filter(({type}) => type === params.type)
                     .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
                     .map((item, key) => (
                         <TransactionItemComponent
@@ -114,9 +110,9 @@ function PageTransaction({params}: {params: string}) {
                             deleteExpense={() => {
                                 setIsTransactionOpen({status: false, data: null})
                                 startTransition(() => {
-                                    deleteTransaction(item.id as string).then(() =>
-                                        fetchTransactions().then(({sumExpenses}) => setCurrentAmount(sumExpenses))
-                                    )
+                                    deleteTransaction(item.id as string).then(() => {
+                                        router.refresh()
+                                    })
                                 })
                             }}
                             item={item}
@@ -129,5 +125,3 @@ function PageTransaction({params}: {params: string}) {
         </>
     )
 }
-
-export default memo(PageTransaction)

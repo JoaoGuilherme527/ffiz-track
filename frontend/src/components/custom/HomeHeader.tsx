@@ -5,11 +5,7 @@ import {checkUserLogged} from "@/src/data/actions/auth-actions"
 import Image from "next/image"
 import Link from "next/link"
 
-interface HeaderProps {
-    isMobile: boolean
-}
-
-export function Header({isMobile}: HeaderProps) {
+export default function HomeHeader() {
     const [isLogged, setIsLogged] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
 
@@ -31,9 +27,7 @@ export function Header({isMobile}: HeaderProps) {
             ) : isLogged ? (
                 <Link
                     href="/dashboard"
-                    className={`font-semibold text-left ${
-                        isMobile ? "text-sm   px-5 py-1 " : "text-base px-10 py-2"
-                    } text-white bg-[var(--dark-green)] rounded-sm`}
+                    className={`font-semibold text-left text-sm px-5 py-1 md:text-base md:px-10 md:py-2 text-white bg-[var(--dark-green)] rounded-sm`}
                 >
                     Dashboard
                 </Link>
@@ -42,7 +36,10 @@ export function Header({isMobile}: HeaderProps) {
                     <Link className="font-semibold text-left text-base" href={"/signin"}>
                         Signin
                     </Link>
-                    <Link className="font-semibold text-left text-sm bg-[var(--dark-green)] text-white rounded-sm px-3 py-1" href={"/signup"}>
+                    <Link
+                        className="font-semibold text-left text-sm bg-[var(--dark-green)] text-white rounded-sm px-3 py-1"
+                        href={"/signup"}
+                    >
                         Sign Up
                     </Link>
                 </div>

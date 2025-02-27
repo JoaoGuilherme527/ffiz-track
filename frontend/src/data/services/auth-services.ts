@@ -98,11 +98,11 @@ export async function updateUserTransaction({ amount, id }: Pick<TransactionItem
   }
 }
 
-export async function getUserExpenses() {
+export async function getUserTransactions(type: string) {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
-  const url = `${baseUrl}/${id}/transactions/expense`;
+  const url = `${baseUrl}/${id}/transactions${type ? "/" + type : ""}`;
 
   try {
     const response = await fetch(url, {
@@ -118,11 +118,21 @@ export async function getUserExpenses() {
   }
 }
 
-export async function getUserProfits() {
+export async function getUserData(): Promise<{
+  balance: 2041,
+  mostFrequentCategory: {
+    category: "Utilities",
+    amount: 1
+  },
+  highestSpendingCategory: {
+    category: "Utilities",
+    amount: 59
+  }
+} | undefined> {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
-  const url = `${baseUrl}/${id}/transactions/profit`;
+  const url = `${baseUrl}/${id}/data`;
 
   try {
     const response = await fetch(url, {
@@ -134,9 +144,10 @@ export async function getUserProfits() {
 
     return response.json();
   } catch (error) {
-    console.error("Get User Transactions Service Error:", error);
+    console.error("Get User Data Service Error:", error);
   }
 }
+
 
 export async function deleteUserTransaction(transactionId: string) {
   const authToken = await getAuthToken();

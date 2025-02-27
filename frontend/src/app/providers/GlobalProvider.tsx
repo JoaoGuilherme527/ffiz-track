@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import {getProfits, getExpenses} from "@/src/data/actions/auth-actions"
+import {getData, getTransactions} from "@/src/data/actions/auth-actions"
 import {TransactionItem} from "@/src/types/types"
 import {createContext, useContext, useState, ReactNode} from "react"
 
@@ -12,19 +12,18 @@ interface GlobalContextProps {
     setCurrentProfits: (param: number) => void
     transactionItems: TransactionItem[]
     setTransactionItems: (param: TransactionItem[]) => void
-    fetchTransactions: () => Promise<{
-        sumExpenses: number
-        sumProfits: number
-        expenses: TransactionItem[]
-        transactions: TransactionItem[]
-        profits: TransactionItem[]
-    }>
+    // fetchTransactions: () => Promise<{
+    //     sumExpenses: number
+    //     sumProfits: number
+    //     expenses: TransactionItem[]
+    //     transactions: TransactionItem[]
+    //     profits: TransactionItem[]
+    // }>
+    fetchTransactions: () => Promise<void>
     categoryMaxOcc: string
     categoryMostOcc: string
     totalTimesCategoryApp: number
     totalCategoryAmount: number
-    isMobile: boolean
-    setIsMobile: (param: boolean) => void
 }
 
 const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
@@ -32,7 +31,6 @@ const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
 export function GlobalProvider({children}: {children: ReactNode}) {
     const [currentExpense, setCurrentExpense] = useState<number>(0)
     const [currentProfits, setCurrentProfits] = useState<number>(0)
-    const [isMobile, setIsMobile] = useState<boolean>(false)
     const [transactionItems, setTransactionItems] = useState<TransactionItem[]>([])
     const [categoryMaxOcc, setCategoryMaxOcc] = useState<string>("-")
     const [categoryMostOcc, setCategoryMostOcc] = useState<string>("-")
@@ -40,40 +38,13 @@ export function GlobalProvider({children}: {children: ReactNode}) {
     const [totalTimesCategoryApp, setTotalTimesCategoryApp] = useState(0)
 
     async function fetchTransactions() {
-        const expenses: TransactionItem[] = await getExpenses()
-        const profits: TransactionItem[] = await getProfits()
-        const transactions: TransactionItem[] = Array.prototype.concat(expenses, profits)
-        setTransactionItems(transactions)
-        const sumExpenses = expenses.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
-        setCurrentExpense(sumExpenses)
-        const sumProfits = profits.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
-        setCurrentProfits(sumProfits)
-
-        const categoryCount: {[key: string]: number} = {}
-        const categorySum: {[key: string]: number} = {}
-
-        expenses.forEach(({category, amount}) => {
-            categoryCount[category as string] = (categoryCount[category as string] || 0) + 1
-            categorySum[category as string] = (categorySum[category as string] || 0) + amount
-        })
-
-        const mostFrequentCategory = Object.entries(categoryCount).reduce((max, current) => (current[1] > max[1] ? current : max), [
-            "",
-            0,
-        ] as [string, number])
-
-        const highestSpendingCategory = Object.entries(categorySum).reduce((max, current) => (current[1] > max[1] ? current : max), [
-            "",
-            0,
-        ] as [string, number])
-
-        setCategoryMostOcc(mostFrequentCategory[0])
-        setTotalTimesCategoryApp(mostFrequentCategory[1])
-        setCategoryMaxOcc(highestSpendingCategory[0])
-        setTotalCategoryAmount(highestSpendingCategory[1])
-
-
-        return {sumExpenses, sumProfits, expenses, transactions, profits}
+        // const expenses: TransactionItem[] = await getTransactions("expense")
+        // const profits: TransactionItem[] = await getTransactions("profit")
+        // const transactions: TransactionItem[] = await getTransactions("")
+        // const {balance, mostFrequentCategory, highestSpendingCategory} = await getData()
+        // const sumExpenses = expenses.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
+        // const sumProfits = profits.map(({amount}) => amount).reduce((acc, crr) => acc + crr, 0)
+        // return {sumExpenses, sumProfits, expenses, transactions, profits, balance, mostFrequentCategory, highestSpendingCategory}
     }
 
     return (
@@ -86,8 +57,6 @@ export function GlobalProvider({children}: {children: ReactNode}) {
                 transactionItems,
                 setTransactionItems,
                 fetchTransactions,
-                isMobile,
-                setIsMobile,
                 categoryMaxOcc,
                 totalCategoryAmount,
                 categoryMostOcc,

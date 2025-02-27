@@ -1,18 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
-import {useEffect, useLayoutEffect, useState} from "react"
-import {Header} from "../components/custom/Header"
-import {useGlobalContext} from "./providers/GlobalProvider"
+import HomeHeader from "../components/custom/HomeHeader"
 
 export default function Home() {
-    const {setIsMobile, isMobile} = useGlobalContext()
-    useEffect(() => {
-        setIsMobile(window.innerWidth <= 768)
-    }, [])
-
     return (
         <div>
-            <Header isMobile={isMobile} />
+            <HomeHeader />
             <div className="min-h-screen bg-gradient-to-b from-green-900 to-green-700 text-white flex flex-col items-center">
                 {/* Hero Section */}
                 <header className="text-center py-20 max-w-4xl">
