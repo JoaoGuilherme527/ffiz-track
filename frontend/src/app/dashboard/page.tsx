@@ -4,7 +4,11 @@
 
 import {getData, getTransactions} from "@/src/data/actions/auth-actions"
 import {TransactionItem} from "@/src/types/types"
+<<<<<<< Updated upstream:frontend/src/app/dashboard/page.tsx
 import DashboardScreen from "./screens/DashboardScreen"
+=======
+import DashboardScreen from "../_screens/DashboardScreen"
+>>>>>>> Stashed changes:frontend/src/app/layout/dashboard/page.tsx
 
 async function fetchTransactions() {
     const expenses: TransactionItem[] = await getTransactions("expense")

@@ -2,13 +2,11 @@
 
 import {loginUserAction} from "@/src/data/actions/auth-actions"
 import Link from "next/link"
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "../ui/card"
-import {Label} from "../ui/label"
-import {Input} from "../ui/input"
 import {StrapiErrors} from "../custom/StrapiErrors"
 import {SubmitButton} from "../custom/SubmitButton"
 import {ZodErrors} from "../custom/ZodErros"
 import {startTransition, useActionState} from "react"
+import Image from "next/image"
 
 const INITIAL_STATE = {
     zodErrors: null,
@@ -20,7 +18,8 @@ const INITIAL_STATE = {
 export function SigninForm() {
     const [formState, formAction] = useActionState(loginUserAction, INITIAL_STATE)
     return (
-        <div className="w-full max-w-md mx-auto flex flex-col justify-center items-center">
+        <div className="z-10 w-full h-dvh md:bg-gray-100 relative">
+            <div className="bg-[url(/background.jpg)] bg-no-repeat bg-center bg-cover blur-md opacity-50 backdrop-blur-sm absolute w-full h-full top-0 left-0 " />
             <form
                 method="post"
                 onSubmit={(e) => {
@@ -30,38 +29,58 @@ export function SigninForm() {
                         formAction(formData)
                     })
                 }}
+                className="md:flex md:w-full md:justify-center md:scale-75 "
             >
-                <Link className="mt-4 text-center text-sm" href={"/"}>
-                    {" "}
-                    {"<"} Back home
-                </Link>
-
-                <Card className="border-none">
-                    <CardHeader className="space-y-4 p-0">
-                        <CardTitle className="text-3xl font-bold text-[var(--dark-green)]">Sign In</CardTitle>
-                        <CardDescription>Enter your details to sign in to your account</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input id="email" name="email" type="text" placeholder="email@gmail.com" />
+                <div className="relative h-dvh flex flex-col justify-center md:w-1/2 md:rounded-xl md:shadow-xl md:border bg-white z-20">
+                    <div className="flex flex-col items-center w-2/3 px-1">
+                        <div className="text-green-600 font-bold">LOGIN</div>
+                        <div className="text-sm md:text-lg">Sing in your account to continue</div>
+                    </div>
+                    <div className="flex flex-col items-end py-20 gap-6">
+                        <div className="flex flex-col gap-1 w-3/4">
+                            <label htmlFor="email" className="text-xl font-bold pl-8">
+                                Email
+                            </label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="text"
+                                placeholder="your@gmail.com"
+                                className="shadow-2xl py-5 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100"
+                            />
                             {formState?.zodErrors?.email && <ZodErrors error={formState.zodErrors.email} />}
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" placeholder="password" />
+                        <div className="flex flex-col gap-1 w-3/4">
+                            <label htmlFor="password" className="text-xl font-bold pl-8">
+                                Password
+                            </label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="password"
+                                className="shadow-2xl py-5 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100"
+                            />
                             {formState?.zodErrors?.password && <ZodErrors error={formState.zodErrors.password} />}
                         </div>
-                    </CardContent>
-                    <CardFooter className="flex flex-col">
-                        <SubmitButton className="w-full bg-[var(--green)] hover:bg-[var(--dark-green)]" text="Sign In" loadingText="Loading" />
+                    </div>
+                    <div className="flex flex-col">
+                        <SubmitButton
+                            className="text-xl font-bold bg-green-600 shadow-2xl w-3/4 rounded-full rounded-l-none py-3 pl-6"
+                            text="LOGIN"
+                            loadingText="Loading"
+                        />
                         {formState?.strapiErrors && <StrapiErrors error={formState.strapiErrors} />}
-                    </CardFooter>
-                </Card>
-                <div className="mt-4 text-center text-sm">
-                    Don&apos;t have an account?
-                    <Link className="underline ml-2" href="signup">
-                        Sign Up
+                    </div>
+                    <div className="mt-4 text-center text-sm md:text-lg flex gap-2 justify-center py-5">
+                        Don&apos;t have an account?
+                        <Link className="text-green-600 font-bold" href="signup">
+                            REGISTER
+                        </Link>
+                    </div>
+
+                    <Link className="text-center text-sm mt-2" href={"/"}>
+                        Back home
                     </Link>
                 </div>
             </form>

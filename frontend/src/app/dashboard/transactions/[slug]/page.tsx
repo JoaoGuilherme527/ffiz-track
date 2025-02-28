@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import TransactionScreen from "../../screens/TransactionScreen"
+import TransactionScreen from "../../_screens/TransactionScreen"
 import {getTransactions} from "@/src/data/actions/auth-actions"
 import {TransactionItem} from "@/src/types/types"
 

@@ -7,7 +7,7 @@ import Navbar from "@/src/components/custom/Navbar"
 import {checkUserLogged} from "@/src/data/actions/auth-actions"
 import {usePathname, useRouter} from "next/navigation"
 import {useEffect, useState} from "react"
-import DashboardHeaderComponent from "./components/DashboardHeader"
+import DashboardHeaderComponent from "../layout/_components/DashboardHeader"
 
 export default function DashboardLayout({
     children,
@@ -29,9 +29,10 @@ export default function DashboardLayout({
 
     function getRouteName(): string {
         const name: {[key: string]: string} = {
-            "/dashboard/transactions/expense": "Expenses",
-            "/dashboard/transactions/profit": "Profits",
-            "/dashboard": "Dashboard",
+            "/layout/transactions/expense": "Expenses",
+            "/layout/transactions/profit": "Profits",
+            "/layout/dashboard": "Dashboard",
+            "/layout/wallet": "Wallet",
         }
         return name[pathname ?? "/dashboard"] ?? "Dashboard"
     }
