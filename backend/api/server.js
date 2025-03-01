@@ -105,7 +105,7 @@ app.get("/:userId/data", async (req, res) => {
         const highestSpendingCategory = Object.entries(categorySum).reduce((max, current) => (current[1] > max[1] ? current : max), ["", 0])
 
         res.status(201).json({
-            balance: sumProfits - sumExpenses ,
+            balance: sumProfits - sumExpenses,
             mostFrequentCategory: {
                 category: mostFrequentCategory[0],
                 amount: mostFrequentCategory[1],
@@ -149,8 +149,8 @@ app.get("/:userId/card", async (req, res) => {
     const {userId} = req.params
     await prisma.$connect()
     try {
-        const card = await prisma.card.findUnique({where: {userId}})
-        res.status(201).json(card)
+        const card = await prisma.card.findMany({where: {userId}})
+        res.status(201).json({cards: card})
     } catch (error) {
         console.log(error)
         res.status(500).json({error: "Error getting card"})
