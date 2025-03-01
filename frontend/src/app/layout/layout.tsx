@@ -7,7 +7,7 @@ import Navbar from "@/src/components/custom/Navbar"
 import {checkUserLogged} from "@/src/data/actions/auth-actions"
 import {usePathname, useRouter} from "next/navigation"
 import {useEffect, useState} from "react"
-import DashboardHeaderComponent from "../layout/_components/DashboardHeader"
+import DashboardHeaderComponent from "./_components/DashboardHeader"
 
 export default function DashboardLayout({
     children,

@@ -26,7 +26,7 @@ export default function HomeHeader() {
                 <div className=" bg-[#0005] font-semibold text-left text-base text-white px-10 py-2 rounded-sm">Loading...</div>
             ) : isLogged ? (
                 <Link
-                    href="/dashboard"
+                    href="/layout/dashboard"
                     className={`font-semibold text-left text-sm px-5 py-1 md:text-base md:px-10 md:py-2 text-white bg-[var(--dark-green)] rounded-sm`}
                 >
                     Dashboard
