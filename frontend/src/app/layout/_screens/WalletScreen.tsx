@@ -131,7 +131,7 @@ const CardItemComponent = ({
                 />
             </div>
             {activeIndex === index ? (
-                <div className="w-full h-full flex flex-col gap-2 overflow-x-scroll">
+                <div className="w-full h-full flex flex-col gap-2 overflow-y-scroll">
                     {transactions
                         .filter(({type}) => type === card.name)
                         .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
