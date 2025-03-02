@@ -13,7 +13,7 @@ export default function DropdownMenuButton({children}: DropdownMenuButtonProps) 
 
             <DropdownMenu.Portal>
                 <DropdownMenu.Content className="z-50 bg-white border rounded-md mt-2 mr-4 shadow-xl">
-                    <DropdownMenu.Item onClick={logoutAction} className="flex justify-between gap-4 items-center opacity-40 px-4 py-2"> 
+                    <DropdownMenu.Item onClick={logoutAction} className="flex justify-between gap-4 items-center opacity-40 px-4 py-2 cursor-pointer"> 
                         <Image alt="" width={20} height={20} src={"/logout.png"} className="" />
                         <p className="text-base font-bold">Logout</p>
                     </DropdownMenu.Item>

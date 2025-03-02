@@ -6,7 +6,7 @@ export default function Home() {
     return (
         <div>
             <HomeHeader />
-            <div className="min-h-screen bg-gradient-to-b from-green-900 to-green-700 text-white flex flex-col items-center">
+            <div className="min-h-screen bg-linear-to-b from-green-900 to-green-700 text-white flex flex-col items-center">
                 {/* Hero Section */}
                 <header className="text-center py-20 max-w-4xl">
                     <h1 className="text-5xl font-bold">Take Control of Your Finances</h1>

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { TransactionItem } from "@/src/types/types";
-import { deleteUserTransaction, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction, getUserTransactions, getUserData } from "../services/auth-services";
+import { deleteUserTransaction, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction, getUserTransactions, getUserData, postNewCard, getUserCards, updateUserCard } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -123,6 +123,23 @@ export async function addTransactionItem(formData: FormData) {
 
   return response
 }
+export async function addCardItem(formData: FormData) {
+  const cardItem = {
+    name: formData.get("name"),
+    available: formData.get("available"),
+    color: formData.get("color"),
+    limit: formData.get("limit"),
+  }
+
+  const response = await postNewCard({
+    name: cardItem.name as string,
+    available: Number(cardItem.available),
+    color: cardItem.color as string,
+    limit: Number(cardItem.limit)
+  });
+
+  return response
+}
 
 export async function updateTransactionItem(formData: FormData, id: string): Promise<TransactionItem | string> {
   const expenseItem = {
@@ -146,7 +163,34 @@ export async function deleteTransaction(id: string) {
 }
 
 export async function getData() {
-  return await getUserData()
+  const response = await getUserData()
+  return response
+}
+
+export async function getCardItems() {
+  return await getUserCards()
+}
+
+export async function updateCardItem(formData: FormData, id: string) {
+  type CardUpdateData = {
+    name?: string;
+    limit?: number;
+    available?: number;
+  };
+
+  const formDataObj = Object.fromEntries(formData.entries()) as Record<string, string>;
+  const filteredData: CardUpdateData = {};
+
+  for (const [key, value] of Object.entries(formDataObj)) {
+    if (value.trim() === "") continue;
+    if (key === "limit" || key === "available") {
+      filteredData[key as "limit" | "available"] = Number(value);
+    } else if (key === "name") {
+      filteredData.name = value;
+    }
+  }
+
+  await updateUserCard(filteredData, id);
 }
 
 export async function logoutAction() {

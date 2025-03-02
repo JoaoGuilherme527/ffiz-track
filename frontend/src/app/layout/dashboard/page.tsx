@@ -4,7 +4,7 @@
 
 import {getData, getTransactions} from "@/src/data/actions/auth-actions"
 import {TransactionItem} from "@/src/types/types"
-import DashboardScreen from "../screens/DashboardScreen"
+import DashboardScreen from "../_screens/DashboardScreen"
 
 async function fetchTransactions() {
     const expenses: TransactionItem[] = await getTransactions("expense")

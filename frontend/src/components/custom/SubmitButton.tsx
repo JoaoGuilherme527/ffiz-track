@@ -32,7 +32,7 @@ export function SubmitButton({
       type="submit"
       aria-disabled={status.pending || loading}
       disabled={status.pending || loading}
-      className={cn(className)}
+      className={className}
     >
       {status.pending || loading ? <Loader text={loadingText} /> : text}
     </Button>

@@ -4,7 +4,7 @@ import {StaticImport} from "next/dist/shared/lib/get-img-props"
 import {Url} from "next/dist/shared/lib/router/router"
 import Image from "next/image"
 import Link from "next/link"
-import {usePathname} from "next/navigation"
+import {usePathname, useRouter} from "next/navigation"
 
 interface LinkRouteButtonProps {
     className?: string | undefined
@@ -16,47 +16,60 @@ interface LinkRouteButtonProps {
     path: boolean
 }
 
-const LinkRouteButtonMobile = ({className, iconSize = 32, src, href, path}: LinkRouteButtonProps) => (
-    <Link className={`active:scale-[0.8] transition-all text-sm invert ${className ?? ""}`} href={href}>
-        <Image
-            className="opacity-50 drop-shadow-lg invert"
-            src={`/${src}${path ? "-filled.png" : ".png"}`}
-            alt=""
-            width={iconSize}
-            height={iconSize}
-        />
-    </Link>
-)
+const LinkRouteButtonMobile = ({className, iconSize = 32, src, src2, href, path, name}: LinkRouteButtonProps) => {
+    const router = useRouter()
+    return (
+        <div
+            onClick={() => router.replace(href.toString())}
+            className={`active:scale-[0.9]  transition-all  flex flex-col p-2 items-center justify-center ${className ?? ""}`}
+            // href={href}
+        >
+            <Image className="drop-shadow-lg" src={path ? (src2 as string) : src} alt="" width={iconSize} height={iconSize} />
+            <p className={`text-gray-400 text-sm ${path ? "font-bold" : ""}`}>{name}</p>
+        </div>
+    )
+}
 
 const LinkRouteButton = ({className, iconSize = 24, src, href, path, name, src2}: LinkRouteButtonProps) => (
     <Link href={href} className={`transition-all w-full flex items-center gap-2 p-2 py-[14px] ${path ? "bg-gray-50" : ""} ${className}`}>
-        <Image
-            width={iconSize}
-            height={iconSize}
-            alt=""
-            src={path ? (src2 as string) : src}
-            className={`transition-all ${path ? "" : "opacity-40"}`}
-        />
-        <p className={`transition-all text-base font-semibold  ${path ? "text-green-400" : "text-gray-400"}`}>{name}</p>
+        <Image width={iconSize} height={iconSize} alt="" src={path ? (src2 as string) : src} className={`transition-all`} />
+        <p className={`transition-all text-base ${path ? "text-green-400 font-semibold" : "text-gray-400 "}`}>{name}</p>
     </Link>
 )
 
 const Navbar = () => {
     const pathname = usePathname()
     return (
-        <div className="z-30 w-full h-14 md:w-64 md:h-full md:flex-col bg-white md:border-r-[1px] border-t-[1px] border-gray-300 py-4  md:justify-start flex md:items-start md:px-2 md:pt-28 px-10 md:p-10 relative">
+        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col bg-gray-900 md:border-r-[1px] border-t-[1px] border-gray-950 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
             {/* Mobile */}
-            <div className="flex items-center justify-between w-full px-10 md:hidden">
-                <LinkRouteButtonMobile href={"/layout/dashboard"} src={"money-bag"} path={pathname.includes("/layout/dashboard")} />
+            <div className="flex items-center justify-evenly w-full md:hidden py-2">
                 <LinkRouteButtonMobile
+                    src={"/money-bag-gray.png"}
+                    src2={"/money-bag-filled-gray.png"}
+                    href={"/layout/dashboard"}
+                    name={"Dashboard"}
+                    path={pathname.includes("/layout/dashboard")}
+                />
+                <LinkRouteButtonMobile
+                    src={"/expense-gray.png"}
+                    src2={"/expense-filled-gray.png"}
                     href={"/layout/transactions/expense"}
-                    src={"expense"}
+                    name={"Expenses"}
                     path={pathname.includes("/layout/transactions/expense")}
                 />
                 <LinkRouteButtonMobile
+                    src={"/income-gray.png"}
+                    src2={"/income-filled-gray.png"}
                     href={"/layout/transactions/profit"}
-                    src={"income"}
+                    name={"Profits"}
                     path={pathname.includes("/layout/transactions/profit")}
+                />
+                <LinkRouteButtonMobile
+                    src={"/wallet-gray.png"}
+                    src2={"/wallet-filled-gray.png"}
+                    href={"/layout/wallet"}
+                    name={"Wallet"}
+                    path={pathname.includes("/layout/wallet")}
                 />
             </div>
 
@@ -75,23 +88,30 @@ const Navbar = () => {
                 <LinkRouteButton
                     href={"/layout/dashboard"}
                     path={pathname.includes("/layout/dashboard")}
-                    src={"/money-bag.png"}
+                    src={"/money-bag-gray.png"}
                     src2={"/money-bag-filled-green.png"}
                     name="Dashboard"
                 />
                 <LinkRouteButton
                     href={"/layout/transactions/expense"}
                     path={pathname.includes("/transactions/expense")}
-                    src={"/expense.png"}
+                    src={"/expense-gray.png"}
                     src2={"/expense-filled-green.png"}
                     name="Expenses"
                 />
                 <LinkRouteButton
                     href={"/layout/transactions/profit"}
                     path={pathname.includes("/transactions/profit")}
-                    src={"/income.png"}
+                    src={"/income-gray.png"}
                     src2={"/income-filled-green.png"}
                     name="Profits"
+                />
+                <LinkRouteButton
+                    href={"/layout/wallet"}
+                    path={pathname.includes("/wallet")}
+                    src={"/wallet-gray.png"}
+                    src2={"/wallet-filled-green.png"}
+                    name="Wallet"
                 />
             </div>
         </div>

@@ -7,7 +7,7 @@ import Navbar from "@/src/components/custom/Navbar"
 import {checkUserLogged} from "@/src/data/actions/auth-actions"
 import {usePathname, useRouter} from "next/navigation"
 import {useEffect, useState} from "react"
-import DashboardHeaderComponent from "./components/DashboardHeader"
+import DashboardHeaderComponent from "./_components/DashboardHeader"
 
 export default function DashboardLayout({
     children,
@@ -32,6 +32,7 @@ export default function DashboardLayout({
             "/layout/transactions/expense": "Expenses",
             "/layout/transactions/profit": "Profits",
             "/layout/dashboard": "Dashboard",
+            "/layout/wallet": "Wallet",
         }
         return name[pathname ?? "/layout/dashboard"] ?? "Dashboard"
     }
@@ -52,22 +53,8 @@ export default function DashboardLayout({
     return (
         <div className="overflow-hidden">
             {/* Mobile */}
-            <div className="flex flex-col h-dvh bg-white overflow-hidden md:hidden">
+            <div className="flex flex-col h-dvh bg-gray-900 justify-between overflow-hidden md:hidden">
                 <DashboardHeaderComponent routeName={currentRouteName} username={isUser?.username} />
-                {/* <div className="w-full h-[30%] absolute top-0 left-0  z-10">
-                    <div className="relative w-full h-full bg-[var(--dark-green)]"></div>
-                    <div className="">
-                        <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                            <path
-                                d={`M0,100 C300,${pathname.includes("/dashboard/transactions/expense") ? "160" : "60"} 500,${
-                                    pathname.includes("/dashboard/transactions/expense") ? "60" : "160"
-                                } 500,100 L500,00 L0,0 Z`}
-                                className="transition-all duration-500"
-                                style={{stroke: "none", fill: "var(--dark-green)"}}
-                            ></path>
-                        </svg>
-                    </div>
-                </div> */}
                 {children}
                 <Navbar />
             </div>
