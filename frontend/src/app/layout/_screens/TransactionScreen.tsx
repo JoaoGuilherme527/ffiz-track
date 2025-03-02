@@ -38,7 +38,7 @@ export default function TransactionScreen({params}: {params: TransactionParams})
             <div className="relative flex flex-col items-center justify-center h-dvh overflow-x-hidden md:hidden">
                 {pending ? <Loading /> : <></>}
                 <AmountLabelComponent type={params.type} sumProfits={params.sumProfits} sumExpenses={params.sumExpenses} />
-                <div className="z-20 w-full h-[65%] px-5 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40">
+                <div className="z-20 w-full h-[65%] px-5 flex flex-col gap-2 overflow-x-auto absolute bottom-0 transition-all pb-30">
                     {params.transactions
                         .filter(({type}) => type === params.type)
                         .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
