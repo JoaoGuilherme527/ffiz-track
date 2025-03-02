@@ -34,7 +34,7 @@ export default function DashboardLayout({
             "/layout/dashboard": "Dashboard",
             "/layout/wallet": "Wallet",
         }
-        return name[pathname ?? "/dashboard"] ?? "Dashboard"
+        return name[pathname ?? "/layout/dashboard"] ?? "Dashboard"
     }
 
     useEffect(() => {

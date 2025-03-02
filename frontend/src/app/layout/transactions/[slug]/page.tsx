@@ -17,6 +17,6 @@ async function fetchTransactions() {
 
 export default async function Page({params}: {params: Promise<any>}) {
     const slug = (await params).slug
-    const {transactions, sumExpenses, sumProfits} = await fetchTransactions()
+    const {sumExpenses, sumProfits, transactions} = await fetchTransactions()
     return <TransactionScreen params={{type: slug, sumExpenses, sumProfits, transactions}} />
 }
