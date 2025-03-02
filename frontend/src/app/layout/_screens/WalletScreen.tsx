@@ -10,6 +10,7 @@ import {motion} from "framer-motion"
 import Image from "next/image"
 import FormModalEditCard from "../_components/FormModalEditCard"
 import FormModalAddTransactionComponent from "../_components/FormModalAddTransaction"
+import Loading from "../../loading"
 interface TransactionParams {
     cards: CardItem[]
     transactions: TransactionItem[]
@@ -173,6 +174,7 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
     const router = useRouter()
     return (
         <div className="relative flex flex-col items-center justify-center h-dvh bg-gray-900 overflow-hidden ">
+            {pending ? <Loading /> : <></>}
             <div className="transition-all z-10 w-full  gap-4 py-6 flex flex-col bottom-4 items-center overflow-x-hidden overflow-y-scroll ">
                 {params.cards
                     .map((item, index) => (
@@ -239,7 +241,7 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
                         e.currentTarget.reset()
                     })
                 }}
-                type={currentCard?.name + " transaction" as string}
+                type={(currentCard?.name + " transaction") as string}
             />
         </div>
     )
