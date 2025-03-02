@@ -62,7 +62,7 @@ const CardItemComponent = ({
                     : {width: 320, height: 200}
             }
             transition={{duration: 0.2, ease: "easeOut"}}
-            className={`relative flex flex-col justify-between gap-10 border-gray-800 p-4 rounded-xl shadow-md overflow-x-hidden${
+            className={`relative flex flex-col justify-between gap-10 border-gray-800 p-4 rounded-xl shadow-md overflow-hidden ${
                 activeIndex === index ? "z-40 gap-5" : "z-0 "
             }`}
             style={{
@@ -131,7 +131,7 @@ const CardItemComponent = ({
                 />
             </div>
             {activeIndex === index ? (
-                <div className="w-full h-full flex flex-col gap-2">
+                <div className="w-full h-full flex flex-col gap-2 overflow-x-scroll">
                     {transactions
                         .filter(({type}) => type === card.name)
                         .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
