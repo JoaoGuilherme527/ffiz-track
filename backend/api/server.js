@@ -157,6 +157,37 @@ app.get("/:userId/card", async (req, res) => {
     }
 })
 
+app.put("/:userId/card/:cardId", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
+
+    const {cardId} = req.params
+    const {available, name, limit, color} = req.body
+
+    await prisma.$connect()
+    try {
+        const updateData = {}
+        if (available !== undefined) updateData.available = available
+        if (name !== undefined) updateData.name = name
+        if (limit !== undefined) updateData.limit = limit
+        if (color !== undefined) updateData.color = color
+
+        if (!Object.keys(updateData).length) {
+            return res.status(400).json({error: "Nenhum dado para atualizar foi fornecido."})
+        }
+
+        const updatedCard = await prisma.card.update({
+            where: {id: cardId},
+            data: updateData,
+        })
+
+        return res.status(200).json(updatedCard)
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({error: "Erro ao atualizar o card"})
+    }
+})
+
 app.post("/:userId/transactions", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
@@ -174,6 +205,19 @@ app.post("/:userId/transactions", async (req, res) => {
                 transactionDate,
             },
         })
+
+        if (type !== "expense" && type !== "profit") {
+            const card = await prisma.card.findMany({where: {name: type}})
+
+            await prisma.card.update({
+                where: {
+                    id: card[0].id,
+                },
+                data: {
+                    available: amount + card[0].available,
+                },
+            })
+        }
         res.status(201).json(newTransaction)
     } catch (error) {
         console.log(error)
