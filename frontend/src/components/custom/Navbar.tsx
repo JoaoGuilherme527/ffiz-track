@@ -19,30 +19,30 @@ interface LinkRouteButtonProps {
 const LinkRouteButtonMobile = ({className, iconSize = 32, src, src2, href, path, name}: LinkRouteButtonProps) => {
     const router = useRouter()
     return (
-        <button
+        <div
             onClick={() => router.replace(href.toString())}
-            className={`active:scale-[0.9] transition-all text-sm items-center flex flex-col p-2 ${className ?? ""}`}
+            className={`active:scale-[0.9]  transition-all  flex flex-col p-2 items-center justify-center ${className ?? ""}`}
             // href={href}
         >
             <Image className="drop-shadow-lg" src={path ? (src2 as string) : src} alt="" width={iconSize} height={iconSize} />
-            <p className={`text-gray-400 ${path ? "font-bold" : ""}`}>{name}</p>
-        </button>
+            <p className={`text-gray-400 text-sm ${path ? "font-bold" : ""}`}>{name}</p>
+        </div>
     )
 }
 
 const LinkRouteButton = ({className, iconSize = 24, src, href, path, name, src2}: LinkRouteButtonProps) => (
     <Link href={href} className={`transition-all w-full flex items-center gap-2 p-2 py-[14px] ${path ? "bg-gray-50" : ""} ${className}`}>
         <Image width={iconSize} height={iconSize} alt="" src={path ? (src2 as string) : src} className={`transition-all`} />
-        <p className={`transition-all text-base   ${path ? "text-green-400 font-semibold" : "text-gray-400 "}`}>{name}</p>
+        <p className={`transition-all text-base ${path ? "text-green-400 font-semibold" : "text-gray-400 "}`}>{name}</p>
     </Link>
 )
 
 const Navbar = () => {
     const pathname = usePathname()
     return (
-        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col bg-white md:border-r-[1px] border-t-[1px] border-gray-300 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
+        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col bg-gray-900 md:border-r-[1px] border-t-[1px] border-gray-950 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
             {/* Mobile */}
-            <div className="flex items-center justify-evenly w-full md:hidden">
+            <div className="flex items-center justify-evenly w-full md:hidden py-2">
                 <LinkRouteButtonMobile
                     src={"/money-bag-gray.png"}
                     src2={"/money-bag-filled-gray.png"}

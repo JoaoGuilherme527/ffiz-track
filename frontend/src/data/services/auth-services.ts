@@ -3,7 +3,7 @@
 import { getApiURL } from "@/src/lib/utils";
 import { getUserMeLoader } from "./get-user-me-loader";
 import { getAuthToken } from "./get-token";
-import { TransactionItem } from "@/src/types/types";
+import { CardItem, TransactionItem } from "@/src/types/types";
 
 interface RegisterUserProps {
   username: string;
@@ -15,7 +15,6 @@ interface LoginUserProps {
   email: string;
   password: string;
 }
-
 const baseUrl = getApiURL();
 
 export async function registerUserService(userData: RegisterUserProps) {
@@ -77,6 +76,29 @@ export async function postNewTransactionItem({ amount, name, category, transacti
     console.error("Post Transaction Item Service Error:", error);
   }
 }
+
+export async function postNewCard({ available, color, limit, name }: CardItem) {
+  const authToken = await getAuthToken();
+  const { data } = await getUserMeLoader()
+  const { id } = data
+  const url = `${baseUrl}/${id}/card`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`
+      },
+      body: JSON.stringify({ available, color, limit, name, userId: id }),
+    });
+
+    return response.json();
+  } catch (error) {
+    console.error("Post Transaction Item Service Error:", error);
+  }
+}
+
 export async function updateUserTransaction({ amount, id }: Pick<TransactionItem, "amount" | "id">): Promise<TransactionItem | string> {
   const authToken = await getAuthToken();
   const url = `${baseUrl}/transactions/${id}`;
@@ -118,17 +140,48 @@ export async function getUserTransactions(type: string) {
   }
 }
 
-export async function getUserData(): Promise<{
-  balance: 2041,
-  mostFrequentCategory: {
-    category: "Utilities",
-    amount: 1
-  },
-  highestSpendingCategory: {
-    category: "Utilities",
-    amount: 59
+export async function getUserCards() {
+  const authToken = await getAuthToken();
+  const { data } = await getUserMeLoader()
+  const { id } = data
+  const url = `${baseUrl}/${id}/card`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      },
+    });
+    return response.json()
+  } catch (error) {
+    console.error("Get User Transactions Service Error:", error);
   }
-} | undefined> {
+}
+
+export async function updateUserCard(formData: any, cardId: string) {
+  const authToken = await getAuthToken();
+  const { data } = await getUserMeLoader()
+  const { id } = data
+  const url = `${baseUrl}/${id}/card/${cardId}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`
+      },
+      body: JSON.stringify(formData)
+    });
+    return response
+  } catch (error) {
+    console.error("Get User Transactions Service Error:", error);
+  }
+}
+
+
+export async function getUserData() {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data

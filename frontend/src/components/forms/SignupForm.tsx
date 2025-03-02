@@ -25,7 +25,7 @@ export function SignupForm() {
 
     return (
         <div className="relative w-full h-dvh md:bg-gray-100">
-            <div className="bg-[url(/background.jpg)] bg-no-repeat bg-center bg-cover blur-md opacity-50 backdrop-blur-sm absolute w-full h-full top-0 left-0 " />
+            <div className="bg-[url(/background.jpg)] bg-no-repeat bg-center bg-cover blur-md opacity-50 backdrop-blur-xs absolute w-full h-full top-0 left-0 " />
             <form
                 method="post"
                 onSubmit={(e) => {
@@ -48,7 +48,7 @@ export function SignupForm() {
                                 Username
                             </label>
                             <input
-                                className="shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100"
+                                className="shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-hidden border-t-2 border-l-2 border-gray-100"
                                 id="username"
                                 name="username"
                                 type="text"
@@ -61,7 +61,7 @@ export function SignupForm() {
                                 Email
                             </label>
                             <input
-                                className="shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100"
+                                className="shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-hidden border-t-2 border-l-2 border-gray-100"
                                 id="email"
                                 name="email"
                                 type="email"
@@ -78,7 +78,7 @@ export function SignupForm() {
                                 onChange={(e) => {
                                     setIsPassword(e.target.value)
                                 }}
-                                className="shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100"
+                                className="shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-hidden border-t-2 border-l-2 border-gray-100"
                                 id="password"
                                 name="password"
                                 type="password"
@@ -94,7 +94,7 @@ export function SignupForm() {
                                 onChange={(e) => {
                                     setIsConfirmPassword(e.target.value)
                                 }}
-                                className={`shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100 ${
+                                className={`shadow-2xl py-4 pl-8 rounded-full rounded-r-none text-base outline-hidden border-t-2 border-l-2 border-gray-100 ${
                                     isPassword === isConfirmPassword ? "" : "outline-red-500"
                                 }`}
                                 id="confirmPassword"
@@ -105,11 +105,13 @@ export function SignupForm() {
                         </div>
                     </div>
                     <div className={`flex flex-col ${isPassword === isConfirmPassword ? "" : "pointer-events-none opacity-[0.5]"}`}>
-                        <SubmitButton
-                            className="text-xl font-bold bg-green-600 shadow-2xl w-3/4 md:w-2/3 rounded-full rounded-l-none py-3 pl-6"
-                            text="REGISTER"
-                            loadingText="Loading"
-                        />
+                        <div className="text-xl text-white text-center font-bold bg-green-600 shadow-2xl w-3/4 rounded-full rounded-l-none py-3 pl-6">
+                            <SubmitButton
+                                className="bg-transparent"
+                                text="REGISTER"
+                                loadingText="Loading"
+                            />
+                        </div>
                         {formState?.strapiErrors && <StrapiErrors error={formState.strapiErrors} />}
                     </div>
                     <div className="flex flex-col gap-0">

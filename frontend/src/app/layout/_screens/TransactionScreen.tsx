@@ -35,10 +35,10 @@ export default function TransactionScreen({params}: {params: TransactionParams})
     return (
         <>
             {/* Mobile */}
-            <div className="relative flex flex-col items-center justify-center h-dvh bg-white overflow-x-hidden md:hidden">
+            <div className="relative flex flex-col items-center justify-center h-dvh overflow-x-hidden md:hidden">
                 {pending ? <Loading /> : <></>}
                 <AmountLabelComponent type={params.type} sumProfits={params.sumProfits} sumExpenses={params.sumExpenses} />
-                <div className="z-20 w-full h-[65%] px-5 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40 ">
+                <div className="z-20 w-full h-[65%] px-5 flex flex-col space-y-5 overflow-x-auto absolute bottom-0 transition-all pb-40">
                     {params.transactions
                         .filter(({type}) => type === params.type)
                         .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
@@ -66,6 +66,7 @@ export default function TransactionScreen({params}: {params: TransactionParams})
                 <FormModalAddTransactionComponent
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
+                    onClose={() => setIsModalOpen(false)}
                     onSubmit={(e) => {
                         startTransition(() => {
                             const formData = new FormData(e.target as HTMLFormElement)

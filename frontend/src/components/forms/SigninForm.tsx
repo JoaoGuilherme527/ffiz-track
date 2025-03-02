@@ -5,7 +5,7 @@ import Link from "next/link"
 import {StrapiErrors} from "../custom/StrapiErrors"
 import {SubmitButton} from "../custom/SubmitButton"
 import {ZodErrors} from "../custom/ZodErros"
-import {startTransition, useActionState} from "react"
+import {useActionState, useTransition} from "react"
 import Image from "next/image"
 
 const INITIAL_STATE = {
@@ -17,9 +17,10 @@ const INITIAL_STATE = {
 
 export function SigninForm() {
     const [formState, formAction] = useActionState(loginUserAction, INITIAL_STATE)
+    const [pending, startTransition] = useTransition()
     return (
         <div className="z-10 w-full h-dvh md:bg-gray-100 relative">
-            <div className="bg-[url(/background.jpg)] bg-no-repeat bg-center bg-cover blur-md opacity-50 backdrop-blur-sm absolute w-full h-full top-0 left-0 " />
+            <div className="bg-[url(/background.jpg)] bg-no-repeat bg-center bg-cover blur-md opacity-50 backdrop-blur-xs absolute w-full h-full top-0 left-0 " />
             <form
                 method="post"
                 onSubmit={(e) => {
@@ -46,7 +47,7 @@ export function SigninForm() {
                                 name="email"
                                 type="text"
                                 placeholder="your@gmail.com"
-                                className="shadow-2xl py-5 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100"
+                                className="shadow-2xl py-5 pl-8 rounded-full rounded-r-none text-base outline-hidden border-t-2 border-l-2 border-gray-100"
                             />
                             {formState?.zodErrors?.email && <ZodErrors error={formState.zodErrors.email} />}
                         </div>
@@ -59,17 +60,15 @@ export function SigninForm() {
                                 name="password"
                                 type="password"
                                 placeholder="password"
-                                className="shadow-2xl py-5 pl-8 rounded-full rounded-r-none text-base outline-none border-t-2 border-l-2 border-gray-100"
+                                className="shadow-2xl py-5 pl-8 rounded-full rounded-r-none text-base outline-hidden border-t-2 border-l-2 border-gray-100"
                             />
                             {formState?.zodErrors?.password && <ZodErrors error={formState.zodErrors.password} />}
                         </div>
                     </div>
                     <div className="flex flex-col">
-                        <SubmitButton
-                            className="text-xl font-bold bg-green-600 shadow-2xl w-3/4 rounded-full rounded-l-none py-3 pl-6"
-                            text="LOGIN"
-                            loadingText="Loading"
-                        />
+                        <div className="text-xl text-white text-center font-bold bg-green-600 shadow-2xl w-3/4 rounded-full rounded-l-none py-3 pl-6">
+                            <SubmitButton className="bg-transparent" text="LOGIN" loadingText="Loading" />
+                        </div>
                         {formState?.strapiErrors && <StrapiErrors error={formState.strapiErrors} />}
                     </div>
                     <div className="mt-4 text-center text-sm md:text-lg flex gap-2 justify-center py-5">

@@ -37,9 +37,9 @@ export default function TransactionItemComponent({
     }
 
     return (
-        <div className="w-full relative flex items-center active:scale-y-[0.9] transition-all ]" key={item.id}>
+        <div className="w-full relative flex items-center active:scale-y-[0.9] transition-all" key={item.id}>
             <div
-                className={`transition-all flex items-center gap-1 w-full bg-white border-gray-300 border-[1px] rounded-md shadow-sm p-5 z-20 ${
+                className={`transition-all flex items-center gap-1 w-full bg-gray-800 border-gray-950 border-[1px] rounded-md shadow-sm p-5 z-20 ${
                     isEditTransactionOpen.data?.id === item.id ? "translate-x-[-24%] w-[80%] rounded-r-none" : ""
                 }`}
                 onClick={() => {
@@ -51,8 +51,8 @@ export default function TransactionItemComponent({
                 onTouchEnd={handleTouchEnd}
             >
                 <div className="flex flex-col w-full flex-1">
-                    <h1 className="text-lg text-gray-800 font-semibold">{item.name}</h1>
-                    <p className="text-xs text-gray-700 dark:text-gray-300">{formatTime(item.transactionDate as string)}</p>
+                    <h1 className="text-lg text-white font-semibold">{item.name}</h1>
+                    <p className="text-xs text-gray-200 dark:text-gray-300">{formatTime(item.transactionDate as string)}</p>
                 </div>
 
                 <p className={`${item.type == "profit" ? "text-green-500" : "text-red-400"} text-2xl  font-bold truncate max-w-[${isLongPress ? "300px" : "150px"}] cursor-pointer`}>

@@ -8,7 +8,7 @@ interface AddTransactionButtonProps {
 export default function AddTransactionButton({isModalOpen, setIsModalOpen}: AddTransactionButtonProps) {
     return (
         <div
-            className={`z-40 absolute bottom-[20px] left-[50%] translate-x-[-50%] rounded-full bg-[var(--green)] shadow-lg w-14 h-14 justify-center items-center flex text-white active:scale-[0.7] transition-all ${
+            className={`z-40 absolute bottom-[20px] left-[50%] translate-x-[-50%] rounded-full bg-green-700 shadow-lg w-14 h-14 justify-center items-center flex text-white active:scale-[0.7] transition-all ${
                 isModalOpen ? "rotate-2 bg-red-300" : "rotate-0"
             }`}
             onClick={() => setIsModalOpen(!isModalOpen)}

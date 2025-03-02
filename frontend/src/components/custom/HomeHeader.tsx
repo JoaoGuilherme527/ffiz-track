@@ -19,7 +19,7 @@ export default function HomeHeader() {
     }, [])
 
     return (
-        <div className="flex justify-between items-center p-4 shadow">
+        <div className="flex justify-between items-center p-4 shadow-sm">
             <Image width={40} height={40} src="/favicon.svg" alt="logo Icon" />
 
             {isLoading ? (
@@ -32,7 +32,7 @@ export default function HomeHeader() {
                     Dashboard
                 </Link>
             ) : (
-                <div className="flex space-x-4 items-center">
+                <div className="flex space-x-4 items-center gap-4">
                     <Link className="font-semibold text-left text-base" href={"/signin"}>
                         Signin
                     </Link>
