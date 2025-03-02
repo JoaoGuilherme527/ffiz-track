@@ -214,7 +214,7 @@ app.post("/:userId/transactions", async (req, res) => {
                     id: card[0].id,
                 },
                 data: {
-                    available: amount + card[0].available,
+                    available: card[0].limit - amount,
                 },
             })
         }

@@ -62,7 +62,7 @@ const CardItemComponent = ({
                     : {width: 320, height: 200}
             }
             transition={{duration: 0.2, ease: "easeOut"}}
-            className={`relative flex flex-col justify-between gap-10 border-gray-800 p-4 rounded-xl shadow-md overflow-hidden ${
+            className={`relative flex flex-col justify-between gap-2 border-gray-800 p-4 rounded-xl shadow-md overflow-hidden ${
                 activeIndex === index ? "z-40 gap-5" : "z-0 "
             }`}
             style={{
@@ -110,7 +110,7 @@ const CardItemComponent = ({
 
             <div className="text-lg font-semibold w-1/2">{card.name}</div>
 
-            <div className="text-sm space-y-1">
+            <div className="text-sm gap-2 flex flex-col">
                 <p>
                     <span className="opacity-80">Limit:</span>
                     <span className="font-medium ml-1">{formatUSDtoBRL(card.limit)}</span>
@@ -119,19 +119,20 @@ const CardItemComponent = ({
                     <span className="opacity-80">Available:</span>
                     <span className="font-medium ml-1">{formatUSDtoBRL(card.available)}</span>
                 </p>
+                <div className="relative w-full min-h-2 border rounded-full bg-white bg-opacity-20 overflow-hidden">
+                    <p></p>
+                    <div
+                        className="h-2 rounded-full rounded-r-none"
+                        style={{
+                            width: `${((card.limit - card.available) * 100) / card.limit}%`,
+                            background: card.color,
+                        }}
+                    />
+                </div>
             </div>
 
-            <div className="w-full min-h-2 border rounded-full bg-white bg-opacity-20 overflow-hidden">
-                <div
-                    className="h-2 rounded-full rounded-r-none"
-                    style={{
-                        width: `${(card.available / card.limit) * 100}%`,
-                        background: card.color,
-                    }}
-                />
-            </div>
             {activeIndex === index ? (
-                <div className="w-full h-full flex flex-col gap-2 overflow-y-scroll">
+                <div className="w-full h-48 flex flex-col gap-2 overflow-y-scroll">
                     {transactions
                         .filter(({type}) => type === card.name)
                         .sort((a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime())
