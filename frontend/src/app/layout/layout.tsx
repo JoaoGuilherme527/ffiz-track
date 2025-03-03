@@ -6,7 +6,7 @@
 import Navbar from "@/src/components/custom/Navbar"
 import {checkUserLogged} from "@/src/data/actions/auth-actions"
 import {usePathname, useRouter} from "next/navigation"
-import {useEffect, useState} from "react"
+import {useEffect, useLayoutEffect, useState} from "react"
 import DashboardHeaderComponent from "./_components/DashboardHeader"
 
 export default function DashboardLayout({
@@ -51,7 +51,7 @@ export default function DashboardLayout({
     }, [pathname])
 
     return (
-        <div className={`overflow-hidden ${typeof window !== 'undefined' ? window.localStorage.theme : "dark"}`}>
+        <div className={`overflow-hidden ${typeof window !== "undefined" ? window.localStorage.theme : "dark"}`}>
             {/* Mobile */}
             <div className="flex flex-col h-dvh bg-white dark:bg-gray-900 justify-between overflow-hidden md:hidden">
                 <DashboardHeaderComponent routeName={currentRouteName} username={isUser?.username} />

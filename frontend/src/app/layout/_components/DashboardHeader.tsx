@@ -9,34 +9,21 @@ interface DashboardHeaderProps {
     username: string
 }
 
-const themes = {
-    dark: {
-        onClick: () => {
-            window.localStorage.theme = "light"
-        },
-        component: <SunIcon color={`#fff`} />,
-    },
-    light: {
-        onClick: () => {
-            window.localStorage.theme = "dark"
-        },
-        component: <MoonIcon color={`#1e2939a0`} />,
-    },
-}
-
 const ChangeThemeButton = () => {
     const router = useRouter()
     const theme = typeof window !== "undefined" ? (window.localStorage.theme as "light" | "dark") : "dark"
     return (
-        <button
+        <div
             onClick={() => {
-                themes[theme].onClick()
+                if (typeof window !== "undefined" && window.localStorage.theme === "dark") {
+                    window.localStorage.theme = "light"
+                } else window.localStorage.theme = "dark"
 
                 router.refresh()
             }}
         >
-            {themes[theme].component}
-        </button>
+            {theme === "dark" ? <SunIcon color={`#fff`} /> : <MoonIcon color={`#1e2939a0`} />}
+        </div>
     )
 }
 
@@ -61,7 +48,7 @@ export default function DashboardHeaderComponent({routeName}: DashboardHeaderPro
                     <div className="flex items-center justify-center gap-2 cursor-pointer">
                         <HamburgerMenuIcon
                             className="p-[8px] rounded w-8 h-8"
-                            color={typeof window !== "undefined" && window.localStorage.theme === "dark" ? "#fff" : "#1e293990"}
+                            color={typeof window !== "undefined" && window.localStorage.theme === "light" ? "#1e293990" : "#fff"}
                         />
                     </div>
                 </DropdownMenuButton>
