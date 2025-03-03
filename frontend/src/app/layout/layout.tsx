@@ -51,9 +51,9 @@ export default function DashboardLayout({
     }, [pathname])
 
     return (
-        <div className="overflow-hidden">
+        <div className={`overflow-hidden ${typeof window !== 'undefined' ? window.localStorage.theme : "dark"}`}>
             {/* Mobile */}
-            <div className="flex flex-col h-dvh bg-gray-900 justify-between overflow-hidden md:hidden">
+            <div className="flex flex-col h-dvh bg-white dark:bg-gray-900 justify-between overflow-hidden md:hidden">
                 <DashboardHeaderComponent routeName={currentRouteName} username={isUser?.username} />
                 {children}
                 <Navbar />

@@ -16,7 +16,6 @@ export default function FormModalAddCard({isModalOpen, onSubmit, setIsModalOpen,
                     Card limit
                 </label>
                 <Input required id="limit" name="limit" type="number" placeholder="limit of your card" step={"0.01"} />
-                <Input required id="available" className="opacity-0 hidden" name="available" type="number" step={"0.01"} readOnly value={0}/>
             </div>
             <div className="">
                 <label htmlFor="color" className="text-sm text-gray-700">

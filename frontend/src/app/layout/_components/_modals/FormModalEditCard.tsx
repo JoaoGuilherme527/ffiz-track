@@ -4,8 +4,16 @@ import Image from "next/image"
 import {Input} from "@/src/components/ui/input"
 import FormModal, {FormModalProps} from "@/src/components/custom/FormModal"
 import {CardItem} from "@/src/types/types"
+import {deleteCard} from "@/src/data/actions/auth-actions"
 
-export default function FormModalEditCard({onClose, onSubmit, isModalOpen, card, setIsModalOpen}: {card: CardItem} & FormModalProps) {
+export default function FormModalEditCard({
+    onClose,
+    onSubmit,
+    isModalOpen,
+    card,
+    setIsModalOpen,
+    onDelete,
+}: {card: CardItem; onDelete: () => void} & FormModalProps) {
     return (
         <FormModal isModalOpen={isModalOpen} onClose={onClose} onSubmit={onSubmit} setIsModalOpen={setIsModalOpen}>
             <div className="flex flex-col gap-5 py-5">
@@ -30,8 +38,13 @@ export default function FormModalEditCard({onClose, onSubmit, isModalOpen, card,
                     step={"0.01"}
                 />
             </div>
-            <div className="w-full flex justify-center">
-                <div className="text-sm text-white py-2 px-10 rounded font-bold bg-green-700">
+            <div className="w-full flex justify-center gap-2">
+                <div className="text-sm text-white py-2 px-5 rounded font-bold bg-red-700">
+                    <button type="button" onClick={() => onDelete()}>
+                        Delete Card
+                    </button>
+                </div>
+                <div className="text-sm text-white py-2 px-5 rounded font-bold bg-green-700">
                     <button type="submit">Update Card</button>
                 </div>
             </div>

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { TransactionItem } from "@/src/types/types";
-import { deleteUserTransaction, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction, getUserTransactions, getUserData, postNewCard, getUserCards, updateUserCard } from "../services/auth-services";
+import { deleteUserTransaction, isUserLogged, loginUserService, postNewTransactionItem, registerUserService, updateUserTransaction, getUserTransactions, getUserData, postNewCard, getUserCards, updateUserCard, deleteUserCard } from "../services/auth-services";
 
 const config = {
   maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -132,7 +132,7 @@ export async function addCardItem(formData: FormData) {
   }
 
   const response = await postNewCard({
-    name: cardItem.name as string,
+    name: (cardItem.name as string).trim(),
     available: Number(cardItem.available),
     color: cardItem.color as string,
     limit: Number(cardItem.limit)
@@ -160,6 +160,9 @@ export async function getTransactions(type: string) {
 
 export async function deleteTransaction(id: string) {
   return await deleteUserTransaction(id)
+}
+export async function deleteCard(id: string) {
+  return await deleteUserCard(id)
 }
 
 export async function getData() {

@@ -67,7 +67,7 @@ export function SigninForm() {
                     </div>
                     <div className="flex flex-col">
                         <div className="text-xl text-white text-center font-bold bg-green-600 shadow-2xl w-3/4 rounded-full rounded-l-none py-3 pl-6">
-                            <SubmitButton className="bg-transparent" text="LOGIN" loadingText="Loading" />
+                            <SubmitButton className="w-full h-full" text="LOGIN" loadingText="Loading" />
                         </div>
                         {formState?.strapiErrors && <StrapiErrors error={formState.strapiErrors} />}
                     </div>

@@ -176,7 +176,25 @@ export async function updateUserCard(formData: any, cardId: string) {
     });
     return response
   } catch (error) {
-    console.error("Get User Transactions Service Error:", error);
+    console.error("Update User Card Service Error:", error);
+  }
+}
+export async function deleteUserCard(cardId: string) {
+  const authToken = await getAuthToken();
+  const { data } = await getUserMeLoader()
+  const { id } = data
+  const url = `${baseUrl}/${id}/card/${cardId}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      },
+    });
+    console.log(response);
+  } catch (error) {
+    console.error("Delete User Card Service Error:", error);
   }
 }
 

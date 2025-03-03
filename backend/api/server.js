@@ -125,12 +125,12 @@ app.post("/:userId/card", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
-    const {available, name, limit, color} = req.body
+    const {name, limit, color} = req.body
     await prisma.$connect()
     try {
         const newCard = await prisma.card.create({
             data: {
-                available,
+                available: limit,
                 limit,
                 name,
                 userId,
@@ -154,6 +154,22 @@ app.get("/:userId/card", async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({error: "Error getting card"})
+    }
+})
+
+app.delete("/:userId/card/:id", async (req, res) => {
+    const token = req.headers.authorization?.replace("Bearer ", "")
+    if (!token) return res.status(401).json({error: "Token ausente!"})
+    const {userId, id} = req.params
+    await prisma.$connect()
+    try {
+        const card = await prisma.card.findMany({where: {id}})
+        if (card.length < 0) return res.status(500).json({error: "Card does not exist!"})
+        await prisma.card.delete({where: {id}})
+        res.status(201).json("Card deleted")
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: "Error deleting card"})
     }
 })
 

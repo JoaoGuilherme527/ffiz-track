@@ -4,7 +4,7 @@ import {StaticImport} from "next/dist/shared/lib/get-img-props"
 import {Url} from "next/dist/shared/lib/router/router"
 import Image from "next/image"
 import Link from "next/link"
-import {usePathname, useRouter} from "next/navigation"
+import {usePathname} from "next/navigation"
 
 interface LinkRouteButtonProps {
     className?: string | undefined
@@ -17,16 +17,14 @@ interface LinkRouteButtonProps {
 }
 
 const LinkRouteButtonMobile = ({className, iconSize = 32, src, src2, href, path, name}: LinkRouteButtonProps) => {
-    const router = useRouter()
     return (
-        <div
-            onClick={() => router.replace(href.toString())}
+        <Link
+            href={href}
             className={`active:scale-[0.9]  transition-all  flex flex-col p-2 items-center justify-center ${className ?? ""}`}
-            // href={href}
         >
             <Image className="drop-shadow-lg" src={path ? (src2 as string) : src} alt="" width={iconSize} height={iconSize} />
             <p className={`text-gray-400 text-sm ${path ? "font-bold" : ""}`}>{name}</p>
-        </div>
+        </Link>
     )
 }
 
@@ -40,7 +38,7 @@ const LinkRouteButton = ({className, iconSize = 24, src, href, path, name, src2}
 const Navbar = () => {
     const pathname = usePathname()
     return (
-        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col bg-gray-900 md:border-r-[1px] border-t-[1px] border-gray-950 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
+        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col dark:bg-gray-900 md:border-r-[1px] border-t-[1px] dark:border-gray-950 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
             {/* Mobile */}
             <div className="flex items-center justify-evenly w-full md:hidden py-2">
                 <LinkRouteButtonMobile
@@ -78,7 +76,7 @@ const Navbar = () => {
                 <div className="absolute top-4 left-1/2 translate-x-[-50%]">
                     <Link
                         href={"/"}
-                        className="active:scale-[0.9] transition-all text-gray-500 text-sm flex flex-col items-center justify-center "
+                        className="active:scale-[0.9] transition-all text-gray-300 text-sm flex flex-col items-center justify-center gap-2"
                     >
                         <Image width={40} height={40} className=" bg-white p-[1px] rounded " src="/favicon.svg" alt="logo Icon" />
                         <h1 className="">FFizTrack</h1>

@@ -1,7 +1,6 @@
 import {FormEvent, useEffect, useState} from "react"
-import {Input} from "../../../components/ui/input"
-import Image from "next/image"
 import FormModal from "@/src/components/custom/FormModal"
+import { Input } from "@/src/components/ui/input"
 
 interface FormModalAddTransactionProps {
     isModalOpen: boolean
@@ -21,7 +20,8 @@ export default function FormModalAddTransactionComponent({
     const [date, setDate] = useState("")
 
     useEffect(() => {
-        const date = new Date().toLocaleString("sv-SE", {timeZoneName: "short"}).replace(" ", "T").slice(0, 16)
+        // const date = new Date().toLocaleString("sv-SE", {timeZoneName: "short"}).replace(" ", "T").slice(0, 16)
+        const date = new Date().toISOString().slice(0, 16)
         setDate(date)
 
         return () => {}
@@ -91,7 +91,7 @@ export default function FormModalAddTransactionComponent({
                 <label htmlFor="transactionDate" className="text-sm text-gray-700">
                     Date of your {type}:
                 </label>
-                <Input id="transactionDate" name="transactionDate" type="datetime-local" defaultValue={date} />
+                <Input id="transactionDate" name="transactionDate" type="datetime-local" defaultValue={date}/>
             </div>
             <div className="w-full flex justify-center py-2">
                 <div className="text-sm text-white py-2 px-10 rounded font-bold bg-green-700">
