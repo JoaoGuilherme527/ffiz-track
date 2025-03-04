@@ -76,7 +76,7 @@ const Navbar = () => {
                 <div className="absolute top-4 left-1/2 translate-x-[-50%]">
                     <Link
                         href={"/"}
-                        className="active:scale-[0.9] transition-all text-gray-300 text-sm flex flex-col items-center justify-center gap-2"
+                        className="active:scale-[0.9] transition-all dark:text-gray-300 text-sm flex flex-col items-center justify-center gap-2"
                     >
                         <Image width={40} height={40} className=" bg-white p-[1px] rounded " src="/favicon.svg" alt="logo Icon" />
                         <h1 className="">FFizTrack</h1>

@@ -60,6 +60,7 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
                 onSubmit={(e) => {
                     startTransition(() => {
                         const formData = new FormData(e.target as HTMLFormElement)
+                        setActiveIndex(null)
                         addCardItem(formData).then(() => {
                             router.refresh()
                         })

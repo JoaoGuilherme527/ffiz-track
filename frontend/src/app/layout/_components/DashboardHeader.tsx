@@ -1,8 +1,9 @@
 import DropdownMenuButton from "@/src/components/custom/Dropdown"
 import Image from "next/image"
 import Link from "next/link"
-import {HamburgerMenuIcon, MoonIcon, SunIcon} from "@radix-ui/react-icons"
+import {HamburgerMenuIcon, MoonIcon, SunIcon, ReloadIcon} from "@radix-ui/react-icons"
 import {useRouter} from "next/navigation"
+import {useLayoutEffect, useState} from "react"
 
 interface DashboardHeaderProps {
     routeName: string
@@ -12,17 +13,29 @@ interface DashboardHeaderProps {
 const ChangeThemeButton = () => {
     const router = useRouter()
     const theme = typeof window !== "undefined" ? (window.localStorage.theme as "light" | "dark") : "dark"
+    const [isLoading, setIsLoading] = useState(false)
     return (
         <div
             onClick={() => {
-                if (typeof window !== "undefined" && window.localStorage.theme === "dark") {
-                    window.localStorage.theme = "light"
-                } else window.localStorage.theme = "dark"
+                if (typeof window !== "undefined") {
+                    if (window.localStorage.theme === "dark") {
+                        window.localStorage.theme = "light"
+                    } else window.localStorage.theme = "dark"
+                }
 
                 router.refresh()
             }}
+            className="cursor-pointer"
         >
-            {theme === "dark" ? <SunIcon color={`#fff`} /> : <MoonIcon color={`#1e2939a0`} />}
+            {typeof window !== "undefined" ? (
+                theme === "dark" ? (
+                    <SunIcon color={`#fff`} />
+                ) : (
+                    <MoonIcon color={`#1e2939a0`} />
+                )
+            ) : (
+                <SunIcon color={`#fff`} />
+            )}
         </div>
     )
 }
@@ -46,10 +59,7 @@ export default function DashboardHeaderComponent({routeName}: DashboardHeaderPro
                 <ChangeThemeButton />
                 <DropdownMenuButton>
                     <div className="flex items-center justify-center gap-2 cursor-pointer">
-                        <HamburgerMenuIcon
-                            className="p-[8px] rounded w-8 h-8"
-                            color={typeof window !== "undefined" && window.localStorage.theme === "light" ? "#1e293990" : "#fff"}
-                        />
+                        <HamburgerMenuIcon className="bg-white p-[8px] rounded w-8 h-8" />
                     </div>
                 </DropdownMenuButton>
             </div>
