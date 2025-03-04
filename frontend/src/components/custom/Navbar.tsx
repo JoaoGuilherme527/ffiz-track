@@ -22,14 +22,23 @@ const LinkRouteButtonMobile = ({className, iconSize = 32, src, src2, href, path,
             href={href}
             className={`active:scale-[0.9]  transition-all  flex flex-col p-2 items-center justify-center ${className ?? ""}`}
         >
-            <Image className="drop-shadow-lg" src={path ? (src2 as string) : src} alt="" width={iconSize} height={iconSize} />
-            <p className={`text-gray-400 text-sm ${path ? "font-bold" : ""}`}>{name}</p>
+            <Image
+                className={`drop-shadow-lg dark:invert dark:opacity-100 opacity-60`}
+                src={path ? (src2 as string) : src}
+                alt=""
+                width={iconSize}
+                height={iconSize}
+            />
+            <p className={`dark:text-white text-gray-600 text-sm ${path ? "font-bold" : ""}`}>{name}</p>
         </Link>
     )
 }
 
 const LinkRouteButton = ({className, iconSize = 24, src, href, path, name, src2}: LinkRouteButtonProps) => (
-    <Link href={href} className={`transition-all w-full flex items-center gap-2 p-2 py-[14px] ${path ? "bg-gray-50" : ""} ${className}`}>
+    <Link
+        href={href}
+        className={`transition-all w-full flex items-center gap-2 p-2 py-[14px] ${path ? "dark:bg-gray-800" : ""} ${className}`}
+    >
         <Image width={iconSize} height={iconSize} alt="" src={path ? (src2 as string) : src} className={`transition-all`} />
         <p className={`transition-all text-base ${path ? "text-green-400 font-semibold" : "text-gray-400 "}`}>{name}</p>
     </Link>
@@ -38,33 +47,33 @@ const LinkRouteButton = ({className, iconSize = 24, src, href, path, name, src2}
 const Navbar = () => {
     const pathname = usePathname()
     return (
-        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col dark:bg-gray-900 md:border-r-[1px] border-t-[1px] dark:border-gray-950 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
+        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col dark:bg-gray-950 md:border-r-[1px] border-t-[1px] dark:border-gray-900 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
             {/* Mobile */}
             <div className="flex items-center justify-evenly w-full md:hidden py-2">
                 <LinkRouteButtonMobile
-                    src={"/money-bag-gray.png"}
-                    src2={"/money-bag-filled-gray.png"}
+                    src={"/money-bag.png"}
+                    src2={"/money-bag-filled.png"}
                     href={"/layout/dashboard"}
                     name={"Dashboard"}
                     path={pathname.includes("/layout/dashboard")}
                 />
                 <LinkRouteButtonMobile
-                    src={"/expense-gray.png"}
-                    src2={"/expense-filled-gray.png"}
+                    src={"/expense.png"}
+                    src2={"/expense-filled.png"}
                     href={"/layout/transactions/expense"}
                     name={"Expenses"}
                     path={pathname.includes("/layout/transactions/expense")}
                 />
                 <LinkRouteButtonMobile
-                    src={"/income-gray.png"}
-                    src2={"/income-filled-gray.png"}
+                    src={"/income.png"}
+                    src2={"/income-filled.png"}
                     href={"/layout/transactions/profit"}
                     name={"Profits"}
                     path={pathname.includes("/layout/transactions/profit")}
                 />
                 <LinkRouteButtonMobile
-                    src={"/wallet-gray.png"}
-                    src2={"/wallet-filled-gray.png"}
+                    src={"/wallet.png"}
+                    src2={"/wallet-filled.png"}
                     href={"/layout/wallet"}
                     name={"Wallet"}
                     path={pathname.includes("/layout/wallet")}

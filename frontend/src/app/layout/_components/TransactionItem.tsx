@@ -39,7 +39,7 @@ export default function TransactionItemComponent({
     return (
         <div className="w-full relative flex items-center active:scale-y-[0.9] transition-all" key={item.id}>
             <div
-                className={`transition-all flex items-center gap-1 w-full dark:bg-gray-800 dark:border-gray-950 bg-white border-[1px] rounded-md shadow-sm p-5 z-20 ${
+                className={`transition-all flex items-center gap-1 w-full dark:bg-gray-800 dark:border-gray-700 bg-white border-[1px] rounded-md shadow-sm p-5 z-20 ${
                     isEditTransactionOpen.data?.id === item.id ? "translate-x-[-24%] w-[80%] rounded-r-none" : ""
                 }`}
                 onClick={() => {

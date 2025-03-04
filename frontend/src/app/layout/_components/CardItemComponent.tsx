@@ -50,7 +50,7 @@ export default function CardItemComponent({
                     : {width: 320, height: 200}
             }
             transition={{duration: 0.2, ease: "easeOut"}}
-            className={`relative flex flex-col gap-4 border-gray-800 p-4 pb-4 rounded-xl shadow-md overflow-hidden ${
+            className={`relative flex flex-col gap-4 dark:border-gray-700 border p-4 pb-4 rounded-xl shadow-md overflow-hidden ${
                 activeIndex !== null && activeIndex !== index ? "hidden" : activeIndex === index ? "z-40" : "z-0 "
             } `}
             style={{

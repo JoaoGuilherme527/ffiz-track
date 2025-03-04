@@ -35,7 +35,7 @@ const DashboardCard = ({src, title, value, description, variant, cards, isCard, 
         <>
             <div
                 onClick={() => setIsModalOpen(true)}
-                className={`relative p-4 dark:border-gray-950 border rounded-md flex flex-col items-start justify-evenly flex-1 text-gray-700 shadow-sm transition-all gap-2 max-w-1/2 ${
+                className={`relative p-4 dark:border-gray-900 border rounded-md flex flex-col items-start justify-evenly flex-1 text-gray-700 shadow-sm transition-all gap-2 max-w-1/2 ${
                     variant && "bg-green-500 dark:bg-green-600"
                 } ${setIsCard && "active:scale-[0.9]"}`}
             >
@@ -151,7 +151,7 @@ export default function DashboardScreen({params}: any) {
                         variant
                     />
                 </div>
-                <div className=" flex-2 flex flex-col p-4 border-[1px] dark:border-gray-950 rounded-md gap-4 ">
+                <div className=" flex-2 flex flex-col p-4 border-[1px] dark:border-gray-900 rounded-md gap-4 ">
                     <p className={`font-extrabold text-xl dark:text-white text-gray-800 `}>Recent Expenses</p>
                     <div className="flex justify-between gap-4">
                         <div className="pb-10">
@@ -169,7 +169,7 @@ export default function DashboardScreen({params}: any) {
                                 .map(({amount, name, transactionDate}: any, key: Key | null | undefined) => (
                                     <div
                                         key={key}
-                                        className="relative  flex dark:bg-gray-800 bg-white dark:border-gray-950 border py-4 px-2 gap-2 rounded"
+                                        className="relative  flex dark:bg-gray-800 bg-white dark:border-gray-700 border py-4 px-2 gap-2 rounded"
                                     >
                                         <div className="absolute top-1/2 translate-y-[-50%] left-[-8.4%] bg-green-400 rounded-full w-4 h-4"></div>
                                         <div className="flex flex-col w-full flex-1">

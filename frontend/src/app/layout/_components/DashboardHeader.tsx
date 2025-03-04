@@ -12,16 +12,14 @@ interface DashboardHeaderProps {
 
 const ChangeThemeButton = () => {
     const router = useRouter()
-    const theme = typeof window !== "undefined" ? (window.localStorage.theme as "light" | "dark") : "dark"
+    const theme = typeof window !== "undefined" ? (window.localStorage.getItem("theme") as "light" | "dark") : "dark"
     const [isLoading, setIsLoading] = useState(false)
     return (
         <div
             onClick={() => {
-                if (typeof window !== "undefined") {
-                    if (window.localStorage.theme === "dark") {
-                        window.localStorage.theme = "light"
-                    } else window.localStorage.theme = "dark"
-                }
+                if (window.localStorage.getItem("theme") === "dark") {
+                    window.localStorage.setItem("theme", "light")
+                } else window.localStorage.setItem("theme", "dark")
 
                 router.refresh()
             }}
@@ -42,7 +40,7 @@ const ChangeThemeButton = () => {
 
 export default function DashboardHeaderComponent({routeName}: DashboardHeaderProps) {
     return (
-        <div className="z-40 w-full h-[7%] md:h-[10%] md:w-full bg-white dark:bg-gray-900  shadow-xs md:shadow-none md:border-b-[1px]  flex justify-between items-center p-4 relative md:justify-end border-b-[1px] dark:border-gray-950 dark:border ">
+        <div className="z-40 w-full h-[7%] md:h-[10%] md:w-full bg-white dark:bg-gray-950  shadow-xs md:shadow-none md:border-b-[1px]  flex justify-between items-center p-4 relative md:justify-end border-b-[1px] dark:border-gray-900 dark:border ">
             <Link
                 href={"/"}
                 className="active:scale-[0.9] transition-all text-gray-950 dark:text-gray-200 text-sm flex items-center justify-center md:hidden gap-2"

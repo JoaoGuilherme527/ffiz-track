@@ -24,8 +24,8 @@ export default function AmountLabelComponent({type, sumExpenses, sumProfits}: To
     }
 
     return (
-        <div className="transition-all z-20 w-full py-20 gap-4 absolute top-0 left-0 flex flex-col items-center justify-center px-10 ">
-            <div className={`transition-all border-[1px] rounded flex flex-col dark:bg-gray-800 dark:border-gray-950 w-full px-4 py-2 gap-5`}>
+        <div className="transition-all z-20 w-full gap-4 absolute top-10 left-0 flex flex-col items-center justify-center px-10 ">
+            <div className={`transition-all  rounded flex flex-col dark:bg-gray-800 dark:border-gray-700 w-full px-4 py-2 gap-5 border-[1px]`}>
                 <div className="text-base dark:text-white text-gray-800">Total amount</div>
                 <h1
                     className={`transition-all ${

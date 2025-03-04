@@ -25,7 +25,7 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
     const router = useRouter()
 
     return (
-        <div className="relative flex flex-col items-center justify-start h-dvh dark:bg-gray-900 overflow-hidden overflow-y-scroll">
+        <div className="relative flex flex-col items-center justify-start h-dvh dark:bg-gray-950 overflow-hidden overflow-y-scroll">
             {pending ? <Loading /> : <></>}
             <div className={`z-10 w-full gap-5 pb-4 flex max-sm:flex-col bottom-4 md:justify-center items-center p-4`}>
                 {params.cards

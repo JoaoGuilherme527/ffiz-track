@@ -26,16 +26,16 @@ export default function Home() {
             <HomeHeader />
             <div className="flex flex-col items-center ">
                 {/* Hero Section */}
-                <header className="relative text-white gap-20 bg-gradient-to-br from-gray-950 px-40 py-40 h-svh to-gray-800 w-full flex flex-col overflow-hidden">
+                <header className="relative text-white md:gap-20 gap-30 bg-gradient-to-br from-gray-950 md:px-40 px-10 md:py-40 py-10 h-svh to-gray-800 w-full flex flex-col overflow-hidden">
                     <div
                         className={`absolute w-50 h-50 bg-white rounded-full opacity-5 shadow-white`}
                         style={{transform: `translate(${mousePos.x - 260}px,${mousePos.y - 322}px)`, boxShadow: "0 0 80px 80px #fff"}}
                     />
-                    <div className="z-0 absolute px-50 top-0 left-0 w-full h-full bg-green-950 opacity-30 flex items-center justify-end ">
+                    <div className="z-0 absolute md:px-50 px-20 max-sm:py-20 top-0 left-0 w-full h-full bg-green-950 opacity-30 flex md:items-center justify-end ">
                         <motion.div
                             initial={{translateX: "100%", opacity: 0}}
                             transition={{duration: 0.4, ease: "easeIn"}}
-                            animate={{translateX: "0", opacity: 1, animation: "forwards"}}
+                            animate={{translateX: "0", opacity: 0.8, animation: "forwards"}}
                             className="opacity-5"
                         >
                             <Image
@@ -43,25 +43,25 @@ export default function Home() {
                                 height={500}
                                 src="/logo_white.png"
                                 alt="logo Icon"
-                                className="opacity-5 animate-pulse duration-5000"
+                                className="opacity-5 animate-pulse duration-6000"
                             />
                         </motion.div>
                     </div>
-                    <div className="z-10 gap-10 flex flex-col">
+                    <div className="z-10 md:gap-10 gap-20 flex flex-col">
                         <motion.h1
                             initial={{translateX: "-50%", opacity: 0}}
                             transition={{duration: 0.4, ease: "easeIn"}}
                             animate={{translateX: "0", opacity: 1, animation: "forwards"}}
-                            className="text-7xl font-bold tracking-wide"
+                            className="md:text-7xl text-5xl  font-bold tracking-wide"
                         >
                             FFizTrack
                         </motion.h1>
-                        <div className="flex flex-col gap-3 text-gray-300">
+                        <div className="flex flex-col md:gap-3 gap-5 text-gray-300">
                             <motion.h2
                                 initial={{translateX: "-50%", opacity: 0}}
                                 transition={{duration: 0.4, ease: "easeIn", delay: 0.1}}
                                 animate={{translateX: "0", opacity: 1, animation: "forwards"}}
-                                className="text-4xl font-normal"
+                                className="md:text-4xl text-3xl font-normal"
                             >
                                 Take Control of Your Finances
                             </motion.h2>
@@ -76,7 +76,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div
-                        className="z-10 w-1/3 text-2xl font-bold text-center px-6 py-3 bg-[#03071250] rounded-lg hover:bg-[#00823550] text-white cursor-pointer"
+                        className="z-10 md:w-1/3 text-2xl font-bold text-center px-6 py-3 bg-[#03071250] rounded-lg hover:bg-[#00823550] text-white cursor-pointer"
                         onClick={() => router.push("/signin")}
                     >
                         Get Started
