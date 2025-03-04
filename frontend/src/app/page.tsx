@@ -1,23 +1,92 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
+import Link from "next/link"
 import HomeHeader from "../components/custom/HomeHeader"
+import Image from "next/image"
+import {motion} from "framer-motion"
+import {useRouter} from "next/navigation"
+import {useEffect, useState} from "react"
 
 export default function Home() {
+    const router = useRouter()
+    const [mousePos, setMousePos] = useState({x: -100, y: -100})
+    useEffect(() => {
+        const handleMouseMove = (event: any) => {
+            setMousePos({x: event.clientX, y: event.clientY})
+        }
+
+        window.addEventListener("mousemove", handleMouseMove)
+
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove)
+        }
+    }, [])
     return (
-        <div>
+        <div className="h-dvh flex flex-col">
             <HomeHeader />
-            <div className="min-h-screen bg-linear-to-b from-green-900 to-green-700 text-white flex flex-col items-center">
+            <div className="flex flex-col items-center ">
                 {/* Hero Section */}
-                <header className="text-center py-20 max-w-4xl">
-                    <h1 className="text-5xl font-bold">Take Control of Your Finances</h1>
-                    <p className="mt-4 text-lg">Track your expenses, monitor your profits, and stay on top of your budget.</p>
-                    <button className="mt-6 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">Get Started</button>
+                <header className="relative text-white gap-20 bg-gradient-to-br from-gray-950 px-40 py-40 h-svh to-gray-800 w-full flex flex-col overflow-hidden">
+                    <div
+                        className={`absolute w-50 h-50 bg-white rounded-full opacity-5 shadow-white`}
+                        style={{transform: `translate(${mousePos.x - 260}px,${mousePos.y - 322}px)`, boxShadow: "0 0 80px 80px #fff"}}
+                    />
+                    <div className="z-0 absolute px-50 top-0 left-0 w-full h-full bg-green-950 opacity-30 flex items-center justify-end ">
+                        <motion.div
+                            initial={{translateX: "100%", opacity: 0}}
+                            transition={{duration: 0.4, ease: "easeIn"}}
+                            animate={{translateX: "0", opacity: 1, animation: "forwards"}}
+                            className="opacity-5"
+                        >
+                            <Image
+                                width={500}
+                                height={500}
+                                src="/logo_white.png"
+                                alt="logo Icon"
+                                className="opacity-5 animate-pulse duration-5000"
+                            />
+                        </motion.div>
+                    </div>
+                    <div className="z-10 gap-10 flex flex-col">
+                        <motion.h1
+                            initial={{translateX: "-50%", opacity: 0}}
+                            transition={{duration: 0.4, ease: "easeIn"}}
+                            animate={{translateX: "0", opacity: 1, animation: "forwards"}}
+                            className="text-7xl font-bold tracking-wide"
+                        >
+                            FFizTrack
+                        </motion.h1>
+                        <div className="flex flex-col gap-3 text-gray-300">
+                            <motion.h2
+                                initial={{translateX: "-50%", opacity: 0}}
+                                transition={{duration: 0.4, ease: "easeIn", delay: 0.1}}
+                                animate={{translateX: "0", opacity: 1, animation: "forwards"}}
+                                className="text-4xl font-normal"
+                            >
+                                Take Control of Your Finances
+                            </motion.h2>
+                            <motion.p
+                                initial={{translateX: "-50%", opacity: 0}}
+                                transition={{duration: 0.4, ease: "easeIn", delay: 0.2}}
+                                animate={{translateX: "0", opacity: 1, animation: "forwards"}}
+                                className="text-base"
+                            >
+                                Track your expenses, monitor your profits, and stay on top of your budget.
+                            </motion.p>
+                        </div>
+                    </div>
+                    <div
+                        className="z-10 w-1/3 text-2xl font-bold text-center px-6 py-3 bg-[#03071250] rounded-lg hover:bg-[#00823550] text-white cursor-pointer"
+                        onClick={() => router.push("/signin")}
+                    >
+                        Get Started
+                    </div>
                 </header>
 
                 {/* Features Section */}
                 <section className="py-16 bg-white text-black text-center w-full flex justify-center">
-                    <div className="max-w-6xl w-full">
-                        <h2 className="text-3xl font-semibold">Why Choose Our App?</h2>
+                    {/* <div className="max-w-6xl w-full">
+                        <h2 className="text-3xl font-semibold">Why Choose FFizTrack?</h2>
                         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div className="p-6 shadow-lg rounded-lg bg-green-100">
                                 <h3 className="text-xl font-bold">Track Expenses</h3>
@@ -32,7 +101,7 @@ export default function Home() {
                                 <p className="mt-2 text-gray-600">Get clear, intuitive financial summaries.</p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </section>
 
                 {/* Call to Action */}

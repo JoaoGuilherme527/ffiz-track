@@ -32,7 +32,7 @@ export default function RootLayout({
                 <link rel="apple-touch-icon" href="/favicon.svg" />
                 <meta name="viewport" content="width=device-width, user-scalable=no" />
             </head>
-            <body className={`${test} antialiased`}>
+            <body className={`${test} antialiased overflow-x-hidden`}>
                 <GlobalProvider>{children}</GlobalProvider>
             </body>
         </html>

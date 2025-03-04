@@ -19,28 +19,30 @@ export default function HomeHeader() {
     }, [])
 
     return (
-        <div className="flex justify-between items-center p-4 shadow-sm">
-            <Image width={40} height={40} src="/favicon.svg" alt="logo Icon" />
+        <div className="flex justify-between items-center p-4 shadow-sm bg-gray-950 h-16">
+            <Image width={20} height={20} src="/logo_white.png" alt="logo Icon" />
 
             {isLoading ? (
-                <div className=" bg-[#0005] font-semibold text-left text-base text-white px-10 py-2 rounded-sm">Loading...</div>
+                <div className="bg-gray-600  text-white px-5 py-1 rounded-sm">
+                    <p className="font-semibold text-left text-sm animate-pulse">Loading...</p></div>
             ) : isLogged ? (
                 <Link
+                prefetch={true}
                     href="/layout/dashboard"
-                    className={`font-semibold text-left text-sm px-5 py-1 md:text-base md:px-10 md:py-2 text-white bg-[var(--dark-green)] rounded-sm`}
+                    className={`font-semibold text-left text-sm px-5 py-1 text-white bg-green-600 rounded-sm`}
                 >
                     Dashboard
                 </Link>
             ) : (
                 <div className="flex space-x-4 items-center gap-4">
-                    <Link className="font-semibold text-left text-base" href={"/signin"}>
-                        Signin
+                    <Link className="font-semibold text-left text-base px-3 py-1 text-white" href={"/signin"} prefetch={true}>
+                        Login
                     </Link>
                     <Link
-                        className="font-semibold text-left text-sm bg-[var(--dark-green)] text-white rounded-sm px-3 py-1"
+                        className="font-semibold text-left text-base bg-green-600 text-white rounded-sm px-3 py-1"
                         href={"/signup"}
                     >
-                        Sign Up
+                        Register
                     </Link>
                 </div>
             )}
