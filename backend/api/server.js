@@ -230,7 +230,7 @@ app.post("/:userId/transactions", async (req, res) => {
                     id: card[0].id,
                 },
                 data: {
-                    available: card[0].limit - amount,
+                    available: card[0].available - amount,
                 },
             })
         }
