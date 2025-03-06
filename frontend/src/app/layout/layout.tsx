@@ -18,7 +18,7 @@ export default function DashboardLayout({
     useEffect(() => {
     const newTheme = window.localStorage.getItem("theme");
     setTheme(newTheme ? newTheme : "dark");
-  }, []);
+  }, [isTheme]);
     return (
         <div className={`overflow-hidden ${theme}`}>
             {/* Mobile */}
