@@ -17,22 +17,21 @@ export const metadata: Metadata = {
     title: "FFizTrack",
     description: "App para controle de gastos",
 }
-
 export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <link rel="png" href="/favicon.svg" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="theme-color" content="#101828" />
-                <link rel="apple-touch-icon" href="/favicon.svg" />
                 <meta name="viewport" content="width=device-width, user-scalable=no" />
+                <meta name="theme-color"  content="#030712" />
+                <link rel="apple-touch-icon" href="/favicon.svg" />
             </head>
-            <body className={`${test} antialiased overflow-x-hidden`}>
+            <body className={`${test} antialiased overflow-x-hidden`} suppressHydrationWarning>
                 <GlobalProvider>{children}</GlobalProvider>
             </body>
         </html>

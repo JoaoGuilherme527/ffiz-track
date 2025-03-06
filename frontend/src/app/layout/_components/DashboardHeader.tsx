@@ -1,9 +1,13 @@
+"use client"
+
 import DropdownMenuButton from "@/src/components/custom/Dropdown"
 import Image from "next/image"
 import Link from "next/link"
 import {HamburgerMenuIcon, MoonIcon, SunIcon, ReloadIcon} from "@radix-ui/react-icons"
 import {usePathname, useRouter} from "next/navigation"
 import {useEffect, useState} from "react"
+import {useGlobalContext} from "../../providers/GlobalProvider"
+import {saveItem} from "@/src/lib/utils"
 
 function getRouteName(pathname: string): string {
     const name: {[key: string]: string} = {
@@ -16,29 +20,21 @@ function getRouteName(pathname: string): string {
 }
 
 const ChangeThemeButton = () => {
-    const router = useRouter()
-    const theme = typeof window !== "undefined" ? (window.localStorage.getItem("theme") as "light" | "dark") : "dark"
-    const [isLoading, setIsLoading] = useState(false)
+    const {setIsTheme, isTheme} = useGlobalContext()
     return (
         <div
             onClick={() => {
-                if (window.localStorage.getItem("theme") === "dark") {
-                    window.localStorage.setItem("theme", "light")
-                } else window.localStorage.setItem("theme", "dark")
-
-                router.refresh()
+                if (isTheme === "dark") {
+                    saveItem("theme", "light")
+                    setIsTheme("light")
+                } else {
+                    saveItem("theme", "dark")
+                    setIsTheme("dark")
+                }
             }}
             className="cursor-pointer"
         >
-            {typeof window !== "undefined" ? (
-                theme === "dark" ? (
-                    <SunIcon color={`#fff`} />
-                ) : (
-                    <MoonIcon color={`#1e2939a0`} />
-                )
-            ) : (
-                <SunIcon color={`#fff`} />
-            )}
+            {isTheme === "dark" ? <SunIcon color={`#fff`} /> : <MoonIcon color={`#1e2939a0`} />}
         </div>
     )
 }
@@ -67,7 +63,7 @@ export default function DashboardHeaderComponent() {
                 href={"/"}
                 className="active:scale-[0.9] transition-all text-gray-950 dark:text-gray-200 text-sm flex items-center justify-center md:hidden gap-2"
             >
-                <Image width={10} height={10} className="bg-white p-[1px] rounded w-8 h-8" src="/favicon.svg" alt="logo Icon" />
+                <Image width={100} height={100} className="bg-white p-[4px] rounded w-8 h-8" src="/Logo.png" alt="logo Icon" />
                 <span>FFizTrack</span>
             </Link>
             <h1

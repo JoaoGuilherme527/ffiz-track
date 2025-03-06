@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import {formatShortBRL, formatTime, formatUSDtoBRL} from "@/src/lib/utils"
+import {formatShortBRL, formatTime, formatUSDtoBRL, getItem, saveItem} from "@/src/lib/utils"
 import Image from "next/image"
 import {StaticImport} from "next/dist/shared/lib/get-img-props"
 import {Key, useEffect, useState} from "react"
@@ -27,7 +27,7 @@ const DashboardCard = ({src, title, value, description, variant, cards, isCard, 
 
     const handleSelectCard = (selectedCard: CardItem) => {
         setIsCard && setIsCard(selectedCard)
-        window.localStorage.setItem("currentCard", selectedCard.id as string)
+        saveItem("currentCard", selectedCard.id as string)
         setIsModalOpen(false)
     }
 
@@ -78,12 +78,18 @@ const DashboardCard = ({src, title, value, description, variant, cards, isCard, 
 export default function DashboardScreen({params}: any) {
     const {sumExpenses, sumProfits, expenses, cards, transactions, profits, balance, mostFrequentCategory, highestSpendingCategory} = params
 
-    function handleGetCard(params: string) {
-        const card = cards.filter(({id}: {id: string}) => id === params)
-        return card[0]
+    const [isCard, setIsCard] = useState<CardItem | null>()
+
+    function handleGetCard() {
+        const cardId = getItem("currentCard")
+        const card = cards.filter(({id}: {id: string}) => id === cardId)
+        setIsCard(card[0])
     }
 
-    const [isCard, setIsCard] = useState<CardItem | null>(handleGetCard(window.localStorage.getItem("currentCard") as string))
+    useEffect(() => {
+        handleGetCard()
+    }, [])
+
     return (
         <>
             {/* Desktop */}

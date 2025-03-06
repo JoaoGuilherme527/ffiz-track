@@ -5,14 +5,17 @@
 
 import Navbar from "@/src/components/custom/Navbar"
 import DashboardHeaderComponent from "./_components/DashboardHeader"
+import {useEffect, useState} from "react"
+import {useGlobalContext} from "../providers/GlobalProvider"
 
 export default function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const {isTheme} = useGlobalContext()
     return (
-        <div className={`overflow-hidden ${typeof window !== "undefined" ? window.localStorage.getItem("theme") : "dark"}`}>
+        <div className={`overflow-hidden ${isTheme}`}>
             {/* Mobile */}
             <div className="flex flex-col h-dvh bg-white dark:bg-gray-950 justify-between overflow-hidden md:hidden">
                 <DashboardHeaderComponent />

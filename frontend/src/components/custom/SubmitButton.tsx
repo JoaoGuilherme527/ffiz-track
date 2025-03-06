@@ -1,40 +1,22 @@
-"use client";
-import { useFormStatus } from "react-dom";
-import { Loader2 } from "lucide-react";
-import { Button } from "../ui/button";
-import { cn } from "@/src/lib/utils";
+"use client"
 
-function Loader({ text }: { readonly text: string }) {
-  return (
-    <div className="flex items-center space-x-2">
-      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      <p>{text}</p>
-    </div>
-  );
-}
+import {Loader2} from "lucide-react"
+import {useFormStatus} from "react-dom"
 
-interface SubmitButtonProps {
-  text: string;
-  loadingText: string;
-  className?: string;
-  loading?: boolean;
-}
-
-export function SubmitButton({
-  text,
-  loadingText,
-  loading,
-  className,
-}: Readonly<SubmitButtonProps>) {
-  const status = useFormStatus();
-  return (
-    <Button
-      type="submit"
-      aria-disabled={status.pending || loading}
-      disabled={status.pending || loading}
-      className={className}
-    >
-      {status.pending || loading ? <Loader text={loadingText} /> : text}
-    </Button>
-  );
+export default function SubmitButton({text}: {text: string}) {
+    const {pending} = useFormStatus()
+    return (
+        <div className={` bg-gray-600 cursor-pointer py-3 w-full rounded shadow text-center text-2xl text-white `}>
+            {pending ? (
+                <div className="flex gap-4 justify-center items-center">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <p>Loading</p>
+                </div>
+            ) : (
+                <button style={{width: "100%", height: "100%"}} type="submit">
+                    {text}
+                </button>
+            )}
+        </div>
+    )
 }

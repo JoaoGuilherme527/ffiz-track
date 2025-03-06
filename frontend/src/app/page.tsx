@@ -76,10 +76,19 @@ export default function Home() {
                         </div>
                     </div>
                     <div
-                        className="z-10 md:w-1/3 text-2xl font-bold text-center px-6 py-3 bg-[#03071250] rounded-lg hover:bg-[#00823550] text-white cursor-pointer"
-                        onClick={() => router.push("/signin")}
+                        className="z-10 md:w-1/3  px-6 py-3 bg-[#03071250] rounded-lg hover:bg-[#00823550]  cursor-pointer overflow-hidden relative"
+                        onClick={() => router.push("/signup")}
                     >
-                        Get Started
+                        <motion.div
+                            initial={{left: "-35%"}}
+                            animate={{left: ["-35%", "120%"]}}
+                            transition={{duration: 5, ease: "easeIn", repeat: Infinity}}
+                            style={{
+                                boxShadow: "0 0 50px 60px #00a63e",
+                            }}
+                            className=" absolute h-full w-5 bg-green-600 z-0 opacity-5"
+                        ></motion.div>
+                        <p className="z-20 text-white text-2xl font-bold text-center relative">Get Started</p>
                     </div>
                 </header>
 
