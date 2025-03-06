@@ -219,6 +219,32 @@ button {
 /* @keyframes cardAnimateClose {
 } */
 
+
+.SwitchRoot {
+	width: 50px;
+	height: 25px;
+    background-color: #03071210;
+	border-radius: 9999px;
+	position: relative;
+	&[data-state="checked"] {
+		background-color: #1e2939a0;
+	}
+}
+
+.SwitchThumb {
+	display: block;
+	width: 21px;
+	height: 21px;
+	border-radius: 9999px;
+	box-shadow: 0 2px 2px var(--black-a7);
+	transition: transform 100ms;
+	transform: translateX(2px);
+	will-change: transform;
+	&[data-state="checked"] {
+		transform: translateX(27px);
+	}
+}
+
 .DropdownMenuContent,
 .DropdownMenuSubContent {
     /* * {

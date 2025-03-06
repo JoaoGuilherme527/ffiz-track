@@ -61,10 +61,11 @@ const DashboardCard = ({src, title, value, description, variant, cards, isCard, 
                             {cards.map((card, index) => (
                                 <li
                                     key={index}
-                                    className="px-4 py-2 border rounded-md cursor-pointer hover:bg-gray-200 bg-gray-100"
+                                    className="px-4 py-2 border rounded-md cursor-pointer  bg-gray-50 text-base flex justify-between items-center"
                                     onClick={() => handleSelectCard(card)}
                                 >
-                                    {card.name}
+                                    <p>{card.name}</p>
+                                    <p className="bg-gray-700 rounded px-4 py-1 text-sm text-white hover:bg-gray-800">Select</p>
                                 </li>
                             ))}
                         </ul>

@@ -23,7 +23,7 @@ export default function SigInPage() {
             <>
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col w-full">
-                        <InputForm labelName="Email" name="email" placeholder="account@gmail.com" />
+                        <InputForm labelName="Email" name="email" type="text" placeholder="account@gmail.com" />
                         {formState?.zodErrors?.email && <ZodErrors error={formState.zodErrors.email} />}
                     </div>
                     <div className="flex flex-col w-full">

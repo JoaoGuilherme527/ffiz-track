@@ -5,9 +5,10 @@ import Image from "next/image"
 import Link from "next/link"
 import {HamburgerMenuIcon, MoonIcon, SunIcon, ReloadIcon} from "@radix-ui/react-icons"
 import {usePathname, useRouter} from "next/navigation"
-import {useEffect, useState} from "react"
+import {useEffect, useLayoutEffect, useState} from "react"
 import {useGlobalContext} from "../../providers/GlobalProvider"
 import {saveItem} from "@/src/lib/utils"
+import {Switch} from "radix-ui"
 
 function getRouteName(pathname: string): string {
     const name: {[key: string]: string} = {
@@ -19,22 +20,47 @@ function getRouteName(pathname: string): string {
     return name[pathname ?? "/layout/dashboard"] ?? "Dashboard"
 }
 
-const ChangeThemeButton = () => {
-    const {setIsTheme, isTheme} = useGlobalContext()
+const themeObj: {[key: string]: {mode: "dark" | "light"; color: string}} = {
+    dark: {mode: "light", color: "#fff"},
+    light: {mode: "dark", color: "#1e2939"},
+}
+
+interface ChangeThemeButtonProps {
+    setIsTheme: (param: "dark" | "light") => void
+    theme: "dark" | "light"
+}
+
+const ChangeThemeButton = ({setIsTheme, theme}: ChangeThemeButtonProps) => {
     return (
         <div
             onClick={() => {
-                if (isTheme === "dark") {
-                    saveItem("theme", "light")
-                    setIsTheme("light")
-                } else {
-                    saveItem("theme", "dark")
-                    setIsTheme("dark")
-                }
+                saveItem("theme", themeObj[theme].mode)
+                setIsTheme(themeObj[theme].mode)
             }}
-            className="cursor-pointer"
+            className="cursor-pointer flex items-center"
         >
-            {isTheme === "dark" ? <SunIcon color={`#fff`} /> : <MoonIcon color={`#1e2939a0`} />}
+            <Switch.Root checked={theme === "dark"} className="SwitchRoot" style={{boxShadow: "none"}} id="airplane-mode">
+                {theme === "dark" ? (
+                    <SunIcon color={themeObj[theme].color} height={12} className="absolute top-[6px] left-[5px]" />
+                ) : (
+                    <MoonIcon color={themeObj[theme].color} height={12} className="absolute top-[8px] right-[5px]" />
+                )}
+                <Switch.Thumb
+                    className="SwitchThumb"
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: theme == "dark" ? "var(--color-gray-700)" : "white",
+                    }}
+                >
+                    {theme === "dark" ? (
+                        <MoonIcon color={themeObj[theme].color} height={12} />
+                    ) : (
+                        <SunIcon color={themeObj[theme].color} height={12} />
+                    )}
+                </Switch.Thumb>
+            </Switch.Root>
         </div>
     )
 }
@@ -42,7 +68,17 @@ const ChangeThemeButton = () => {
 export default function DashboardHeaderComponent() {
     const [currentRouteName, setCurrentRouteName] = useState<string>("Dashboard")
     const pathname = usePathname()
-    function haldeRouteChange(pathname: string) {
+    const {setIsTheme, isTheme} = useGlobalContext()
+    const [theme, setTheme] = useState<"dark" | "light">("dark")
+
+    useLayoutEffect(() => {
+        if (typeof window !== "undefined") {
+            const newTheme = localStorage.getItem("theme") as "dark" | "light"
+            setTheme(newTheme ? newTheme : "dark")
+        }
+    }, [isTheme])
+
+    useEffect(() => {
         let newRouteName = getRouteName(pathname)
         setCurrentRouteName("")
         let index = 0
@@ -51,10 +87,7 @@ export default function DashboardHeaderComponent() {
             index++
             if (index === newRouteName.length) clearInterval(interval)
         }, 35)
-        return clearInterval(interval)
-    }
-    useEffect(() => {
-        return () => haldeRouteChange(pathname)
+        return () => clearInterval(interval)
     }, [pathname])
 
     return (
@@ -72,10 +105,10 @@ export default function DashboardHeaderComponent() {
                 {currentRouteName}
             </h1>
             <div className="flex gap-4 items-center">
-                <ChangeThemeButton />
+                <ChangeThemeButton setIsTheme={setIsTheme} theme={theme} />
                 <DropdownMenuButton>
                     <div className="flex items-center justify-center gap-2 cursor-pointer">
-                        <HamburgerMenuIcon className="bg-white p-[8px] rounded w-8 h-8" />
+                        <HamburgerMenuIcon color={themeObj[theme].color} className="p-[8px] rounded w-8 h-8" />
                     </div>
                 </DropdownMenuButton>
             </div>

@@ -14,11 +14,13 @@ export default function DashboardLayout({
     children: React.ReactNode
 }>) {
     const {isTheme} = useGlobalContext()
-    const [theme,setTheme]=useState("")
+    const [theme, setTheme] = useState("")
     useEffect(() => {
-    const newTheme = window.localStorage.getItem("theme");
-    setTheme(newTheme ? newTheme : "dark");
-  }, [isTheme]);
+        if (typeof window !== "undefined") {
+            const newTheme = localStorage.getItem("theme")
+            setTheme(newTheme ? newTheme : "dark")
+        }
+    }, [isTheme])
     return (
         <div className={`overflow-hidden ${theme}`}>
             {/* Mobile */}

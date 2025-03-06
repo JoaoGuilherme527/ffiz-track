@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
+
+import {useTransition} from "react"
+
 interface AuthFormProps {
     children: React.ReactNode
     formAction: (e: FormData) => void
@@ -8,13 +11,16 @@ interface AuthFormProps {
 }
 
 export function AuthForm({children, formAction, description, title}: AuthFormProps) {
+    const [pending, startTransition] = useTransition()
     return (
         <form
             method="post"
             onSubmit={(e) => {
                 e.preventDefault()
                 const formData = new FormData(e.currentTarget)
-                formAction(formData)
+                startTransition(() => {
+                    formAction(formData)
+                })
             }}
             className="md:flex md:justify-end md:w-full h-dvh  py-10 relative"
         >
