@@ -2,12 +2,17 @@ import DropdownMenuButton from "@/src/components/custom/Dropdown"
 import Image from "next/image"
 import Link from "next/link"
 import {HamburgerMenuIcon, MoonIcon, SunIcon, ReloadIcon} from "@radix-ui/react-icons"
-import {useRouter} from "next/navigation"
-import {useLayoutEffect, useState} from "react"
+import {usePathname, useRouter} from "next/navigation"
+import {useEffect, useState} from "react"
 
-interface DashboardHeaderProps {
-    routeName: string
-    username: string
+function getRouteName(pathname: string): string {
+    const name: {[key: string]: string} = {
+        "/layout/transactions/expense": "Expenses",
+        "/layout/transactions/profit": "Profits",
+        "/layout/dashboard": "Dashboard",
+        "/layout/wallet": "Wallet",
+    }
+    return name[pathname ?? "/layout/dashboard"] ?? "Dashboard"
 }
 
 const ChangeThemeButton = () => {
@@ -38,7 +43,24 @@ const ChangeThemeButton = () => {
     )
 }
 
-export default function DashboardHeaderComponent({routeName}: DashboardHeaderProps) {
+export default function DashboardHeaderComponent() {
+    const [currentRouteName, setCurrentRouteName] = useState<string>("Dashboard")
+    const pathname = usePathname()
+    function haldeRouteChange(pathname: string) {
+        let newRouteName = getRouteName(pathname)
+        setCurrentRouteName("")
+        let index = 0
+        const interval = setInterval(() => {
+            setCurrentRouteName(newRouteName.slice(0, index + 1))
+            index++
+            if (index === newRouteName.length) clearInterval(interval)
+        }, 35)
+        return clearInterval(interval)
+    }
+    useEffect(() => {
+        return () => haldeRouteChange(pathname)
+    }, [pathname])
+
     return (
         <div className="z-40 w-full h-[7%] md:h-[10%] md:w-full bg-white dark:bg-gray-950  shadow-xs md:shadow-none md:border-b-[1px]  flex justify-between items-center p-4 relative md:justify-end border-b-[1px] dark:border-gray-900 dark:border ">
             <Link
@@ -51,7 +73,7 @@ export default function DashboardHeaderComponent({routeName}: DashboardHeaderPro
             <h1
                 className={`text-gray-950 dark:text-gray-200 text-base drop-shadow-md transition-all  duration-500  absolute left-2/4 translate-x-[-50%] md:text-3xl`}
             >
-                {routeName}
+                {currentRouteName}
             </h1>
             <div className="flex gap-4 items-center">
                 <ChangeThemeButton />

@@ -298,7 +298,6 @@ app.get("/api/users", async (req, res) => {
     const users = (await prisma.user.findMany()) ?? []
     const usersFiltered = users.map((user) => {
         return {
-            id: user.id,
             username: user.username,
             email: user.email,
         }
