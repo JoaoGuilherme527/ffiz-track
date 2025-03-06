@@ -81,7 +81,7 @@ export const formatShortBRL = (number: number): string => {
 
 // Retrieves all items from localStorage as an array of [key, value] pairs
 export const getItems = () => {
-  if(typeof window !== "undefined"{
+  if(typeof window !== "undefined"){
   const items: [string, string][] = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
@@ -95,26 +95,26 @@ export const getItems = () => {
 
 // Retrieves a specific item from localStorage by key
 export const getItem = (key: string) => {
-  if(typeof window !== "undefined"{
+  if(typeof window !== "undefined"){
   const value = localStorage.getItem(key) || "";
   return value;}
 };
 
 // Saves a new key-value pair to localStorage
 export const saveItem = (newKey: string, newValue: string) => {
-  if(typeof window !== "undefined"{
+  if(typeof window !== "undefined"){
   localStorage.setItem(newKey, newValue);}
 };
 
 // Removes a specific item from localStorage
 export const removeItem = (key: string) => {
-  if(typeof window !== "undefined"{
+  if(typeof window !== "undefined"){
   localStorage.removeItem(key);}
 };
 
 // Clears all localStorage data after user confirmation
 export const clearAll = () => {
-  if(typeof window !== "undefined"{
+  if(typeof window !== "undefined"){
   if (confirm("Are you sure you want to clear all localStorage items?")) {
     localStorage.clear();
   }}
