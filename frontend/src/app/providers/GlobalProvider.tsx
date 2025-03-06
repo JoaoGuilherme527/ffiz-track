@@ -15,7 +15,7 @@ const GlobalContext = createContext<GlobalContextProps | undefined>(undefined)
 
 
 export function GlobalProvider({children}: {children: ReactNode}) {
-    const [isTheme, setIsTheme] = useState<string>(getItem("theme"))
+    const [isTheme, setIsTheme] = useState<string>(getItem("theme")||"dark")
 
     return <GlobalContext.Provider value={{isTheme, setIsTheme}}>{children}</GlobalContext.Provider>
 }
