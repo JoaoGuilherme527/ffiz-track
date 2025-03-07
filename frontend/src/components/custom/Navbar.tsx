@@ -37,7 +37,9 @@ const LinkRouteButtonMobile = ({className, iconSize = 32, src, src2, href, path,
 const LinkRouteButton = ({className, iconSize = 24, src, href, path, name, src2}: LinkRouteButtonProps) => (
     <Link
         href={href}
-        className={`transition-all w-full flex items-center gap-2 p-2 py-[14px] ${path ? "dark:bg-gray-800" : ""} ${className}`}
+        className={`transition-all hover:opacity-50 w-full flex items-center gap-2 p-2 py-[14px] ${
+            path ? "dark:bg-gray-800 bg-gray-50  " : ""
+        } ${className}`}
     >
         <Image width={iconSize} height={iconSize} alt="" src={path ? (src2 as string) : src} className={`transition-all`} />
         <p className={`transition-all text-base ${path ? "text-green-400 font-semibold" : "text-gray-400 "}`}>{name}</p>
@@ -47,7 +49,7 @@ const LinkRouteButton = ({className, iconSize = 24, src, href, path, name, src2}
 const Navbar = () => {
     const pathname = usePathname()
     return (
-        <div className="z-30 w-full h-16 md:w-64 md:h-full md:flex-col dark:bg-gray-950 md:border-r-[1px] border-t-[1px] dark:border-gray-900 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
+        <div className="z-30 w-full h-16 md:w-64 md:h-[100%] md:flex-col dark:bg-gray-950 md:border-r-[1px] border-t-[1px] dark:border-gray-900 md:justify-start flex md:items-start md:px-2 md:pt-28 px-2 md:p-10 relative">
             {/* Mobile */}
             <div className="flex items-center justify-evenly w-full md:hidden py-2">
                 <LinkRouteButtonMobile

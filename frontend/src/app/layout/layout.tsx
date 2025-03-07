@@ -22,7 +22,7 @@ export default function DashboardLayout({
         }
     }, [isTheme])
     return (
-        <div className={`overflow-hidden ${theme}`}>
+        <div className={`${theme}`}>
             {/* Mobile */}
             <div className="flex flex-col h-dvh bg-white dark:bg-gray-950 justify-between overflow-hidden md:hidden">
                 <DashboardHeaderComponent />
@@ -31,9 +31,9 @@ export default function DashboardLayout({
             </div>
 
             {/* Desktop */}
-            <div className="flex  bg-white dark:bg-gray-950 overflow-hidden h-dvh max-sm:hidden">
+            <div className="flex bg-white h-lvh dark:bg-gray-950 overflow-hidden max-sm:hidden">
                 <Navbar />
-                <div className="w-dvw h-dvh overflow-hidden">
+                <div className="w-dvw h-dvh relative pt-16">
                     <DashboardHeaderComponent />
                     {children}
                 </div>

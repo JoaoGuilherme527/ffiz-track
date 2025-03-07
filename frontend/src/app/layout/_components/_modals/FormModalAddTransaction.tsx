@@ -1,5 +1,5 @@
 import {FormEvent, useEffect, useState} from "react"
-import FormModal from "@/src/components/custom/FormModal"
+import FormModal from "@/src/components/forms/FormModal"
 import { Input } from "@/src/components/ui/input"
 
 interface FormModalAddTransactionProps {

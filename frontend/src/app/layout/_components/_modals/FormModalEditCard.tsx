@@ -2,7 +2,7 @@ import {FormEvent} from "react"
 import {formatUSDtoBRL} from "@/src/lib/utils"
 import Image from "next/image"
 import {Input} from "@/src/components/ui/input"
-import FormModal, {FormModalProps} from "@/src/components/custom/FormModal"
+import FormModal, {FormModalProps} from "@/src/components/forms/FormModal"
 import {CardItem} from "@/src/types/types"
 import {deleteCard} from "@/src/data/actions/auth-actions"
 

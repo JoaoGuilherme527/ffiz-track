@@ -58,9 +58,9 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
                 setIsModalOpen={setIsModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={(e) => {
+                    setActiveIndex(null)
+                    const formData = new FormData(e.target as HTMLFormElement)
                     startTransition(() => {
-                        const formData = new FormData(e.target as HTMLFormElement)
-                        setActiveIndex(null)
                         addCardItem(formData).then(() => {
                             router.refresh()
                         })
@@ -83,8 +83,9 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
                 }}
                 onSubmit={(e) => {
                     setIsEditCardModalOpen(false)
+                    setActiveIndex(null)
+                    const formData = new FormData(e.target as HTMLFormElement)
                     startTransition(() => {
-                        const formData = new FormData(e.target as HTMLFormElement)
                         updateCardItem(formData, currentCard?.id as string).then(() => {
                             router.refresh()
                         })
@@ -97,8 +98,9 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
                 setIsModalOpen={setIsAddTransactionModalOpen}
                 onClose={() => setIsAddTransactionModalOpen(false)}
                 onSubmit={(e) => {
+                    setActiveIndex(null)
+                    const formData = new FormData(e.target as HTMLFormElement)
                     startTransition(() => {
-                        const formData = new FormData(e.target as HTMLFormElement)
                         addTransactionItem(formData).then(() => {
                             router.refresh()
                         })

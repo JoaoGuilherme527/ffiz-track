@@ -88,7 +88,6 @@
     * {
         padding: 0;
         margin: 0;
-        /* font-family: "Kodchasan", serif; */
         font-weight: 300;
         font-style: normal;
         user-select: none;
@@ -100,8 +99,6 @@
     }
 
     body {
-        /* font-family: Arial, Helvetica, sans-serif; */
-
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         font-size: 3.2vmax;
@@ -186,63 +183,68 @@ button {
     all: unset;
 }
 
-/* .cardOpen {
-    background-color: black;
-    animation: cardAnimateOpen forwards;
-    transition-duration: ms;
-    z-index: 40;
+:root {
+    --primary: var(--color-gray-300);
+    --secondary: var(--color-gray-50);
+    .dark * {
+        --primary: var(--color-gray-800);
+        --secondary: var(--color-gray-950);
+    }
 }
 
-.cardClose {
-    background-color: black;
-    animation: cardAnimateClose forwards;
-    transition-duration: 200ms;
-    width: 288px;
-    height: 192px;
+/* Scrollbar styles */
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--secondary);
 }
 
-@keyframes cardAnimateOpen {
-    0% {
-        width: 288px;
-        height: 192px;
-    }
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
 
-    50% {
-        height: 312px;
-        width: 312px;
-    }
+*::-webkit-scrollbar-track {
+    background: var(--primary);
+}
 
-    100% {
-        /* top: 50%;
-        transform: translateY(-50%); */
-
-/* @keyframes cardAnimateClose {
-} */
-
+*::-webkit-scrollbar-thumb {
+    background-color: var(--secondary);
+    /*   background: repeating-linear-gradient(
+      45deg,
+      var(--secondary),
+      var(--secondary) 5px,
+      var(--primary) 5px,
+      var(--primary) 10px
+    ); */
+    border-radius: 20px;
+    border: 3px solid var(--primary);
+}
 
 .SwitchRoot {
-	width: 50px;
-	height: 25px;
+    width: 50px;
+    height: 25px;
     background-color: #03071210;
-	border-radius: 9999px;
-	position: relative;
-	&[data-state="checked"] {
-		background-color: #1e2939a0;
-	}
+    border-radius: 9999px;
+    position: relative;
+    &[data-state="checked"] {
+        background-color: #1e2939a0;
+    }
 }
 
 .SwitchThumb {
-	display: block;
-	width: 21px;
-	height: 21px;
-	border-radius: 9999px;
-	box-shadow: 0 2px 2px var(--black-a7);
-	transition: transform 100ms;
-	transform: translateX(2px);
-	will-change: transform;
-	&[data-state="checked"] {
-		transform: translateX(27px);
-	}
+    display: block;
+    width: 21px;
+    height: 21px;
+    border-radius: 9999px;
+    box-shadow: 0 2px 2px var(--black-a7);
+    transition: transform 100ms;
+    transform: translateX(2px);
+    will-change: transform;
+    &[data-state="checked"] {
+        transform: translateX(27px);
+    }
 }
 
 .DropdownMenuContent,

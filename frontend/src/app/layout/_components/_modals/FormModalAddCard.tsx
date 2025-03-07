@@ -1,4 +1,4 @@
-import FormModal, {FormModalProps} from "@/src/components/custom/FormModal"
+import FormModal, {FormModalProps} from "@/src/components/forms/FormModal"
 import {Input} from "@/src/components/ui/input"
 import {FormEvent} from "react"
 
