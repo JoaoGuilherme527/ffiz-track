@@ -1,6 +1,6 @@
 import {FormEvent, useEffect, useState} from "react"
 import FormModal from "@/src/components/forms/FormModal"
-import { Input } from "@/src/components/ui/input"
+import {Input} from "@/src/components/ui/input"
 
 interface FormModalAddTransactionProps {
     isModalOpen: boolean
@@ -29,15 +29,15 @@ export default function FormModalAddTransactionComponent({
 
     return (
         <FormModal isModalOpen={isModalOpen} onClose={onClose} onSubmit={onSubmit} setIsModalOpen={setIsModalOpen}>
-            <div className="">
+            <div className="flex flex-col gap-2">
                 <label htmlFor="name" className="text-sm text-gray-700">
                     Name of your {type}:
                 </label>
                 <Input required id="name" name="name" type="text" placeholder={`${type} name`} />
             </div>
-            <div className="">
+            <div className="flex flex-col gap-2">
                 <label htmlFor="amount" className="text-sm text-gray-700">
-                    Amount of your {type}:
+                    Amount:
                 </label>
                 <Input required id="amount" name="amount" type="number" placeholder="amount" step={"0.01"} />
                 <Input
@@ -50,9 +50,23 @@ export default function FormModalAddTransactionComponent({
                     placeholder="type"
                 />
             </div>
-            <div className="">
+            <div className="flex flex-col gap-2">
+                <label htmlFor="frequency" className="text-sm text-gray-700">
+                    Frequency type:
+                </label>
+                <select
+                    required
+                    name="frequency"
+                    id="frequency"
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                >
+                    <option value="variable">Variable</option>
+                    <option value="fixed">Fixed</option>
+                </select>
+            </div>
+            <div className="flex flex-col gap-2">
                 <label htmlFor="category" className="text-sm text-gray-700">
-                    Category of your {type}:
+                    Category:
                 </label>
                 <select
                     required
@@ -87,14 +101,14 @@ export default function FormModalAddTransactionComponent({
                 </select>
             </div>
 
-            <div className="">
+            <div className="flex flex-col gap-2">
                 <label htmlFor="transactionDate" className="text-sm text-gray-700">
                     Date of your {type}:
                 </label>
-                <Input id="transactionDate" name="transactionDate" type="datetime-local" defaultValue={date}/>
+                <Input id="transactionDate" name="transactionDate" type="datetime-local" defaultValue={date} />
             </div>
             <div className="w-full flex justify-center py-2">
-                <div className="text-sm text-white py-2 px-10 rounded font-bold bg-green-700">
+                <div className="text-sm text-white py-2 px-10 rounded font-bold bg-green-700 cursor-pointer flex-1 text-center">
                     <button type="submit">Add Expense</button>
                 </div>
             </div>

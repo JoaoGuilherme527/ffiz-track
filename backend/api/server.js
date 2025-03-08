@@ -125,7 +125,7 @@ app.post("/:userId/card", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
-    const {name, limit, color} = req.body
+    const {name, limit, color, expirationDate} = req.body
     await prisma.$connect()
     try {
         const newCard = await prisma.card.create({
@@ -135,6 +135,7 @@ app.post("/:userId/card", async (req, res) => {
                 name,
                 userId,
                 color,
+                expirationDate,
             },
         })
         res.status(201).json(newCard)
@@ -178,23 +179,13 @@ app.put("/:userId/card/:cardId", async (req, res) => {
     if (!token) return res.status(401).json({error: "Token ausente!"})
 
     const {cardId} = req.params
-    const {available, name, limit, color} = req.body
+    const data = req.body
 
     await prisma.$connect()
     try {
-        const updateData = {}
-        if (available !== undefined) updateData.available = available
-        if (name !== undefined) updateData.name = name
-        if (limit !== undefined) updateData.limit = limit
-        if (color !== undefined) updateData.color = color
-
-        if (!Object.keys(updateData).length) {
-            return res.status(400).json({error: "Nenhum dado para atualizar foi fornecido."})
-        }
-
         const updatedCard = await prisma.card.update({
             where: {id: cardId},
-            data: updateData,
+            data: data,
         })
 
         return res.status(200).json(updatedCard)
@@ -208,7 +199,7 @@ app.post("/:userId/transactions", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
     if (!token) return res.status(401).json({error: "Token ausente!"})
     const {userId} = req.params
-    const {name, amount, type, transactionDate, category} = req.body
+    const {name, amount, type, transactionDate, category, frequency} = req.body
     await prisma.$connect()
     try {
         const newTransaction = await prisma.transactionItem.create({
@@ -217,8 +208,9 @@ app.post("/:userId/transactions", async (req, res) => {
                 amount,
                 userId,
                 type,
-                category: category ?? "",
+                category,
                 transactionDate,
+                frequency
             },
         })
 

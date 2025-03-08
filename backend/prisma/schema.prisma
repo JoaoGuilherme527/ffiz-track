@@ -28,15 +28,18 @@ model TransactionItem {
   createdAt       DateTime @default(now())
   transactionDate String
   userId          String
-  type            String
+  type            String // "expense" | "profit" | Card.name
   category        String?
+  frequency       String   @default("variable") // "fixed" | "variable"
 }
 
 model Card {
-  id        String @id @default(cuid())
-  name      String
-  limit     Float
-  available Float
-  userId    String
-  color     String @default("#FFF")
+  id             String   @id @default(cuid())
+  name           String
+  limit          Float
+  available      Float
+  userId         String
+  color          String   @default("#FFF")
+  expirationDate DateTime @default(now())
+  isPaid         Boolean  @default(false)
 }

@@ -104,10 +104,16 @@ export default function CardItemComponent({
                             <span className="opacity-80">Limit:</span>
                             <span className="font-medium ml-1">{formatUSDtoBRL(card.limit)}</span>
                         </p>
-                        <p>
-                            <span className="opacity-80">Available:</span>
-                            <span className="font-medium ml-1">{formatUSDtoBRL(card.available)}</span>
-                        </p>
+                        <div className="flex justify-between items-center">
+                            <p>
+                                <span className="opacity-80">Available:</span>
+                                <span className="font-medium ml-1">{formatUSDtoBRL(card.available)}</span>
+                            </p>
+                            <p className="text-xs">
+                                <span className="opacity-80">Expiration:</span>
+                                <span className="font-medium ml-1">{formatTime(card.expirationDate).slice(0, 5)}</span>
+                            </p>
+                        </div>
                     </div>
                     <div className="relative w-full min-h-2 dark:border border-y-gray-200 shadow border rounded-full bg-white bg-opacity-20 overflow-hidden">
                         <div

@@ -111,6 +111,7 @@ export async function addTransactionItem(formData: FormData) {
     category: formData.get("category"),
     type: formData.get("type"),
     transactionDate: formData.get("transactionDate"),
+    frequency: formData.get("frequency"),
   }
 
   const response = await postNewTransactionItem({
@@ -119,6 +120,7 @@ export async function addTransactionItem(formData: FormData) {
     category: transactionItem.category as string,
     transactionDate: transactionItem.transactionDate as string,
     type: transactionItem.type as "expense" | "profit",
+    frequency: transactionItem.frequency as "variable" | "fixed",
   });
 
   return response
@@ -129,29 +131,42 @@ export async function addCardItem(formData: FormData) {
     available: formData.get("available"),
     color: formData.get("color"),
     limit: formData.get("limit"),
+    expirationDate: formData.get("expirationDate"),
   }
 
   const response = await postNewCard({
     name: (cardItem.name as string).trim(),
     available: Number(cardItem.available),
     color: cardItem.color as string,
-    limit: Number(cardItem.limit)
+    limit: Number(cardItem.limit),
+    expirationDate: cardItem.expirationDate as string
   });
 
   return response
 }
+export async function updateTransactionItem(formData: FormData, id: string) {
+  const formDataObj = Object.fromEntries(formData.entries()) as Record<string, string>;
 
-export async function updateTransactionItem(formData: FormData, id: string): Promise<TransactionItem | string> {
-  const expenseItem = {
-    amount: formData.get("amount"),
-  }
+  const filteredData = Object.entries(formDataObj).reduce((acc, [key, value]) => {
+    if (!value.trim()) return acc;
 
-  const response = await updateUserTransaction({
-    amount: Number(expenseItem.amount),
-    id
-  });
+    switch (key) {
+      case "amount":
+        acc[key] = Number(value);
+        break;
+      case "transactionDate":
+      case "type":
+      case "category":
+      case "frequency":
+      case "name":
+        acc[key] = value;
+        break;
+    }
 
-  return response
+    return acc;
+  }, {} as Record<string, string | number>);
+
+  await updateUserTransaction(filteredData, id);
 }
 
 export async function getTransactions(type: string) {
@@ -175,23 +190,24 @@ export async function getCardItems() {
 }
 
 export async function updateCardItem(formData: FormData, id: string) {
-  type CardUpdateData = {
-    name?: string;
-    limit?: number;
-    available?: number;
-  };
-
   const formDataObj = Object.fromEntries(formData.entries()) as Record<string, string>;
-  const filteredData: CardUpdateData = {};
 
-  for (const [key, value] of Object.entries(formDataObj)) {
-    if (value.trim() === "") continue;
-    if (key === "limit" || key === "available") {
-      filteredData[key as "limit" | "available"] = Number(value);
-    } else if (key === "name") {
-      filteredData.name = value;
+  const filteredData = Object.entries(formDataObj).reduce((acc, [key, value]) => {
+    if (!value.trim()) return acc;
+
+    switch (key) {
+      case "limit":
+      case "available":
+        acc[key] = Number(value);
+        break;
+      case "name":
+      case "expirationDate":
+        acc[key] = value;
+        break;
     }
-  }
+
+    return acc;
+  }, {} as Record<string, string | number>);
 
   await updateUserCard(filteredData, id);
 }

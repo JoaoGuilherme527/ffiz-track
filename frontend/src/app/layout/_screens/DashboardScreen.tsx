@@ -57,7 +57,7 @@ const DashboardCard = ({src, title, value, description, variant, cards, classNam
                 {cards && cards?.length > 0 && (
                     <>
                         <div className="absolute top-[10px] right-[10px]">
-                            <PlusIcon color="white" />
+                            <PlusIcon color={variant ? "white" : "var(--color-green-500)"} />
                         </div>
                     </>
                 )}

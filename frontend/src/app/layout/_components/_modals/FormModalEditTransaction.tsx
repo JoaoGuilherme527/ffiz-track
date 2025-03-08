@@ -3,17 +3,30 @@ import {formatUSDtoBRL} from "@/src/lib/utils"
 import Image from "next/image"
 import {Input} from "@/src/components/ui/input"
 import FormModal, {FormModalProps} from "@/src/components/forms/FormModal"
+import {TransactionItem} from "@/src/types/types"
+
+//"name", "amount", "transactionDate", "type", "category", "frequency"
 
 export default function FormModalEditTransactionComponent({
     onClose,
     onSubmit,
     isModalOpen,
     amount,
+    name,
+    frequency,
+    transactionDate,
+    type,
+    category,
     setIsModalOpen,
-}: {amount: number} & FormModalProps) {
+}: TransactionItem & FormModalProps) {
     return (
         <FormModal isModalOpen={isModalOpen} onClose={onClose} onSubmit={onSubmit} setIsModalOpen={setIsModalOpen}>
-            <div className="flex flex-col gap-5 py-5">
+            <div className="flex flex-col gap-2 ">
+                <label className="text-sm text-gray-700 flex place-items-baseline justify-between">Name: {name}</label>
+                <Input id="name" name="name" type="text" placeholder={name} />
+            </div>
+
+            <div className="flex flex-col gap-2">
                 <label className="text-sm text-gray-700 flex place-items-baseline justify-between">
                     Current amount: {formatUSDtoBRL(amount as number)}
                 </label>

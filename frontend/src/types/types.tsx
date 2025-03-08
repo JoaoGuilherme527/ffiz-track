@@ -5,6 +5,7 @@ export interface TransactionItem {
     createdAt?: string
     category?: string
     transactionDate: string
+    frequency: "variable" | "fixed"
     id?: string
 }
 
@@ -13,5 +14,7 @@ export interface CardItem {
     limit: number
     available: number
     color: string
+    expirationDate: string
+    isPaid?: boolean
     id?: string
 }

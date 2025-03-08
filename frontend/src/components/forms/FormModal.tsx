@@ -12,13 +12,13 @@ export interface FormModalProps {
 export default function FormModal({isModalOpen, onSubmit, setIsModalOpen, onClose, children}: FormModalProps) {
     return (
         <div
-            className={`transition-all w-dvw h-dvh z-60 absolute top-0 left-[50%] translate-x-[-50%] flex items-center justify-center max-sm:bottom-0 ${
-                isModalOpen ? "bg-[#0000] h-dvh max-sm:bottom-0 top-0" : "bg-[#0000] pointer-events-none h-0 "
+            className={`transition-all w-dvw h-dvh z-60 absolute md:top-5 md:left-0  max-sm:left-[50%] max-sm:translate-x-[-50%] flex items-center justify-center max-sm:bottom-0 ${
+                isModalOpen ? "bg-[#0000] h-dvh max-sm:bottom-0" : "bg-[#0000] pointer-events-none h-0 "
             }`}
         >
             <form
                 method="post"
-                className={`transition-all flex flex-col md:w-[40%] max-sm:w-[90%] rounded-md gap-2 shadow-2xl bg-white px-10 pt-1 pb-5 ${
+                className={`transition-all flex flex-col md:w-[40%] max-sm:w-[90%] rounded-md md:gap-4 gap-2 shadow-2xl bg-white px-10 pt-5 pb-5 ${
                     isModalOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"
                 } `}
                 onSubmit={(e) => {

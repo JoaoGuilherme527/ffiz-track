@@ -54,7 +54,7 @@ export async function loginUserService(userData: LoginUserProps) {
   }
 }
 
-export async function postNewTransactionItem({ amount, name, category, transactionDate, type }: TransactionItem) {
+export async function postNewTransactionItem({ amount, name, category, transactionDate, type, frequency }: TransactionItem) {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
@@ -68,7 +68,7 @@ export async function postNewTransactionItem({ amount, name, category, transacti
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`
       },
-      body: JSON.stringify({ name, amount, category, transactionDate: date, type }),
+      body: JSON.stringify({ name, amount, category, transactionDate: date, type, frequency }),
     });
 
     return response.json();
@@ -77,7 +77,7 @@ export async function postNewTransactionItem({ amount, name, category, transacti
   }
 }
 
-export async function postNewCard({ available, color, limit, name }: CardItem) {
+export async function postNewCard({ available, color, limit, name, expirationDate }: CardItem) {
   const authToken = await getAuthToken();
   const { data } = await getUserMeLoader()
   const { id } = data
@@ -90,7 +90,7 @@ export async function postNewCard({ available, color, limit, name }: CardItem) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`
       },
-      body: JSON.stringify({ available, color, limit, name, userId: id }),
+      body: JSON.stringify({ available, color, limit, name, userId: id, expirationDate }),
     });
 
     return response.json();
@@ -99,7 +99,7 @@ export async function postNewCard({ available, color, limit, name }: CardItem) {
   }
 }
 
-export async function updateUserTransaction({ amount, id }: Pick<TransactionItem, "amount" | "id">): Promise<TransactionItem | string> {
+export async function updateUserTransaction(formData: any, id: string): Promise<TransactionItem | string> {
   const authToken = await getAuthToken();
   const url = `${baseUrl}/transactions/${id}`;
 
@@ -110,7 +110,7 @@ export async function updateUserTransaction({ amount, id }: Pick<TransactionItem
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`
       },
-      body: JSON.stringify({ amount }),
+      body: JSON.stringify(formData),
     });
 
     return response.json();
