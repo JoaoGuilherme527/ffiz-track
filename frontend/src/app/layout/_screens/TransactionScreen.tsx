@@ -81,6 +81,11 @@ export default function TransactionScreen({params}: {params: TransactionParams})
 
                 <FormModalEditTransactionComponent
                     amount={isEditModalOpen.data?.amount as number}
+                    frequency="variable"
+                    name=""
+                    transactionDate=""
+                    type=""
+                    category=""
                     isModalOpen={isEditModalOpen.status}
                     onClose={() => setIsEditModalOpen({data: null, status: false})}
                     onSubmit={(e) => {
