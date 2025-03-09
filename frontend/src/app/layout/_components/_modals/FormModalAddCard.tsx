@@ -18,7 +18,13 @@ export default function FormModalAddCard({isModalOpen, onSubmit, setIsModalOpen,
                 <Input required id="limit" name="limit" type="number" placeholder="limit of your card" step={"0.01"} />
                 <Input required id="available" className="opacity-0 hidden" name="available" type="number" step={"0.01"} readOnly value={0}/>
             </div>
-            <div className="">
+            <div className="flex flex-col gap-2">
+                <label htmlFor="expirationDate" className="text-sm text-gray-700">
+                    Expiration day
+                </label>
+                <Input required id="expirationDate" name="expirationDate" type="number" placeholder="15" />
+            </div>
+            <div className="flex flex-col gap-2">
                 <label htmlFor="color" className="text-sm text-gray-700">
                     Card color
                 </label>

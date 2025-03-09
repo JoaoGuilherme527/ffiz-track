@@ -4,13 +4,13 @@
 import {useState, useTransition} from "react"
 import {TransactionItem} from "@/src/types/types"
 import Loading from "../../loading"
-import TransactionItemComponent from "../_components/TransactionItem"
 import {addTransactionItem, deleteTransaction, updateTransactionItem} from "@/src/data/actions/auth-actions"
-import FormModalAddTransactionComponent from "../_components/FormModalAddTransaction"
-import FormModalEditTransactionComponent from "../_components/FormModalEditTransaction"
-import AddTransactionButton from "../_components/AddTransactionButton"
-import AmountLabelComponent from "../_components/TotalAmountLabel"
+import AddTransactionButton from "../../../components/custom/AddTransactionButton"
+import AmountLabelComponent from "../../../components/custom/TotalAmountLabel"
 import {useRouter} from "next/navigation"
+import TransactionItemComponent from "@/src/components/custom/TransactionItem"
+import FormModalAddTransactionComponent from "../_components/_modals/FormModalAddTransaction"
+import FormModalEditTransactionComponent from "../_components/_modals/FormModalEditTransaction"
 
 interface TransactionParams {
     type: string

@@ -1,15 +1,15 @@
 "use client"
 
 import {useState, useTransition} from "react"
-import FormModalAddCard from "../_components/FormModalAddCard"
+import FormModalAddCard from "../_components/_modals/FormModalAddCard"
 import {addCardItem, addTransactionItem, updateCardItem} from "@/src/data/actions/auth-actions"
 import {CardItem, TransactionItem} from "@/src/types/types"
 import {useRouter} from "next/navigation"
-import {formatShortBRL, formatTime, formatUSDtoBRL} from "@/src/lib/utils"
+import FormModalEditCard from "../_components/_modals/FormModalEditCard"
+import FormModalAddTransactionComponent from "../_components/_modals/FormModalAddTransaction"
 import {motion} from "framer-motion"
 import Image from "next/image"
-import FormModalEditCard from "../_components/FormModalEditCard"
-import FormModalAddTransactionComponent from "../_components/FormModalAddTransaction"
+import { formatShortBRL, formatTime, formatUSDtoBRL } from "@/src/lib/utils"
 interface TransactionParams {
     cards: CardItem[]
     transactions: TransactionItem[]
@@ -187,12 +187,13 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
                             index={index}
                             key={index}
                         />
-                    ))
-                    .reverse()}
+                    ))}
 
                 <div
                     onClick={() => setIsModalOpen(true)}
-                    className="transition-all active:scale-[0.9] flex items-center justify-center shadow border rounded-xl w-64 min-h-40 bg-linear-to-br from-gray-400 to-gray-800"
+                    className={`transition-all active:scale-[0.9] flex items-center justify-center shadow border rounded-xl w-64 md:w-full min-h-40 bg-linear-to-br from-gray-400 to-gray-800 ${
+                        typeof activeIndex === "number" ? "hidden" : ""
+                    }`}
                 >
                     <p className="font-thin text-6xl text-white drop-shadow-lg ">+</p>
                 </div>
@@ -212,6 +213,7 @@ export default function WalletScreen({params}: {params: TransactionParams}) {
                 }}
             />
             <FormModalEditCard
+                onDelete={()=>{}}
                 isModalOpen={isEditCardModalOpen}
                 card={currentCard as CardItem}
                 onClose={() => setIsEditCardModalOpen(false)}

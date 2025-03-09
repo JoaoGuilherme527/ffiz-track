@@ -1,7 +1,7 @@
 import {FormEvent, useEffect, useState} from "react"
-import {Input} from "../../../components/ui/input"
 import Image from "next/image"
 import FormModal from "@/src/components/custom/FormModal"
+import { Input } from "@/src/components/ui/input"
 
 interface FormModalAddTransactionProps {
     isModalOpen: boolean

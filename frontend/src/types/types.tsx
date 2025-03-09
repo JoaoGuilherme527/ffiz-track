@@ -14,4 +14,6 @@ export interface CardItem {
     available: number
     color: string
     id?: string
+    isPaymentDay?: boolean
+    expirationDate: string
 }

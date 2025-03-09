@@ -33,10 +33,12 @@ model TransactionItem {
 }
 
 model Card {
-  id        String @id @default(cuid())
-  name      String
-  limit     Float
-  available Float
-  userId    String
-  color     String @default("#FFF")
+  id             String   @id @default(cuid())
+  name           String
+  limit          Float
+  available      Float
+  userId         String
+  color          String   @default("#FFF")
+  expirationDate String   @default("")
+  isPaid         Boolean  @default(false)
 }

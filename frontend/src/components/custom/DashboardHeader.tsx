@@ -1,6 +1,12 @@
 import DropdownMenuButton from "@/src/components/custom/Dropdown"
 import Image from "next/image"
 import Link from "next/link"
+import {HamburgerMenuIcon, MoonIcon, SunIcon, ReloadIcon} from "@radix-ui/react-icons"
+import {usePathname, useRouter} from "next/navigation"
+import {useEffect, useLayoutEffect, useState} from "react"
+import {saveItem} from "@/src/lib/utils"
+import {Switch} from "radix-ui"
+import { useGlobalContext } from "@/src/app/providers/GlobalProvider"
 
 interface DashboardHeaderProps {
     routeName: string

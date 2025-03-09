@@ -143,19 +143,37 @@ app.post("/:userId/card", async (req, res) => {
         res.status(500).json({error: "Error creating card"})
     }
 })
+
 app.get("/:userId/card", async (req, res) => {
-    const token = req.headers.authorization?.replace("Bearer ", "")
-    if (!token) return res.status(401).json({error: "Token ausente!"})
-    const {userId} = req.params
-    await prisma.$connect()
+    const token = req.headers.authorization?.replace("Bearer ", "");
+    if (!token) return res.status(401).json({ error: "Token ausente!" });
+
+    const { userId } = req.params;
+    await prisma.$connect();
     try {
-        const card = await prisma.card.findMany({where: {userId}})
-        res.status(201).json({cards: card})
+        const cards = await prisma.card.findMany({ where: { userId } });
+
+        const today = new Date();
+        const formattedCards = cards.map(card => {
+            const expirationDate = new Date(card.expirationDate);
+            const isPaymentDay = 
+                today.getDate() === expirationDate.getDate() &&
+                today.getMonth() === expirationDate.getMonth() &&
+                today.getFullYear() === expirationDate.getFullYear();
+
+            return {
+                ...card,
+                isPaymentDay,
+            };
+        });
+
+        res.status(200).json({ cards: formattedCards });
     } catch (error) {
-        console.log(error)
-        res.status(500).json({error: "Error getting card"})
+        console.log(error);
+        res.status(500).json({ error: "Error getting card" });
     }
-})
+});
+
 
 app.put("/:userId/card/:cardId", async (req, res) => {
     const token = req.headers.authorization?.replace("Bearer ", "")
