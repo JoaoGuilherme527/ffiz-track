@@ -167,6 +167,8 @@ app.delete("/:userId/card/:id", async (req, res) => {
         const card = await prisma.card.findMany({where: {id}})
         if (card.length < 0) return res.status(500).json({error: "Card does not exist!"})
         await prisma.card.delete({where: {id}})
+        await prisma.transactionItem.delete({where: {type: card.name}})
+
         res.status(201).json("Card deleted")
     } catch (error) {
         console.log(error)
